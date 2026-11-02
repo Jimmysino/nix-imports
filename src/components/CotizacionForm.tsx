@@ -147,12 +147,10 @@ export function CotizacionForm({ comisionDefault, valoresIniciales, onGuardar, s
           <span>Total a cobrar (USD)</span>
           <span className="text-blue-600">{formatUSD(total)}</span>
         </div>
-        {(valores.tipo_cambio || 0) > 1 && (
-          <div className="flex justify-between text-sm text-gray-500">
-            <span>Equivalente en moneda local</span>
-            <span className="font-medium text-gray-700">$ {formatLocal(total, valores.tipo_cambio || 1)}</span>
-          </div>
-        )}
+        <div className="flex justify-between text-sm text-gray-500">
+          <span>Equivalente en moneda local</span>
+          <span className="font-medium text-gray-700">$ {formatLocal(total, valores.tipo_cambio || 1)}</span>
+        </div>
       </div>
 
       {!soloLectura && (
