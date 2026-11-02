@@ -35,7 +35,36 @@ export function CambiarEstado({ estadoActual, onCambiar }: CambiarEstadoProps) {
     }
   }
 
-  if (esFinal) return null
+  if (esFinal) {
+    return (
+      <div className="flex items-center gap-1 flex-wrap">
+        {FLUJO_ESTADOS.map((estado, i) => {
+          const idx = FLUJO_ESTADOS.indexOf(estadoActual)
+          const pasado = i < idx
+          const actual = i === idx
+          return (
+            <div key={estado} className="flex items-center gap-1">
+              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                actual ? 'bg-green-100 text-green-700' :
+                pasado ? 'bg-gray-100 text-gray-400 line-through' :
+                'bg-gray-50 text-gray-400'
+              }`}>
+                {estado}
+              </span>
+              {i < FLUJO_ESTADOS.length - 1 && (
+                <ChevronRight size={12} className="text-gray-300 shrink-0" />
+              )}
+            </div>
+          )
+        })}
+        {estadoActual === 'Cancelado' && (
+          <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-red-100 text-red-600 ml-1">
+            Cancelado
+          </span>
+        )}
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-3">
