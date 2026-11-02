@@ -14,6 +14,7 @@ export function Clientes() {
   const { clientes, loading, error, crearCliente, actualizarCliente } = useClientes()
   const [mostrarForm, setMostrarForm] = useState(false)
   const [clienteEditando, setClienteEditando] = useState<Cliente | null>(null)
+  const [exito, setExito] = useState<string | null>(null)
   const [busqueda, setBusqueda] = useState('')
   const [conteos, setConteos] = useState<Record<string, number>>({})
   const [errorConteos, setErrorConteos] = useState<string | null>(null)
@@ -71,11 +72,17 @@ export function Clientes() {
   }
 
   async function guardarCliente(valores: Parameters<typeof crearCliente>[0]) {
-    if (clienteEditando) await actualizarCliente(clienteEditando.id, valores)
-    else await crearCliente(valores)
+    if (clienteEditando) {
+      await actualizarCliente(clienteEditando.id, valores)
+      setExito(`Cliente "${valores.nombre}" actualizado correctamente`)
+    } else {
+      await crearCliente(valores)
+      setExito(`Cliente "${valores.nombre}" creado correctamente`)
+    }
     await cargarConteos()
     setMostrarForm(false)
     setClienteEditando(null)
+    setTimeout(() => setExito(null), 4000)
   }
 
   return (
@@ -87,6 +94,13 @@ export function Clientes() {
         </div>
         <Button onClick={nuevoCliente} className="gap-2"><Plus size={16} /> Nuevo cliente</Button>
       </div>
+
+      {exito && (
+        <div className="mb-4 flex items-center justify-between rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">
+          <span>✓ {exito}</span>
+          <button onClick={() => setExito(null)}><X size={14} /></button>
+        </div>
+      )}
 
       {mostrarForm && (
         <div className="mb-6 rounded-xl border border-gray-200 bg-white shadow-sm">
