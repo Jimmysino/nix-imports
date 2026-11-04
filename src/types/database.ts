@@ -90,6 +90,9 @@ export interface Perfume {
   genero: GeneroPerfume
   descripcion: string | null
   imagen_url: string | null
+  costo_compra: number
+  precio_minorista: number
+  precio_mayorista: number
   created_at: string
   updated_at: string
 }

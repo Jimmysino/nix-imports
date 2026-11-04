@@ -8,6 +8,7 @@ import { Inventario } from './pages/Inventario'
 import { Configuracion } from './pages/Configuracion'
 import { Reportes } from './pages/Reportes'
 import { PerfumesCatalogo } from './pages/PerfumesCatalogo'
+import { PerfumesPrecios } from './pages/PerfumesPrecios'
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
           <Route path="inventario" element={<Inventario />} />
           <Route path="reportes" element={<Reportes />} />
           <Route path="perfumes/catalogo" element={<PerfumesCatalogo />} />
+          <Route path="perfumes/precios" element={<PerfumesPrecios />} />
           <Route path="configuracion" element={<Configuracion />} />
         </Route>
       </Routes>

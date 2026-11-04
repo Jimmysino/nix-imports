@@ -526,7 +526,7 @@ El admin puede crear, editar y eliminar perfumes del catálogo. Cada perfume tie
 ---
 
 ### NIX-020: Gestionar precios mayorista y minorista
-**Estado Scrum:** Pendiente
+**Estado Scrum:** Implementada
 **Prioridad:** Alta | **Puntos:** 5 | **Sprint:** 4
 **Como** admin, **quiero** asignar precios de venta mayorista y minorista a cada perfume, **para** manejar las dos líneas de negocio con precios diferenciados.
 
@@ -534,13 +534,13 @@ El admin puede crear, editar y eliminar perfumes del catálogo. Cada perfume tie
 Cada perfume tiene dos precios de venta: uno para clientes minoristas (unidad) y otro para mayoristas (volumen). El admin también registra el costo de compra para calcular el margen de ganancia. Los precios se manejan en moneda local.
 
 **Criterios de aceptación:**
-- [ ] Puedo asignar a cada perfume: costo de compra, precio minorista, precio mayorista
-- [ ] Los precios se muestran en moneda local
-- [ ] Se calcula y muestra el margen de ganancia (%) para cada tipo de precio
-- [ ] Puedo editar los precios en cualquier momento
-- [ ] Se valida que el precio minorista sea mayor que el mayorista
-- [ ] Se valida que ambos precios sean mayores que cero
-- [ ] Se muestra un listado con los precios actuales de todos los perfumes
+- [x] Puedo asignar a cada perfume: costo de compra, precio minorista, precio mayorista
+- [x] Los precios se muestran en moneda local
+- [x] Se calcula y muestra el margen de ganancia (%) para cada tipo de precio
+- [x] Puedo editar los precios en cualquier momento
+- [x] Se valida que el precio minorista sea mayor que el mayorista
+- [x] Se valida que ambos precios sean mayores que cero
+- [x] Se muestra un listado con los precios actuales de todos los perfumes
 
 ---
 
