@@ -422,7 +422,7 @@ El admin puede consultar un reporte filtrado por rango de fechas que muestra los
 ---
 
 ### NIX-015: Búsqueda global de pedidos, clientes e inventario
-**Estado Scrum:** Pendiente
+**Estado Scrum:** Implementada
 **Prioridad:** Media | **Puntos:** 5 | **Sprint:** 3
 **Como** admin, **quiero** buscar pedidos, clientes y productos desde un solo campo de búsqueda, **para** encontrar información rápidamente sin navegar entre secciones.
 
@@ -430,13 +430,13 @@ El admin puede consultar un reporte filtrado por rango de fechas que muestra los
 Un campo de búsqueda global accesible desde cualquier página permite al admin escribir un término y ver resultados agrupados por tipo (pedidos, clientes, inventario). Los resultados son enlaces directos al detalle correspondiente.
 
 **Criterios de aceptación:**
-- [ ] Hay un campo de búsqueda global visible en el header o sidebar
-- [ ] Al escribir, se muestran resultados agrupados por: pedidos, clientes, inventario
-- [ ] Puedo buscar por código de pedido, nombre de cliente, teléfono, nombre de producto o número de serie
-- [ ] Los resultados se actualizan mientras escribo (debounce)
-- [ ] Al seleccionar un resultado, navego al detalle correspondiente
-- [ ] Se muestra un mensaje cuando no hay resultados
-- [ ] La búsqueda se puede abrir con un atajo de teclado (Ctrl+K)
+- [x] Hay un campo de búsqueda global visible en el header o sidebar
+- [x] Al escribir, se muestran resultados agrupados por: pedidos, clientes, inventario
+- [x] Puedo buscar por código de pedido, nombre de cliente, teléfono, nombre de producto o número de serie
+- [x] Los resultados se actualizan mientras escribo (debounce)
+- [x] Al seleccionar un resultado, navego al detalle correspondiente
+- [x] Se muestra un mensaje cuando no hay resultados
+- [x] La búsqueda se puede abrir con un atajo de teclado (Ctrl+K)
 
 ---
 
