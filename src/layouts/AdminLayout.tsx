@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell, Menu, X, Droplets } from 'lucide-react'
+import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell, Menu, X, Droplets, ChevronDown, BookOpen, DollarSign, Warehouse, Truck } from 'lucide-react'
 import { BusquedaGlobal } from '../components/BusquedaGlobal'
 import { PanelAlertas } from '../components/PanelAlertas'
 import { useAlertas } from '../hooks/useAlertas'
@@ -11,19 +11,28 @@ const navItems = [
   { to: '/clientes',    label: 'Clientes',    icon: Users },
   { to: '/inventario',  label: 'Inventario',  icon: Boxes },
   { to: '/reportes',    label: 'Reportes',    icon: BarChart3 },
-  { to: '/perfumes/catalogo', label: 'Perfumes', icon: Droplets },
   { to: '/configuracion', label: 'Configuración', icon: Settings },
+]
+
+const perfumesSubItems = [
+  { to: '/perfumes',            label: 'Dashboard',   icon: LayoutDashboard },
+  { to: '/perfumes/catalogo',   label: 'Catálogo',    icon: BookOpen },
+  { to: '/perfumes/precios',    label: 'Precios',     icon: DollarSign },
+  { to: '/perfumes/stock',      label: 'Stock',       icon: Warehouse },
+  { to: '/perfumes/proveedores', label: 'Proveedores', icon: Truck },
 ]
 
 export function AdminLayout() {
   const [busquedaAbierta, setBusquedaAbierta] = useState(false)
   const [alertasAbiertas, setAlertasAbiertas] = useState(false)
   const [menuAbierto, setMenuAbierto] = useState(false)
+  const [perfumesAbierto, setPerfumesAbierto] = useState(false)
   const alertasRef = useRef<HTMLDivElement>(null)
   const { alertas, marcarRevisada } = useAlertas()
   const location = useLocation()
 
   useEffect(() => { setMenuAbierto(false) }, [location.pathname])
+  useEffect(() => { if (location.pathname.startsWith('/perfumes')) setPerfumesAbierto(true) }, [location.pathname])
 
   const cerrarBusqueda = useCallback(() => setBusquedaAbierta(false), [])
 
@@ -74,23 +83,66 @@ export function AdminLayout() {
       </div>
 
       <nav className="flex-1 p-3 flex flex-col gap-0.5">
-        {navItems.map(({ to, label, icon: Icon }) => (
-          <NavLink
-            key={to}
-            to={to}
-            end={to === '/'}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors min-h-[44px] ${
-                isActive
-                  ? 'bg-blue-50 text-blue-600 font-medium'
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`
-            }
-          >
-            <Icon size={17} />
-            {label}
-          </NavLink>
-        ))}
+        {navItems.map(({ to, label, icon: Icon }) => {
+          if (to === '/configuracion') return null
+          return (
+            <NavLink
+              key={to}
+              to={to}
+              end={to === '/'}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors min-h-[44px] ${
+                  isActive ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-600 hover:bg-gray-100'
+                }`
+              }
+            >
+              <Icon size={17} />
+              {label}
+            </NavLink>
+          )
+        })}
+
+        <button
+          onClick={() => setPerfumesAbierto((v) => !v)}
+          className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors min-h-[44px] w-full text-left ${
+            location.pathname.startsWith('/perfumes') ? 'text-purple-600 font-medium' : 'text-gray-600 hover:bg-gray-100'
+          }`}
+        >
+          <Droplets size={17} />
+          <span className="flex-1">Perfumes</span>
+          <ChevronDown size={14} className={`transition-transform ${perfumesAbierto ? 'rotate-180' : ''}`} />
+        </button>
+        {perfumesAbierto && (
+          <div className="ml-4 flex flex-col gap-0.5">
+            {perfumesSubItems.map(({ to, label, icon: Icon }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end={to === '/perfumes'}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors min-h-[40px] ${
+                    isActive ? 'bg-purple-50 text-purple-600 font-medium' : 'text-gray-500 hover:bg-gray-100'
+                  }`
+                }
+              >
+                <Icon size={15} />
+                {label}
+              </NavLink>
+            ))}
+          </div>
+        )}
+
+        <NavLink
+          to="/configuracion"
+          className={({ isActive }) =>
+            `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors min-h-[44px] ${
+              isActive ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-600 hover:bg-gray-100'
+            }`
+          }
+        >
+          <Settings size={17} />
+          Configuración
+        </NavLink>
       </nav>
     </>
   )

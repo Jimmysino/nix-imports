@@ -7,6 +7,7 @@ import { Clientes } from './pages/Clientes'
 import { Inventario } from './pages/Inventario'
 import { Configuracion } from './pages/Configuracion'
 import { Reportes } from './pages/Reportes'
+import { PerfumesDashboard } from './pages/PerfumesDashboard'
 import { PerfumesCatalogo } from './pages/PerfumesCatalogo'
 import { PerfumesPrecios } from './pages/PerfumesPrecios'
 import { PerfumesStock } from './pages/PerfumesStock'
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="clientes" element={<Clientes />} />
           <Route path="inventario" element={<Inventario />} />
           <Route path="reportes" element={<Reportes />} />
+          <Route path="perfumes" element={<PerfumesDashboard />} />
           <Route path="perfumes/catalogo" element={<PerfumesCatalogo />} />
           <Route path="perfumes/precios" element={<PerfumesPrecios />} />
           <Route path="perfumes/stock" element={<PerfumesStock />} />

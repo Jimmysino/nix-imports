@@ -582,7 +582,7 @@ El admin puede crear y gestionar una lista de proveedores con datos de contacto.
 ---
 
 ### NIX-023: Navegación y dashboard del módulo perfumes
-**Estado Scrum:** Pendiente
+**Estado Scrum:** Implementada
 **Prioridad:** Media | **Puntos:** 5 | **Sprint:** 4
 **Como** admin, **quiero** acceder al módulo de perfumes desde la navegación principal con su propio dashboard, **para** tener una vista general del negocio de perfumes separada de las importaciones.
 
@@ -590,12 +590,12 @@ El admin puede crear y gestionar una lista de proveedores con datos de contacto.
 Se agrega una sección "Perfumes" en la navegación del sidebar con sub-ítems: Catálogo, Stock, Proveedores. El dashboard de perfumes muestra métricas clave: total de productos, valor del inventario, productos con stock bajo, y los últimos movimientos.
 
 **Criterios de aceptación:**
-- [ ] Hay una sección "Perfumes" en el sidebar con sub-navegación: Catálogo, Stock, Proveedores
-- [ ] El dashboard de perfumes muestra: total de productos en catálogo, unidades en stock, valor del inventario a costo
-- [ ] Se muestran los perfumes con stock bajo (debajo del mínimo configurado)
-- [ ] Se muestran los últimos 5 movimientos de stock (entradas/salidas)
-- [ ] La navegación es responsive y funciona en móvil
-- [ ] Las nuevas rutas están integradas con react-router-dom
+- [x] Hay una sección "Perfumes" en el sidebar con sub-navegación: Catálogo, Stock, Proveedores
+- [x] El dashboard de perfumes muestra: total de productos en catálogo, unidades en stock, valor del inventario a costo
+- [x] Se muestran los perfumes con stock bajo (debajo del mínimo configurado)
+- [x] Se muestran los últimos 5 movimientos de stock (entradas/salidas)
+- [x] La navegación es responsive y funciona en móvil
+- [x] Las nuevas rutas están integradas con react-router-dom
 
 ---
 
