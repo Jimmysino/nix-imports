@@ -80,6 +80,20 @@ export interface HistorialEstado {
   notas: string | null
 }
 
+export type GeneroPerfume = 'Hombre' | 'Mujer' | 'Unisex'
+
+export interface Perfume {
+  id: string
+  nombre: string
+  marca: string
+  presentacion_ml: number
+  genero: GeneroPerfume
+  descripcion: string | null
+  imagen_url: string | null
+  created_at: string
+  updated_at: string
+}
+
 export interface Configuracion {
   id: string
   comision_default: number
@@ -123,6 +137,12 @@ export interface Database {
         Row: HistorialEstado
         Insert: Omit<HistorialEstado, 'id' | 'fecha'>
         Update: Partial<Omit<HistorialEstado, 'id' | 'pedido_id' | 'fecha'>>
+        Relationships: []
+      }
+      perfumes: {
+        Row: Perfume
+        Insert: Omit<Perfume, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<Perfume, 'id' | 'created_at'>>
         Relationships: []
       }
       configuracion: {

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell, Menu, X } from 'lucide-react'
+import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell, Menu, X, Droplets } from 'lucide-react'
 import { BusquedaGlobal } from '../components/BusquedaGlobal'
 import { PanelAlertas } from '../components/PanelAlertas'
 import { useAlertas } from '../hooks/useAlertas'
@@ -11,6 +11,7 @@ const navItems = [
   { to: '/clientes',    label: 'Clientes',    icon: Users },
   { to: '/inventario',  label: 'Inventario',  icon: Boxes },
   { to: '/reportes',    label: 'Reportes',    icon: BarChart3 },
+  { to: '/perfumes/catalogo', label: 'Perfumes', icon: Droplets },
   { to: '/configuracion', label: 'Configuración', icon: Settings },
 ]
 

@@ -7,6 +7,7 @@ import { Clientes } from './pages/Clientes'
 import { Inventario } from './pages/Inventario'
 import { Configuracion } from './pages/Configuracion'
 import { Reportes } from './pages/Reportes'
+import { PerfumesCatalogo } from './pages/PerfumesCatalogo'
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="clientes" element={<Clientes />} />
           <Route path="inventario" element={<Inventario />} />
           <Route path="reportes" element={<Reportes />} />
+          <Route path="perfumes/catalogo" element={<PerfumesCatalogo />} />
           <Route path="configuracion" element={<Configuracion />} />
         </Route>
       </Routes>

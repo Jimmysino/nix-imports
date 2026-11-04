@@ -498,6 +498,107 @@ Se revisan todas las pantallas para asegurar que funcionen correctamente en reso
 
 ---
 
+## Sprint 4 - Scope
+
+**Fechas:** 09 Dic - 22 Dic 2026
+**Objetivo:** Crear el módulo de perfumes con catálogo de productos, gestión de precios mayorista/minorista y proveedores.
+
+**Historias incluidas:** NIX-019, NIX-020, NIX-021, NIX-022, NIX-023
+
+### NIX-019: Registrar perfumes en catálogo
+**Estado Scrum:** Implementada
+**Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 4
+**Como** admin, **quiero** registrar perfumes en un catálogo con sus datos principales, **para** tener un inventario organizado de los productos disponibles para venta.
+
+**Descripción:**
+El admin puede crear, editar y eliminar perfumes del catálogo. Cada perfume tiene nombre, marca, presentación (ml), género, descripción y una imagen opcional. El catálogo es la base para luego asignar precios y gestionar stock.
+
+**Criterios de aceptación:**
+- [x] Puedo crear un perfume con: nombre, marca, presentación (ml), género (Hombre/Mujer/Unisex), descripción
+- [x] Puedo subir o indicar una URL de imagen para el perfume
+- [x] Puedo editar los datos de un perfume existente
+- [x] Puedo eliminar un perfume que no tenga movimientos de stock
+- [x] Puedo buscar perfumes por nombre o marca
+- [x] Puedo filtrar por género (Hombre/Mujer/Unisex/Todos)
+- [x] Se muestra la lista de perfumes en tarjetas o tabla con imagen, nombre, marca y presentación
+- [x] Se valida que no existan duplicados (misma marca + nombre + presentación)
+
+---
+
+### NIX-020: Gestionar precios mayorista y minorista
+**Estado Scrum:** Pendiente
+**Prioridad:** Alta | **Puntos:** 5 | **Sprint:** 4
+**Como** admin, **quiero** asignar precios de venta mayorista y minorista a cada perfume, **para** manejar las dos líneas de negocio con precios diferenciados.
+
+**Descripción:**
+Cada perfume tiene dos precios de venta: uno para clientes minoristas (unidad) y otro para mayoristas (volumen). El admin también registra el costo de compra para calcular el margen de ganancia. Los precios se manejan en moneda local.
+
+**Criterios de aceptación:**
+- [ ] Puedo asignar a cada perfume: costo de compra, precio minorista, precio mayorista
+- [ ] Los precios se muestran en moneda local
+- [ ] Se calcula y muestra el margen de ganancia (%) para cada tipo de precio
+- [ ] Puedo editar los precios en cualquier momento
+- [ ] Se valida que el precio minorista sea mayor que el mayorista
+- [ ] Se valida que ambos precios sean mayores que cero
+- [ ] Se muestra un listado con los precios actuales de todos los perfumes
+
+---
+
+### NIX-021: Gestionar stock de perfumes
+**Estado Scrum:** Pendiente
+**Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 4
+**Como** admin, **quiero** registrar entradas y salidas de stock de perfumes, **para** saber cuántas unidades tengo disponibles de cada producto.
+
+**Descripción:**
+El admin registra la recepción de lotes de perfumes (entradas) y las ventas o ajustes (salidas). El sistema calcula el stock actual automáticamente. Se muestran alertas cuando el stock de un producto baja de un mínimo configurable.
+
+**Criterios de aceptación:**
+- [ ] Puedo registrar una entrada de stock: perfume, cantidad, costo unitario, proveedor, fecha
+- [ ] Puedo registrar una salida de stock: perfume, cantidad, tipo (Venta/Ajuste/Merma), nota
+- [ ] El sistema calcula el stock actual de cada perfume (entradas - salidas)
+- [ ] No puedo registrar una salida mayor al stock disponible
+- [ ] Puedo ver el historial de movimientos de un perfume (entradas y salidas)
+- [ ] Se muestra una alerta visual cuando el stock está por debajo del mínimo (configurable)
+- [ ] Puedo ver un resumen general: total de unidades, valor del inventario a costo
+
+---
+
+### NIX-022: Registrar proveedores de perfumes
+**Estado Scrum:** Pendiente
+**Prioridad:** Media | **Puntos:** 3 | **Sprint:** 4
+**Como** admin, **quiero** registrar los proveedores de perfumes, **para** tener un directorio organizado y asociar compras a cada proveedor.
+
+**Descripción:**
+El admin puede crear y gestionar una lista de proveedores con datos de contacto. Los proveedores se asocian a las entradas de stock para tener trazabilidad de dónde vienen los productos.
+
+**Criterios de aceptación:**
+- [ ] Puedo crear un proveedor con: nombre, teléfono, email, dirección, notas
+- [ ] Puedo editar los datos de un proveedor existente
+- [ ] Puedo ver la lista de proveedores con búsqueda por nombre
+- [ ] Al registrar una entrada de stock, puedo seleccionar el proveedor
+- [ ] Puedo ver cuántas entradas de stock tiene asociadas cada proveedor
+- [ ] No puedo eliminar un proveedor que tenga movimientos asociados
+
+---
+
+### NIX-023: Navegación y dashboard del módulo perfumes
+**Estado Scrum:** Pendiente
+**Prioridad:** Media | **Puntos:** 5 | **Sprint:** 4
+**Como** admin, **quiero** acceder al módulo de perfumes desde la navegación principal con su propio dashboard, **para** tener una vista general del negocio de perfumes separada de las importaciones.
+
+**Descripción:**
+Se agrega una sección "Perfumes" en la navegación del sidebar con sub-ítems: Catálogo, Stock, Proveedores. El dashboard de perfumes muestra métricas clave: total de productos, valor del inventario, productos con stock bajo, y los últimos movimientos.
+
+**Criterios de aceptación:**
+- [ ] Hay una sección "Perfumes" en el sidebar con sub-navegación: Catálogo, Stock, Proveedores
+- [ ] El dashboard de perfumes muestra: total de productos en catálogo, unidades en stock, valor del inventario a costo
+- [ ] Se muestran los perfumes con stock bajo (debajo del mínimo configurado)
+- [ ] Se muestran los últimos 5 movimientos de stock (entradas/salidas)
+- [ ] La navegación es responsive y funciona en móvil
+- [ ] Las nuevas rutas están integradas con react-router-dom
+
+---
+
 **Entidades principales:**
 - **Cliente:** nombre, teléfono, email, dirección
 - **Pedido:** cliente, producto_solicitado, url_producto, precio_producto, costo_envio, impuestos, comision_porcentaje, comision_monto, costo_total, estado, fecha_solicitud, notas
