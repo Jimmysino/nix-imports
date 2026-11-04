@@ -83,6 +83,7 @@ export interface HistorialEstado {
 export interface Configuracion {
   id: string
   comision_default: number
+  dias_alerta: number
   updated_at: string
 }
 

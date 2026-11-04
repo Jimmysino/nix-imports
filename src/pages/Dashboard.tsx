@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom'
+import { AlertTriangle } from 'lucide-react'
 import { Badge } from '../components/ui/Badge'
 import { useDashboard } from '../hooks/useDashboard'
+import { useAlertas } from '../hooks/useAlertas'
 import { formatUSD } from '../utils/cotizacion'
 
 export function Dashboard() {
@@ -17,6 +19,7 @@ export function Dashboard() {
     loading,
     error,
   } = useDashboard()
+  const { alertas } = useAlertas()
 
   const resumen = [
     { titulo: 'Pedidos activos', valor: String(pedidosActivos) },
@@ -52,6 +55,30 @@ export function Dashboard() {
           </div>
         ))}
       </div>
+
+      {alertas.length > 0 && (
+        <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <AlertTriangle size={16} className="text-amber-600" />
+            <h2 className="text-sm font-semibold text-amber-800">
+              {alertas.length} pedido{alertas.length !== 1 ? 's' : ''} estancado{alertas.length !== 1 ? 's' : ''}
+            </h2>
+          </div>
+          <div className="space-y-2">
+            {alertas.slice(0, 5).map(({ pedido, diasSinCambio }) => (
+              <button
+                key={pedido.id}
+                onClick={() => navigate(`/pedidos/${pedido.id}`)}
+                className="flex w-full items-center gap-3 rounded-lg bg-white/70 px-3 py-2 text-sm hover:bg-white transition-colors"
+              >
+                <span className="font-mono font-medium text-blue-600">{pedido.codigo}</span>
+                <Badge estado={pedido.estado} />
+                <span className="ml-auto text-xs font-semibold text-amber-600">{diasSinCambio} días</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
         <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">

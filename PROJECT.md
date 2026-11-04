@@ -441,7 +441,7 @@ Un campo de búsqueda global accesible desde cualquier página permite al admin 
 ---
 
 ### NIX-016: Alertas de pedidos estancados y pendientes
-**Estado Scrum:** Pendiente
+**Estado Scrum:** Implementada
 **Prioridad:** Media | **Puntos:** 5 | **Sprint:** 3
 **Como** admin, **quiero** recibir alertas visuales de pedidos que llevan demasiado tiempo en un mismo estado, **para** dar seguimiento oportuno y evitar retrasos.
 
@@ -449,14 +449,14 @@ Un campo de búsqueda global accesible desde cualquier página permite al admin 
 El sistema identifica pedidos que no han cambiado de estado en un tiempo configurable y los muestra como alertas en el dashboard y en un panel de notificaciones. El admin puede marcar alertas como revisadas.
 
 **Criterios de aceptación:**
-- [ ] Los pedidos que llevan más de X días en el mismo estado se marcan como estancados
-- [ ] El umbral de días es configurable desde la pantalla de configuración
-- [ ] Las alertas se muestran en el dashboard con un indicador visual
-- [ ] Hay un panel o sección de notificaciones accesible desde el header
-- [ ] Cada alerta muestra: código del pedido, estado actual y días sin cambio
-- [ ] Puedo navegar al detalle del pedido desde la alerta
-- [ ] Puedo marcar una alerta como revisada para que deje de mostrarse
-- [ ] Se muestra un contador de alertas activas en el header
+- [x] Los pedidos que llevan más de X días en el mismo estado se marcan como estancados
+- [x] El umbral de días es configurable desde la pantalla de configuración
+- [x] Las alertas se muestran en el dashboard con un indicador visual
+- [x] Hay un panel o sección de notificaciones accesible desde el header
+- [x] Cada alerta muestra: código del pedido, estado actual y días sin cambio
+- [x] Puedo navegar al detalle del pedido desde la alerta
+- [x] Puedo marcar una alerta como revisada para que deje de mostrarse
+- [x] Se muestra un contador de alertas activas en el header
 
 ---
 

@@ -1,7 +1,9 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
-import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search } from 'lucide-react'
+import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell } from 'lucide-react'
 import { BusquedaGlobal } from '../components/BusquedaGlobal'
+import { PanelAlertas } from '../components/PanelAlertas'
+import { useAlertas } from '../hooks/useAlertas'
 
 const navItems = [
   { to: '/',            label: 'Dashboard',   icon: LayoutDashboard },
@@ -14,8 +16,11 @@ const navItems = [
 
 export function AdminLayout() {
   const [busquedaAbierta, setBusquedaAbierta] = useState(false)
+  const [alertasAbiertas, setAlertasAbiertas] = useState(false)
+  const alertasRef = useRef<HTMLDivElement>(null)
+  const { alertas, marcarRevisada } = useAlertas()
 
-  const cerrar = useCallback(() => setBusquedaAbierta(false), [])
+  const cerrarBusqueda = useCallback(() => setBusquedaAbierta(false), [])
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -27,6 +32,16 @@ export function AdminLayout() {
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [])
+
+  useEffect(() => {
+    function onClick(e: MouseEvent) {
+      if (alertasAbiertas && alertasRef.current && !alertasRef.current.contains(e.target as Node)) {
+        setAlertasAbiertas(false)
+      }
+    }
+    document.addEventListener('mousedown', onClick)
+    return () => document.removeEventListener('mousedown', onClick)
+  }, [alertasAbiertas])
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -70,11 +85,36 @@ export function AdminLayout() {
         </nav>
       </aside>
 
-      <main className="flex-1 overflow-y-auto">
-        <Outlet />
-      </main>
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <header className="flex items-center justify-end border-b border-gray-200 bg-white px-6 py-3">
+          <div ref={alertasRef} className="relative">
+            <button
+              onClick={() => setAlertasAbiertas((prev) => !prev)}
+              className="relative rounded-lg p-2 text-gray-500 hover:bg-gray-100 transition-colors"
+            >
+              <Bell size={18} />
+              {alertas.length > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-amber-500 px-1 text-[10px] font-bold text-white">
+                  {alertas.length}
+                </span>
+              )}
+            </button>
+            {alertasAbiertas && (
+              <PanelAlertas
+                alertas={alertas}
+                onRevisar={marcarRevisada}
+                onCerrar={() => setAlertasAbiertas(false)}
+              />
+            )}
+          </div>
+        </header>
 
-      <BusquedaGlobal abierto={busquedaAbierta} onCerrar={cerrar} />
+        <main className="flex-1 overflow-y-auto">
+          <Outlet />
+        </main>
+      </div>
+
+      <BusquedaGlobal abierto={busquedaAbierta} onCerrar={cerrarBusqueda} />
     </div>
   )
 }
