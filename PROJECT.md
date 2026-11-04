@@ -545,7 +545,7 @@ Cada perfume tiene dos precios de venta: uno para clientes minoristas (unidad) y
 ---
 
 ### NIX-021: Gestionar stock de perfumes
-**Estado Scrum:** Pendiente
+**Estado Scrum:** Implementada
 **Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 4
 **Como** admin, **quiero** registrar entradas y salidas de stock de perfumes, **para** saber cuántas unidades tengo disponibles de cada producto.
 
@@ -553,18 +553,18 @@ Cada perfume tiene dos precios de venta: uno para clientes minoristas (unidad) y
 El admin registra la recepción de lotes de perfumes (entradas) y las ventas o ajustes (salidas). El sistema calcula el stock actual automáticamente. Se muestran alertas cuando el stock de un producto baja de un mínimo configurable.
 
 **Criterios de aceptación:**
-- [ ] Puedo registrar una entrada de stock: perfume, cantidad, costo unitario, proveedor, fecha
-- [ ] Puedo registrar una salida de stock: perfume, cantidad, tipo (Venta/Ajuste/Merma), nota
-- [ ] El sistema calcula el stock actual de cada perfume (entradas - salidas)
-- [ ] No puedo registrar una salida mayor al stock disponible
-- [ ] Puedo ver el historial de movimientos de un perfume (entradas y salidas)
-- [ ] Se muestra una alerta visual cuando el stock está por debajo del mínimo (configurable)
-- [ ] Puedo ver un resumen general: total de unidades, valor del inventario a costo
+- [x] Puedo registrar una entrada de stock: perfume, cantidad, costo unitario, proveedor, fecha
+- [x] Puedo registrar una salida de stock: perfume, cantidad, tipo (Venta/Ajuste/Merma), nota
+- [x] El sistema calcula el stock actual de cada perfume (entradas - salidas)
+- [x] No puedo registrar una salida mayor al stock disponible
+- [x] Puedo ver el historial de movimientos de un perfume (entradas y salidas)
+- [x] Se muestra una alerta visual cuando el stock está por debajo del mínimo (configurable)
+- [x] Puedo ver un resumen general: total de unidades, valor del inventario a costo
 
 ---
 
 ### NIX-022: Registrar proveedores de perfumes
-**Estado Scrum:** Pendiente
+**Estado Scrum:** Implementada
 **Prioridad:** Media | **Puntos:** 3 | **Sprint:** 4
 **Como** admin, **quiero** registrar los proveedores de perfumes, **para** tener un directorio organizado y asociar compras a cada proveedor.
 
@@ -572,12 +572,12 @@ El admin registra la recepción de lotes de perfumes (entradas) y las ventas o a
 El admin puede crear y gestionar una lista de proveedores con datos de contacto. Los proveedores se asocian a las entradas de stock para tener trazabilidad de dónde vienen los productos.
 
 **Criterios de aceptación:**
-- [ ] Puedo crear un proveedor con: nombre, teléfono, email, dirección, notas
-- [ ] Puedo editar los datos de un proveedor existente
-- [ ] Puedo ver la lista de proveedores con búsqueda por nombre
-- [ ] Al registrar una entrada de stock, puedo seleccionar el proveedor
-- [ ] Puedo ver cuántas entradas de stock tiene asociadas cada proveedor
-- [ ] No puedo eliminar un proveedor que tenga movimientos asociados
+- [x] Puedo crear un proveedor con: nombre, teléfono, email, dirección, notas
+- [x] Puedo editar los datos de un proveedor existente
+- [x] Puedo ver la lista de proveedores con búsqueda por nombre
+- [x] Al registrar una entrada de stock, puedo seleccionar el proveedor
+- [x] Puedo ver cuántas entradas de stock tiene asociadas cada proveedor
+- [x] No puedo eliminar un proveedor que tenga movimientos asociados
 
 ---
 

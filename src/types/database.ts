@@ -97,11 +97,38 @@ export interface Perfume {
   updated_at: string
 }
 
+export interface Proveedor {
+  id: string
+  nombre: string
+  telefono: string | null
+  email: string | null
+  direccion: string | null
+  notas: string | null
+  created_at: string
+}
+
+export type TipoMovimientoPerfume = 'Entrada' | 'Venta' | 'Ajuste' | 'Merma'
+
+export interface MovimientoPerfume {
+  id: string
+  perfume_id: string
+  perfume?: Perfume
+  tipo: TipoMovimientoPerfume
+  cantidad: number
+  costo_unitario: number | null
+  proveedor: string | null
+  proveedor_id: string | null
+  nota: string | null
+  fecha: string
+  created_at: string
+}
+
 export interface Configuracion {
   id: string
   comision_default: number
   dias_alerta: number
   tipo_cambio: number
+  stock_minimo_perfumes: number
   updated_at: string
 }
 
