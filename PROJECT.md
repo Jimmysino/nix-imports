@@ -94,12 +94,38 @@
 |----|-------------------|-----------|--------|--------|
 | NIX-013 | Dashboard resumen del negocio | Media | 8 | 2 |
 
+### Epic 6: Reportes y Búsqueda
+
+| ID | Historia de Usuario | Prioridad | Puntos | Sprint |
+|----|-------------------|-----------|--------|--------|
+| NIX-014 | Generar reportes de ventas y comisiones | Alta | 8 | 3 |
+| NIX-015 | Búsqueda global de pedidos, clientes e inventario | Media | 5 | 3 |
+
+### Epic 7: Notificaciones y Alertas
+
+| ID | Historia de Usuario | Prioridad | Puntos | Sprint |
+|----|-------------------|-----------|--------|--------|
+| NIX-016 | Alertas de pedidos estancados y pendientes | Media | 5 | 3 |
+
+### Epic 8: Configuración Avanzada
+
+| ID | Historia de Usuario | Prioridad | Puntos | Sprint |
+|----|-------------------|-----------|--------|--------|
+| NIX-017 | Configurar tipo de cambio USD a moneda local | Alta | 3 | 3 |
+
+### Epic 9: Pulido de UI/UX
+
+| ID | Historia de Usuario | Prioridad | Puntos | Sprint |
+|----|-------------------|-----------|--------|--------|
+| NIX-018 | Mejorar experiencia de usuario y diseño responsive | Media | 5 | 3 |
+
 ### Resumen de puntos
 
 | Sprint | Historias | Puntos totales |
 |--------|-----------|----------------|
 | 1 | NIX-001, 002, 003, 004, 006, 011 | **31** |
 | 2 | NIX-005, 007, 008, 009, 010, 012, 013 | **32** |
+| 3 | NIX-014, 015, 016, 017, 018 | **26** |
 
 ---
 
@@ -131,6 +157,7 @@
 **Historias incluidas:** NIX-001, NIX-002, NIX-003, NIX-004, NIX-006, NIX-011
 
 ### NIX-001: Registrar pedido de importación
+**Estado Scrum:** Implementada
 **Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 1
 **Como** admin, **quiero** registrar un nuevo pedido de importación con los datos del cliente y el producto solicitado, **para** tener control de cada solicitud.
 
@@ -138,16 +165,17 @@
 El admin recibe una solicitud de un cliente que quiere importar un producto tecnológico (celular, laptop, etc.) desde un sitio como eBay o Amazon. Debe poder crear un pedido asociando al cliente, describiendo el producto y registrando el link de origen.
 
 **Criterios de aceptación:**
-- [ ] Puedo crear un pedido seleccionando un cliente existente o creando uno nuevo desde el formulario
-- [ ] Puedo ingresar: nombre del producto, descripción, URL de origen, categoría (celular/laptop/tablet/otro)
-- [ ] El pedido se crea con estado "Solicitado" y fecha de creación automática
-- [ ] El pedido genera un código único visible (NIX-XXXX)
-- [ ] Se muestra confirmación al guardar exitosamente
-- [ ] No puedo crear un pedido sin cliente ni producto
+- [x] Puedo crear un pedido seleccionando un cliente existente o creando uno nuevo desde el formulario
+- [x] Puedo ingresar: nombre del producto, descripción, URL de origen, categoría (celular/laptop/tablet/otro)
+- [x] El pedido se crea con estado "Solicitado" y fecha de creación automática
+- [x] El pedido genera un código único visible (NIX-XXXX)
+- [x] Se muestra confirmación al guardar exitosamente
+- [x] No puedo crear un pedido sin cliente ni producto
 
 ---
 
 ### NIX-002: Calcular costo total y cotización
+**Estado Scrum:** Implementada
 **Prioridad:** Alta | **Puntos:** 5 | **Sprint:** 1
 **Como** admin, **quiero** calcular el costo total del pedido (precio + envío + impuestos + comisión), **para** generar una cotización al cliente.
 
@@ -155,12 +183,12 @@ El admin recibe una solicitud de un cliente que quiere importar un producto tecn
 Una vez registrado el pedido, el admin ingresa los costos reales del producto. El sistema calcula automáticamente la comisión según el porcentaje configurado y muestra el costo total que se le cobrará al cliente.
 
 **Criterios de aceptación:**
-- [ ] Puedo ingresar: precio del producto (USD), costo de envío internacional, impuestos estimados
-- [ ] El sistema aplica automáticamente el % de comisión configurado (NIX-011)
-- [ ] Se muestra un desglose: precio + envío + impuestos + comisión = total
-- [ ] Puedo ajustar la comisión manualmente para un pedido específico si es necesario
-- [ ] Al guardar la cotización, el estado cambia automáticamente a "Cotizado"
-- [ ] El total se muestra en la moneda local
+- [x] Puedo ingresar: precio del producto (USD), costo de envío internacional, impuestos estimados
+- [x] El sistema aplica automáticamente el % de comisión configurado (NIX-011)
+- [x] Se muestra un desglose: precio + envío + impuestos + comisión = total
+- [x] Puedo ajustar la comisión manualmente para un pedido específico si es necesario
+- [x] Al guardar la cotización, el estado cambia automáticamente a "Cotizado"
+- [x] El total se muestra en la moneda local
 
 ---
 
@@ -173,11 +201,11 @@ Una vez registrado el pedido, el admin ingresa los costos reales del producto. E
 Los pedidos pasan por un flujo definido. El admin debe poder avanzar (o retroceder) el estado del pedido, y cada cambio debe quedar registrado con fecha.
 
 **Criterios de aceptación:**
-- [ ] Puedo cambiar el estado siguiendo el flujo: Solicitado → Cotizado → Aprobado → Comprado → En tránsito → Recibido → Entregado
-- [ ] Puedo marcar un pedido como "Cancelado" desde cualquier estado (excepto Entregado)
-- [ ] Cada cambio de estado registra la fecha automáticamente
-- [ ] Se muestra visualmente el estado actual y el historial de cambios
-- [ ] No puedo saltar estados (ej: de Solicitado a Comprado directamente)
+- [x] Puedo cambiar el estado siguiendo el flujo: Solicitado → Cotizado → Aprobado → Comprado → En tránsito → Recibido → Entregado
+- [x] Puedo marcar un pedido como "Cancelado" desde cualquier estado (excepto Entregado)
+- [x] Cada cambio de estado registra la fecha automáticamente
+- [x] Se muestra visualmente el estado actual y el historial de cambios
+- [x] No puedo saltar estados (ej: de Solicitado a Comprado directamente)
 
 ---
 
@@ -363,6 +391,110 @@ El dashboard centraliza indicadores generales de pedidos, facturación, comision
 - [x] Puedo consultar los pedidos recientes y navegar a su detalle
 - [x] Puedo ver la distribución de pedidos por estado
 - [x] Se muestran estados de carga y error al consultar los datos
+
+---
+
+## Sprint 3 - Scope
+
+**Fechas:** 25 Nov - 08 Dic 2026
+**Objetivo:** Agregar reportes, búsqueda global, alertas de seguimiento, tipo de cambio configurable y pulir la experiencia de usuario.
+
+**Historias incluidas:** NIX-014, NIX-015, NIX-016, NIX-017, NIX-018
+
+### NIX-014: Generar reportes de ventas y comisiones
+**Estado Scrum:** Implementada
+**Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 3
+**Como** admin, **quiero** generar reportes de ventas y comisiones por periodo, **para** conocer el rendimiento financiero del negocio y tomar decisiones informadas.
+
+**Descripción:**
+El admin puede consultar un reporte filtrado por rango de fechas que muestra los pedidos entregados, el total facturado, las comisiones cobradas y un desglose por pedido. El reporte se puede exportar a PDF o Excel.
+
+**Criterios de aceptación:**
+- [x] Puedo seleccionar un rango de fechas para generar el reporte
+- [x] El reporte muestra solo pedidos en estado Entregado dentro del rango
+- [x] Veo el total facturado, total de comisiones y cantidad de pedidos
+- [x] Veo un desglose por pedido con: código, cliente, producto, total y comisión
+- [x] Puedo exportar el reporte a PDF
+- [x] Puedo exportar el reporte a Excel (CSV)
+- [x] Se muestra un mensaje cuando no hay datos en el rango seleccionado
+- [x] Se muestran estados de carga y error
+
+---
+
+### NIX-015: Búsqueda global de pedidos, clientes e inventario
+**Estado Scrum:** Pendiente
+**Prioridad:** Media | **Puntos:** 5 | **Sprint:** 3
+**Como** admin, **quiero** buscar pedidos, clientes y productos desde un solo campo de búsqueda, **para** encontrar información rápidamente sin navegar entre secciones.
+
+**Descripción:**
+Un campo de búsqueda global accesible desde cualquier página permite al admin escribir un término y ver resultados agrupados por tipo (pedidos, clientes, inventario). Los resultados son enlaces directos al detalle correspondiente.
+
+**Criterios de aceptación:**
+- [ ] Hay un campo de búsqueda global visible en el header o sidebar
+- [ ] Al escribir, se muestran resultados agrupados por: pedidos, clientes, inventario
+- [ ] Puedo buscar por código de pedido, nombre de cliente, teléfono, nombre de producto o número de serie
+- [ ] Los resultados se actualizan mientras escribo (debounce)
+- [ ] Al seleccionar un resultado, navego al detalle correspondiente
+- [ ] Se muestra un mensaje cuando no hay resultados
+- [ ] La búsqueda se puede abrir con un atajo de teclado (Ctrl+K)
+
+---
+
+### NIX-016: Alertas de pedidos estancados y pendientes
+**Estado Scrum:** Pendiente
+**Prioridad:** Media | **Puntos:** 5 | **Sprint:** 3
+**Como** admin, **quiero** recibir alertas visuales de pedidos que llevan demasiado tiempo en un mismo estado, **para** dar seguimiento oportuno y evitar retrasos.
+
+**Descripción:**
+El sistema identifica pedidos que no han cambiado de estado en un tiempo configurable y los muestra como alertas en el dashboard y en un panel de notificaciones. El admin puede marcar alertas como revisadas.
+
+**Criterios de aceptación:**
+- [ ] Los pedidos que llevan más de X días en el mismo estado se marcan como estancados
+- [ ] El umbral de días es configurable desde la pantalla de configuración
+- [ ] Las alertas se muestran en el dashboard con un indicador visual
+- [ ] Hay un panel o sección de notificaciones accesible desde el header
+- [ ] Cada alerta muestra: código del pedido, estado actual y días sin cambio
+- [ ] Puedo navegar al detalle del pedido desde la alerta
+- [ ] Puedo marcar una alerta como revisada para que deje de mostrarse
+- [ ] Se muestra un contador de alertas activas en el header
+
+---
+
+### NIX-017: Configurar tipo de cambio USD a moneda local
+**Estado Scrum:** Pendiente
+**Prioridad:** Alta | **Puntos:** 3 | **Sprint:** 3
+**Como** admin, **quiero** configurar el tipo de cambio de USD a moneda local, **para** que las cotizaciones reflejen el precio correcto en la moneda del cliente.
+
+**Descripción:**
+Desde la pantalla de configuración, el admin puede establecer el tipo de cambio actual. Este valor se usa en las cotizaciones para mostrar el equivalente en moneda local. El cambio no afecta cotizaciones ya guardadas.
+
+**Criterios de aceptación:**
+- [ ] Puedo establecer el tipo de cambio USD a moneda local desde configuración
+- [ ] El valor se persiste en Supabase y se mantiene entre sesiones
+- [ ] Las nuevas cotizaciones usan el tipo de cambio configurado
+- [ ] El cambio de tipo de cambio no afecta cotizaciones ya guardadas
+- [ ] Se muestra el valor actual del tipo de cambio en configuración
+- [ ] El valor debe ser mayor a cero
+- [ ] Se muestra la fecha de última actualización del tipo de cambio
+
+---
+
+### NIX-018: Mejorar experiencia de usuario y diseño responsive
+**Estado Scrum:** Pendiente
+**Prioridad:** Media | **Puntos:** 5 | **Sprint:** 3
+**Como** admin, **quiero** que el sistema se vea bien y funcione correctamente en dispositivos móviles y de escritorio, **para** poder gestionar pedidos desde cualquier dispositivo.
+
+**Descripción:**
+Se revisan todas las pantallas para asegurar que funcionen correctamente en resoluciones móviles, tablet y escritorio. Se mejoran los empty states, los mensajes de feedback, la navegación y la consistencia visual general.
+
+**Criterios de aceptación:**
+- [ ] Todas las pantallas son usables en resolución móvil (360px+)
+- [ ] La navegación se adapta a móvil (menú colapsable o drawer)
+- [ ] Las tablas se adaptan a pantallas pequeñas (scroll horizontal o vista de tarjetas)
+- [ ] Los formularios son usables en móvil sin overflow horizontal
+- [ ] Los empty states muestran un mensaje claro y acción sugerida
+- [ ] Los botones de acción tienen tamaño táctil adecuado en móvil (44px+)
+- [ ] La tipografía y espaciado son consistentes entre todas las pantallas
 
 ---
 

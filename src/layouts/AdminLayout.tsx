@@ -1,11 +1,12 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { Package, Users, LayoutDashboard, Settings, Boxes } from 'lucide-react'
+import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3 } from 'lucide-react'
 
 const navItems = [
   { to: '/',            label: 'Dashboard',   icon: LayoutDashboard },
   { to: '/pedidos',     label: 'Pedidos',     icon: Package },
   { to: '/clientes',    label: 'Clientes',    icon: Users },
   { to: '/inventario',  label: 'Inventario',  icon: Boxes },
+  { to: '/reportes',    label: 'Reportes',    icon: BarChart3 },
   { to: '/configuracion', label: 'Configuración', icon: Settings },
 ]
 
