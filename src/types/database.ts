@@ -84,6 +84,7 @@ export interface Configuracion {
   id: string
   comision_default: number
   dias_alerta: number
+  tipo_cambio: number
   updated_at: string
 }
 

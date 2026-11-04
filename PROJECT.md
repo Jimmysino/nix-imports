@@ -461,7 +461,7 @@ El sistema identifica pedidos que no han cambiado de estado en un tiempo configu
 ---
 
 ### NIX-017: Configurar tipo de cambio USD a moneda local
-**Estado Scrum:** Pendiente
+**Estado Scrum:** Implementada
 **Prioridad:** Alta | **Puntos:** 3 | **Sprint:** 3
 **Como** admin, **quiero** configurar el tipo de cambio de USD a moneda local, **para** que las cotizaciones reflejen el precio correcto en la moneda del cliente.
 
@@ -469,13 +469,13 @@ El sistema identifica pedidos que no han cambiado de estado en un tiempo configu
 Desde la pantalla de configuración, el admin puede establecer el tipo de cambio actual. Este valor se usa en las cotizaciones para mostrar el equivalente en moneda local. El cambio no afecta cotizaciones ya guardadas.
 
 **Criterios de aceptación:**
-- [ ] Puedo establecer el tipo de cambio USD a moneda local desde configuración
-- [ ] El valor se persiste en Supabase y se mantiene entre sesiones
-- [ ] Las nuevas cotizaciones usan el tipo de cambio configurado
-- [ ] El cambio de tipo de cambio no afecta cotizaciones ya guardadas
-- [ ] Se muestra el valor actual del tipo de cambio en configuración
-- [ ] El valor debe ser mayor a cero
-- [ ] Se muestra la fecha de última actualización del tipo de cambio
+- [x] Puedo establecer el tipo de cambio USD a moneda local desde configuración
+- [x] El valor se persiste en Supabase y se mantiene entre sesiones
+- [x] Las nuevas cotizaciones usan el tipo de cambio configurado
+- [x] El cambio de tipo de cambio no afecta cotizaciones ya guardadas
+- [x] Se muestra el valor actual del tipo de cambio en configuración
+- [x] El valor debe ser mayor a cero
+- [x] Se muestra la fecha de última actualización del tipo de cambio
 
 ---
 

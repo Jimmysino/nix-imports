@@ -64,5 +64,24 @@ export function useConfiguracion() {
     return data
   }
 
-  return { config, loading, error, actualizarComision, actualizarDiasAlerta, recargar: cargar }
+  async function actualizarTipoCambio(tipoCambio: number) {
+    setError(null)
+    if (!config) throw new Error('No existe una configuración para actualizar')
+
+    const { data, error } = await supabase
+      .from('configuracion')
+      .update({
+        tipo_cambio: tipoCambio,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', config.id)
+      .select()
+      .single()
+
+    if (error) throw new Error(error.message)
+    setConfig(data)
+    return data
+  }
+
+  return { config, loading, error, actualizarComision, actualizarDiasAlerta, actualizarTipoCambio, recargar: cargar }
 }

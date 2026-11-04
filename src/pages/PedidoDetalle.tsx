@@ -131,6 +131,7 @@ export function PedidoDetalle() {
             ) : (
               <CotizacionForm
                 comisionDefault={config.comision_default}
+                tipoCambioDefault={config.tipo_cambio}
                 soloLectura={!puedeEditar}
                 valoresIniciales={
                   pedido.precio_usd !== null

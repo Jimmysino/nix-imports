@@ -5,20 +5,25 @@ import { Input } from '../components/ui/Input'
 import { useConfiguracion } from '../hooks/useConfiguracion'
 
 export function Configuracion() {
-  const { config, loading, error, actualizarComision, actualizarDiasAlerta } = useConfiguracion()
+  const { config, loading, error, actualizarComision, actualizarDiasAlerta, actualizarTipoCambio } = useConfiguracion()
   const [comision, setComision] = useState('15')
   const [diasAlerta, setDiasAlerta] = useState('7')
+  const [tipoCambio, setTipoCambio] = useState('1')
   const [guardando, setGuardando] = useState(false)
   const [guardandoDias, setGuardandoDias] = useState(false)
+  const [guardandoTC, setGuardandoTC] = useState(false)
   const [mensaje, setMensaje] = useState<string | null>(null)
   const [mensajeDias, setMensajeDias] = useState<string | null>(null)
+  const [mensajeTC, setMensajeTC] = useState<string | null>(null)
   const [errorGuardado, setErrorGuardado] = useState<string | null>(null)
   const [errorDias, setErrorDias] = useState<string | null>(null)
+  const [errorTC, setErrorTC] = useState<string | null>(null)
 
   useEffect(() => {
     if (config) {
       setComision(String(config.comision_default))
       setDiasAlerta(String(config.dias_alerta))
+      setTipoCambio(String(config.tipo_cambio))
     }
   }, [config])
 
@@ -64,6 +69,27 @@ export function Configuracion() {
     }
   }
 
+  async function guardarTipoCambio(event: FormEvent) {
+    event.preventDefault()
+    const valor = Number(tipoCambio)
+    if (!Number.isFinite(valor) || valor <= 0) {
+      setErrorTC('El tipo de cambio debe ser mayor a 0')
+      return
+    }
+
+    setGuardandoTC(true)
+    setMensajeTC(null)
+    setErrorTC(null)
+    try {
+      await actualizarTipoCambio(valor)
+      setMensajeTC('Tipo de cambio guardado correctamente')
+    } catch (err) {
+      setErrorTC(err instanceof Error ? err.message : 'No se pudo guardar el tipo de cambio')
+    } finally {
+      setGuardandoTC(false)
+    }
+  }
+
   return (
     <div className="mx-auto max-w-3xl p-6">
       <div className="mb-6">
@@ -99,6 +125,42 @@ export function Configuracion() {
               />
               <div className="flex justify-end">
                 <Button type="submit" loading={guardando} disabled={!config}>Guardar comisión</Button>
+              </div>
+            </form>
+          )}
+        </div>
+
+        <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
+          <div className="border-b border-gray-100 px-6 py-4">
+            <h2 className="font-semibold text-gray-900">Tipo de cambio</h2>
+            <p className="mt-1 text-sm text-gray-500">Valor de 1 USD en moneda local. Se usa como valor por defecto en nuevas cotizaciones.</p>
+          </div>
+
+          {loading ? (
+            <p className="px-6 py-8 text-sm text-gray-400">Cargando configuración...</p>
+          ) : (
+            <form onSubmit={guardarTipoCambio} className="space-y-4 p-6">
+              {errorTC && (
+                <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{errorTC}</p>
+              )}
+              {mensajeTC && <p className="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">{mensajeTC}</p>}
+              <Input
+                label="1 USD ="
+                type="number"
+                min="0.01"
+                step="0.01"
+                required
+                value={tipoCambio}
+                onChange={(event) => setTipoCambio(event.target.value)}
+                disabled={!config}
+              />
+              {config && (
+                <p className="text-xs text-gray-400">
+                  Ultima actualizacion: {new Date(config.updated_at).toLocaleString('es-AR')}
+                </p>
+              )}
+              <div className="flex justify-end">
+                <Button type="submit" loading={guardandoTC} disabled={!config}>Guardar tipo de cambio</Button>
               </div>
             </form>
           )}

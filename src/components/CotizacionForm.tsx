@@ -18,12 +18,13 @@ type CotizacionValues = z.infer<typeof schema>
 
 interface CotizacionFormProps {
   comisionDefault: number
+  tipoCambioDefault?: number
   valoresIniciales?: Partial<CotizacionValues>
   onGuardar: (valores: CotizacionValues & { comision_monto_usd: number; total_usd: number }) => Promise<void>
   soloLectura?: boolean
 }
 
-export function CotizacionForm({ comisionDefault, valoresIniciales, onGuardar, soloLectura }: CotizacionFormProps) {
+export function CotizacionForm({ comisionDefault, tipoCambioDefault = 1, valoresIniciales, onGuardar, soloLectura }: CotizacionFormProps) {
   const [guardando, setGuardando] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -34,7 +35,7 @@ export function CotizacionForm({ comisionDefault, valoresIniciales, onGuardar, s
       costo_envio_usd:     valoresIniciales?.costo_envio_usd ?? 0,
       impuestos_usd:       valoresIniciales?.impuestos_usd ?? 0,
       comision_porcentaje: valoresIniciales?.comision_porcentaje ?? comisionDefault,
-      tipo_cambio:         valoresIniciales?.tipo_cambio ?? 1,
+      tipo_cambio:         valoresIniciales?.tipo_cambio ?? tipoCambioDefault,
     },
   })
 
