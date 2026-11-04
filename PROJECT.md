@@ -480,7 +480,7 @@ Desde la pantalla de configuración, el admin puede establecer el tipo de cambio
 ---
 
 ### NIX-018: Mejorar experiencia de usuario y diseño responsive
-**Estado Scrum:** Pendiente
+**Estado Scrum:** Implementada
 **Prioridad:** Media | **Puntos:** 5 | **Sprint:** 3
 **Como** admin, **quiero** que el sistema se vea bien y funcione correctamente en dispositivos móviles y de escritorio, **para** poder gestionar pedidos desde cualquier dispositivo.
 
@@ -488,13 +488,13 @@ Desde la pantalla de configuración, el admin puede establecer el tipo de cambio
 Se revisan todas las pantallas para asegurar que funcionen correctamente en resoluciones móviles, tablet y escritorio. Se mejoran los empty states, los mensajes de feedback, la navegación y la consistencia visual general.
 
 **Criterios de aceptación:**
-- [ ] Todas las pantallas son usables en resolución móvil (360px+)
-- [ ] La navegación se adapta a móvil (menú colapsable o drawer)
-- [ ] Las tablas se adaptan a pantallas pequeñas (scroll horizontal o vista de tarjetas)
-- [ ] Los formularios son usables en móvil sin overflow horizontal
-- [ ] Los empty states muestran un mensaje claro y acción sugerida
-- [ ] Los botones de acción tienen tamaño táctil adecuado en móvil (44px+)
-- [ ] La tipografía y espaciado son consistentes entre todas las pantallas
+- [x] Todas las pantallas son usables en resolución móvil (360px+)
+- [x] La navegación se adapta a móvil (menú colapsable o drawer)
+- [x] Las tablas se adaptan a pantallas pequeñas (scroll horizontal o vista de tarjetas)
+- [x] Los formularios son usables en móvil sin overflow horizontal
+- [x] Los empty states muestran un mensaje claro y acción sugerida
+- [x] Los botones de acción tienen tamaño táctil adecuado en móvil (44px+)
+- [x] La tipografía y espaciado son consistentes entre todas las pantallas
 
 ---
 

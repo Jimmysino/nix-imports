@@ -170,10 +170,17 @@ export function Clientes() {
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
         {loading ? (
           <div className="py-16 text-center text-sm text-gray-400">Cargando clientes...</div>
+        ) : clientes.length === 0 ? (
+          <div className="py-16 text-center">
+            <p className="text-sm text-gray-400">No hay clientes registrados</p>
+            <p className="text-xs text-gray-300 mt-1 mb-3">Registra el primero con el boton "Nuevo cliente"</p>
+            <Button size="sm" onClick={nuevoCliente}><Plus size={14} /> Crear cliente</Button>
+          </div>
         ) : clientesFiltrados.length === 0 ? (
           <div className="py-16 text-center text-sm text-gray-400">No se encontraron clientes</div>
         ) : (
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="border-b border-gray-100 bg-gray-50">
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Cliente</th>
@@ -204,6 +211,7 @@ export function Clientes() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

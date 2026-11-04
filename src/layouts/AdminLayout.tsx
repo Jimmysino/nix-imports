@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
-import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell } from 'lucide-react'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell, Menu, X } from 'lucide-react'
 import { BusquedaGlobal } from '../components/BusquedaGlobal'
 import { PanelAlertas } from '../components/PanelAlertas'
 import { useAlertas } from '../hooks/useAlertas'
@@ -17,8 +17,12 @@ const navItems = [
 export function AdminLayout() {
   const [busquedaAbierta, setBusquedaAbierta] = useState(false)
   const [alertasAbiertas, setAlertasAbiertas] = useState(false)
+  const [menuAbierto, setMenuAbierto] = useState(false)
   const alertasRef = useRef<HTMLDivElement>(null)
   const { alertas, marcarRevisada } = useAlertas()
+  const location = useLocation()
+
+  useEffect(() => { setMenuAbierto(false) }, [location.pathname])
 
   const cerrarBusqueda = useCallback(() => setBusquedaAbierta(false), [])
 
@@ -43,69 +47,109 @@ export function AdminLayout() {
     return () => document.removeEventListener('mousedown', onClick)
   }, [alertasAbiertas])
 
-  return (
-    <div className="flex h-screen bg-gray-50">
-      <aside className="w-60 bg-white border-r border-gray-200 flex flex-col">
-        <div className="p-5 border-b border-gray-200">
+  const sidebarContent = (
+    <>
+      <div className="p-5 border-b border-gray-200 flex items-center justify-between">
+        <div>
           <h1 className="text-lg font-bold text-blue-600 tracking-tight">NIX IMPORTS</h1>
           <p className="text-xs text-gray-400 mt-0.5">Panel de administración</p>
         </div>
+        <button onClick={() => setMenuAbierto(false)} className="lg:hidden text-gray-400 hover:text-gray-600">
+          <X size={20} />
+        </button>
+      </div>
 
-        <div className="px-3 pt-3">
-          <button
-            onClick={() => setBusquedaAbierta(true)}
-            className="flex w-full items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-400 hover:border-gray-300 hover:text-gray-500 transition-colors"
+      <div className="px-3 pt-3">
+        <button
+          onClick={() => { setMenuAbierto(false); setBusquedaAbierta(true) }}
+          className="flex w-full items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-400 hover:border-gray-300 hover:text-gray-500 transition-colors"
+        >
+          <Search size={15} />
+          <span className="flex-1 text-left">Buscar...</span>
+          <kbd className="hidden sm:inline-flex rounded border border-gray-200 bg-gray-50 px-1.5 py-0.5 text-[10px] font-medium">
+            Ctrl K
+          </kbd>
+        </button>
+      </div>
+
+      <nav className="flex-1 p-3 flex flex-col gap-0.5">
+        {navItems.map(({ to, label, icon: Icon }) => (
+          <NavLink
+            key={to}
+            to={to}
+            end={to === '/'}
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors min-h-[44px] ${
+                isActive
+                  ? 'bg-blue-50 text-blue-600 font-medium'
+                  : 'text-gray-600 hover:bg-gray-100'
+              }`
+            }
           >
-            <Search size={15} />
-            <span className="flex-1 text-left">Buscar...</span>
-            <kbd className="rounded border border-gray-200 bg-gray-50 px-1.5 py-0.5 text-[10px] font-medium">
-              Ctrl K
-            </kbd>
-          </button>
-        </div>
+            <Icon size={17} />
+            {label}
+          </NavLink>
+        ))}
+      </nav>
+    </>
+  )
 
-        <nav className="flex-1 p-3 flex flex-col gap-0.5">
-          {navItems.map(({ to, label, icon: Icon }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={to === '/'}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                  isActive
-                    ? 'bg-blue-50 text-blue-600 font-medium'
-                    : 'text-gray-600 hover:bg-gray-100'
-                }`
-              }
-            >
-              <Icon size={17} />
-              {label}
-            </NavLink>
-          ))}
-        </nav>
+  return (
+    <div className="flex h-screen bg-gray-50">
+      {/* Sidebar desktop */}
+      <aside className="hidden lg:flex w-60 bg-white border-r border-gray-200 flex-col shrink-0">
+        {sidebarContent}
       </aside>
 
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="flex items-center justify-end border-b border-gray-200 bg-white px-6 py-3">
-          <div ref={alertasRef} className="relative">
+      {/* Drawer móvil */}
+      {menuAbierto && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <div className="fixed inset-0 bg-black/40" onClick={() => setMenuAbierto(false)} />
+          <aside className="relative z-10 flex h-full w-64 flex-col bg-white shadow-xl">
+            {sidebarContent}
+          </aside>
+        </div>
+      )}
+
+      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
+        <header className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3 sm:px-6">
+          <button
+            onClick={() => setMenuAbierto(true)}
+            className="lg:hidden rounded-lg p-2 text-gray-500 hover:bg-gray-100 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+          >
+            <Menu size={20} />
+          </button>
+
+          <h2 className="lg:hidden text-sm font-bold text-blue-600">NIX IMPORTS</h2>
+
+          <div className="flex items-center gap-2 ml-auto">
             <button
-              onClick={() => setAlertasAbiertas((prev) => !prev)}
-              className="relative rounded-lg p-2 text-gray-500 hover:bg-gray-100 transition-colors"
+              onClick={() => setBusquedaAbierta(true)}
+              className="lg:hidden rounded-lg p-2 text-gray-500 hover:bg-gray-100 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
             >
-              <Bell size={18} />
-              {alertas.length > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-amber-500 px-1 text-[10px] font-bold text-white">
-                  {alertas.length}
-                </span>
-              )}
+              <Search size={18} />
             </button>
-            {alertasAbiertas && (
-              <PanelAlertas
-                alertas={alertas}
-                onRevisar={marcarRevisada}
-                onCerrar={() => setAlertasAbiertas(false)}
-              />
-            )}
+
+            <div ref={alertasRef} className="relative">
+              <button
+                onClick={() => setAlertasAbiertas((prev) => !prev)}
+                className="relative rounded-lg p-2 text-gray-500 hover:bg-gray-100 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+              >
+                <Bell size={18} />
+                {alertas.length > 0 && (
+                  <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-amber-500 px-1 text-[10px] font-bold text-white">
+                    {alertas.length}
+                  </span>
+                )}
+              </button>
+              {alertasAbiertas && (
+                <PanelAlertas
+                  alertas={alertas}
+                  onRevisar={marcarRevisada}
+                  onCerrar={() => setAlertasAbiertas(false)}
+                />
+              )}
+            </div>
           </div>
         </header>
 

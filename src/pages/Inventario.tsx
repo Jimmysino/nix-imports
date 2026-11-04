@@ -179,12 +179,17 @@ export function Inventario() {
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
         {loading ? (
           <div className="py-16 text-center text-sm text-gray-400">Cargando inventario...</div>
-        ) : itemsFiltrados.length === 0 ? (
-          <div className="py-16 text-center text-sm text-gray-400">
-            {items.length === 0 ? 'Todavía no hay productos registrados' : 'No se encontraron productos con esos filtros'}
+        ) : items.length === 0 ? (
+          <div className="py-16 text-center">
+            <p className="text-sm text-gray-400">Todavia no hay productos registrados</p>
+            <p className="text-xs text-gray-300 mt-1 mb-3">Registra el primero con el boton "Registrar producto"</p>
+            <Button size="sm" onClick={() => setMostrarForm(true)}><Plus size={14} /> Registrar producto</Button>
           </div>
+        ) : itemsFiltrados.length === 0 ? (
+          <div className="py-16 text-center text-sm text-gray-400">No se encontraron productos con esos filtros</div>
         ) : (
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[650px]">
             <thead><tr className="border-b border-gray-100 bg-gray-50">
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Producto</th>
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Serie</th>
@@ -219,6 +224,7 @@ export function Inventario() {
               </tr>
             ))}</tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

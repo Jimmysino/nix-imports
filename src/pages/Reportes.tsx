@@ -96,7 +96,7 @@ export function Reportes() {
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-sm">
+                <table className="w-full text-sm min-w-[700px]">
                   <thead>
                     <tr className="border-b border-gray-100 bg-gray-50">
                       <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Código</th>

@@ -13,7 +13,7 @@ export function PanelAlertas({ alertas, onRevisar, onCerrar }: Props) {
   const navigate = useNavigate()
 
   return (
-    <div className="absolute right-0 top-full mt-2 w-96 rounded-xl border border-gray-200 bg-white shadow-xl z-50">
+    <div className="absolute right-0 top-full mt-2 w-[calc(100vw-2rem)] sm:w-96 max-w-96 rounded-xl border border-gray-200 bg-white shadow-xl z-50">
       <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3">
         <h3 className="text-sm font-semibold text-gray-900">Alertas de pedidos</h3>
         <button onClick={onCerrar} className="text-gray-400 hover:text-gray-600">

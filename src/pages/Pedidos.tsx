@@ -101,7 +101,7 @@ export function Pedidos() {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-xl font-bold text-gray-900">Pedidos</h1>
           <p className="text-sm text-gray-500 mt-0.5">
@@ -149,7 +149,7 @@ export function Pedidos() {
 
       {/* Filtros */}
       <div className="mb-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <div className="grid gap-3 md:grid-cols-[minmax(220px,1fr)_180px_180px_190px]">
+        <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[minmax(220px,1fr)_180px_180px_190px]">
           <input
             type="search"
             value={busqueda}
@@ -222,7 +222,10 @@ export function Pedidos() {
         ) : pedidos.length === 0 ? (
           <div className="py-16 text-center">
             <p className="text-gray-400 text-sm">No hay pedidos todavía</p>
-            <p className="text-gray-300 text-xs mt-1">Creá el primero con el botón "Nuevo pedido"</p>
+            <p className="text-gray-300 text-xs mt-1 mb-3">Creá el primero con el botón "Nuevo pedido"</p>
+            <Button size="sm" onClick={() => { setMostrarForm(true); setErrorForm(null) }}>
+              <Plus size={14} /> Crear pedido
+            </Button>
           </div>
         ) : pedidosFiltrados.length === 0 ? (
           <div className="py-16 text-center">
@@ -232,16 +235,17 @@ export function Pedidos() {
             </button>
           </div>
         ) : (
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[700px]">
             <thead>
               <tr className="border-b border-gray-100 bg-gray-50">
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Código</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Cliente</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Producto</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Categoría</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide hidden sm:table-cell">Categoría</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Estado</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Total USD</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Fecha</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide hidden sm:table-cell">Fecha</th>
               </tr>
             </thead>
             <tbody>
@@ -250,16 +254,17 @@ export function Pedidos() {
                   <td className="px-4 py-3 font-mono text-blue-600 font-medium">{pedido.codigo}</td>
                   <td className="px-4 py-3 text-gray-700">{pedido.cliente?.nombre ?? '—'}</td>
                   <td className="px-4 py-3 text-gray-700 max-w-48 truncate">{pedido.producto_nombre}</td>
-                  <td className="px-4 py-3 text-gray-500">{pedido.categoria}</td>
+                  <td className="px-4 py-3 text-gray-500 hidden sm:table-cell">{pedido.categoria}</td>
                   <td className="px-4 py-3"><Badge estado={pedido.estado} /></td>
                   <td className="px-4 py-3 font-medium text-gray-700">{formatUSD(pedido.total_usd)}</td>
-                  <td className="px-4 py-3 text-gray-400">
+                  <td className="px-4 py-3 text-gray-400 hidden sm:table-cell">
                     {new Date(pedido.created_at).toLocaleDateString('es-AR')}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>
