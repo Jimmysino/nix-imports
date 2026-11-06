@@ -963,7 +963,7 @@ Configurar la gestión de tokens JWT de Supabase con tiempos de expiración adec
 ---
 
 ### NIX-038: Roles y permisos de usuario (RBAC)
-**Estado Scrum:** En progreso (RLS de tablas operativas se completa en NIX-039)
+**Estado Scrum:** Implementada
 **Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 7
 **Como** superadmin, **quiero** asignar roles con permisos diferenciados a cada usuario del sistema, **para** controlar quién puede ver, crear, editar o eliminar datos según su responsabilidad.
 
@@ -977,7 +977,7 @@ Se implementa un sistema de control de acceso basado en roles (RBAC) con al meno
 - [x] El rol `viewer` puede: ver listados, detalles, reportes y dashboard en modo solo lectura, pero NO puede crear, editar ni eliminar ningún registro
 - [x] Los roles se almacenan en una tabla `user_profiles` vinculada al `auth.users.id` de Supabase
 - [x] El rol se verifica en el frontend: los botones y acciones no permitidas están ocultos o deshabilitados según el rol del usuario logueado
-- [ ] El rol se verifica en el backend: las RLS policies de Supabase validan el rol antes de permitir INSERT, UPDATE o DELETE
+- [x] El rol se verifica en el backend: las RLS policies de Supabase validan el rol antes de permitir INSERT, UPDATE o DELETE
 - [x] El superadmin tiene una pantalla de gestión de usuarios donde puede: ver la lista de usuarios, cambiar roles y desactivar cuentas
 - [x] Un usuario desactivado no puede iniciar sesión aunque tenga credenciales válidas
 - [x] Un usuario no puede escalarse de rol: la asignación solo la puede hacer el superadmin desde la UI
@@ -985,7 +985,7 @@ Se implementa un sistema de control de acceso basado en roles (RBAC) con al meno
 ---
 
 ### NIX-039: Row Level Security (RLS) en todas las tablas
-**Estado Scrum:** Pendiente
+**Estado Scrum:** Implementada
 **Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 7
 **Como** admin de seguridad, **quiero** que todas las tablas de Supabase tengan políticas de Row Level Security activas, **para** que ningún dato sea accesible sin autenticación y autorización verificada a nivel de base de datos.
 
@@ -993,16 +993,16 @@ Se implementa un sistema de control de acceso basado en roles (RBAC) con al meno
 Se activa RLS en todas las tablas del proyecto y se crean políticas explícitas para cada operación (SELECT, INSERT, UPDATE, DELETE) basadas en el rol del usuario autenticado. Sin políticas explícitas, el acceso queda denegado por defecto. Se verifica que la anon key no permita acceso sin autenticación.
 
 **Criterios de aceptación:**
-- [ ] RLS está habilitado en TODAS las tablas del proyecto (pedidos, clientes, inventario, perfumes, stock_movements, configuracion, ventas, proveedores, costos_adicionales, alertas, user_profiles, audit_log)
-- [ ] Cada tabla tiene políticas explícitas para SELECT, INSERT, UPDATE y DELETE según el rol
-- [ ] Sin autenticación (anon key sola) NO se puede leer, insertar, actualizar ni eliminar ningún registro
-- [ ] El rol `viewer` solo tiene políticas SELECT en las tablas de datos operativos
-- [ ] El rol `admin` tiene políticas SELECT, INSERT y UPDATE en tablas operativas, pero no DELETE en tablas críticas (clientes, pedidos)
-- [ ] El rol `superadmin` tiene acceso completo a todas las tablas incluidas audit_log y user_profiles
-- [ ] Las políticas usan `auth.uid()` y una función SQL `get_user_role()` que consulta user_profiles para verificar el rol
-- [ ] Existe una migración SQL documentada que crea todas las políticas RLS
-- [ ] Se incluye un test manual o script SQL que verifica que cada rol tiene exactamente los permisos esperados (no más, no menos)
-- [ ] La tabla `audit_log` es append-only: nadie puede hacer UPDATE ni DELETE, solo INSERT (excepto superadmin para mantenimiento)
+- [x] RLS está habilitado en TODAS las tablas del proyecto (pedidos, clientes, inventario, perfumes, stock_movements, configuracion, ventas, proveedores, costos_adicionales, alertas, user_profiles, audit_log)
+- [x] Cada tabla tiene políticas explícitas para SELECT, INSERT, UPDATE y DELETE según el rol
+- [x] Sin autenticación (anon key sola) NO se puede leer, insertar, actualizar ni eliminar ningún registro (única excepción: INSERT acotado en auth_log para registrar logins fallidos)
+- [x] El rol `viewer` solo tiene políticas SELECT en las tablas de datos operativos
+- [x] El rol `admin` tiene políticas SELECT, INSERT y UPDATE en tablas operativas, pero no DELETE en tablas críticas (clientes, pedidos)
+- [x] El rol `superadmin` tiene acceso completo a todas las tablas incluidas audit_log y user_profiles
+- [x] Las políticas usan `auth.uid()` y una función SQL `get_user_role()` que consulta user_profiles para verificar el rol
+- [x] Existe una migración SQL documentada que crea todas las políticas RLS
+- [x] Se incluye un test manual o script SQL que verifica que cada rol tiene exactamente los permisos esperados (no más, no menos)
+- [x] La tabla `audit_log` es append-only: nadie puede hacer UPDATE ni DELETE, solo INSERT (excepto superadmin para mantenimiento)
 
 ---
 
