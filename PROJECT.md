@@ -675,7 +675,7 @@ Se agrega una sección "Perfumes" en la navegación del sidebar con sub-ítems: 
 **Historias incluidas:** NIX-024, NIX-025, NIX-026, NIX-027, NIX-028, NIX-029
 
 ### NIX-024: Registrar venta de perfumes
-**Estado Scrum:** Pendiente
+**Estado Scrum:** En progreso (falta mensaje de confirmación al guardar)
 **Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 5
 **Como** admin, **quiero** registrar una venta de perfumes indicando cliente, productos y tipo de venta (minorista/mayorista), **para** llevar control de las ventas y aplicar el precio correspondiente.
 
@@ -683,21 +683,21 @@ Se agrega una sección "Perfumes" en la navegación del sidebar con sub-ítems: 
 El admin crea una venta seleccionando el tipo (minorista o mayorista), un cliente existente o datos de venta rápida, y agrega uno o más perfumes con su cantidad. El sistema aplica automáticamente el precio según el tipo de venta, calcula el total y descuenta del stock al confirmar.
 
 **Criterios de aceptación:**
-- [ ] Puedo crear una venta seleccionando tipo: Minorista o Mayorista
-- [ ] Puedo asociar la venta a un cliente existente o registrar un nombre de referencia (venta rápida)
-- [ ] Puedo agregar uno o más perfumes a la venta con cantidad deseada
-- [ ] El precio unitario se carga automáticamente según el tipo de venta (minorista/mayorista)
-- [ ] Puedo ajustar el precio manualmente en una venta específica si es necesario
-- [ ] Se muestra el subtotal por línea y el total general de la venta
-- [ ] No puedo vender más unidades de las que hay en stock
-- [ ] Al confirmar la venta, se descuenta automáticamente del stock (movimiento tipo "Venta")
-- [ ] La venta genera un código único visible (VTA-XXXX)
+- [x] Puedo crear una venta seleccionando tipo: Minorista o Mayorista
+- [x] Puedo asociar la venta a un cliente existente o registrar un nombre de referencia (venta rápida)
+- [x] Puedo agregar uno o más perfumes a la venta con cantidad deseada
+- [x] El precio unitario se carga automáticamente según el tipo de venta (minorista/mayorista)
+- [x] Puedo ajustar el precio manualmente en una venta específica si es necesario
+- [x] Se muestra el subtotal por línea y el total general de la venta
+- [x] No puedo vender más unidades de las que hay en stock
+- [x] Al confirmar la venta, se descuenta automáticamente del stock (movimiento tipo "Venta")
+- [x] La venta genera un código único visible (VTA-XXXX)
 - [ ] Se muestra confirmación al guardar exitosamente
 
 ---
 
 ### NIX-025: Listar ventas con filtros
-**Estado Scrum:** Pendiente
+**Estado Scrum:** Implementada
 **Prioridad:** Alta | **Puntos:** 5 | **Sprint:** 5
 **Como** admin, **quiero** ver un listado de todas las ventas de perfumes con filtros, **para** consultar el historial de ventas y hacer seguimiento.
 
@@ -705,18 +705,18 @@ El admin crea una venta seleccionando el tipo (minorista o mayorista), un client
 Vista principal de ventas en formato tabla con la información más relevante. El admin puede filtrar por tipo de venta, rango de fechas y buscar por cliente o código de venta.
 
 **Criterios de aceptación:**
-- [ ] Veo una tabla con: código, fecha, cliente, tipo (minorista/mayorista), cantidad de ítems, total, estado
-- [ ] Puedo filtrar por tipo de venta (Minorista/Mayorista/Todos)
-- [ ] Puedo filtrar por rango de fechas
-- [ ] Puedo buscar por nombre de cliente o código de venta
-- [ ] Puedo ordenar por fecha o total
-- [ ] Al hacer clic en una venta, veo su detalle con el desglose de productos
-- [ ] Veo un contador de resultados y totales acumulados
+- [x] Veo una tabla con: código, fecha, cliente, tipo (minorista/mayorista), cantidad de ítems, total, estado
+- [x] Puedo filtrar por tipo de venta (Minorista/Mayorista/Todos)
+- [x] Puedo filtrar por rango de fechas
+- [x] Puedo buscar por nombre de cliente o código de venta
+- [x] Puedo ordenar por fecha o total
+- [x] Al hacer clic en una venta, veo su detalle con el desglose de productos
+- [x] Veo un contador de resultados y totales acumulados
 
 ---
 
 ### NIX-026: Detalle y anulación de venta
-**Estado Scrum:** Pendiente
+**Estado Scrum:** En progreso (la anulación resta stock en vez de devolverlo)
 **Prioridad:** Alta | **Puntos:** 5 | **Sprint:** 5
 **Como** admin, **quiero** ver el detalle de una venta y poder anularla si fue un error, **para** corregir errores y mantener el stock correcto.
 
@@ -724,17 +724,17 @@ Vista principal de ventas en formato tabla con la información más relevante. E
 Desde el listado de ventas el admin accede al detalle que muestra toda la información de la transacción. Si la venta fue registrada por error, puede anularla, lo que devuelve las unidades al stock automáticamente.
 
 **Criterios de aceptación:**
-- [ ] Puedo ver el detalle completo de una venta: código, fecha, cliente, tipo, productos vendidos con cantidad y precio, total
-- [ ] Puedo anular una venta que no haya sido anulada previamente
+- [x] Puedo ver el detalle completo de una venta: código, fecha, cliente, tipo, productos vendidos con cantidad y precio, total
+- [x] Puedo anular una venta que no haya sido anulada previamente
 - [ ] Al anular, se genera un movimiento de tipo "Ajuste" que devuelve las unidades al stock
-- [ ] La venta anulada queda marcada visualmente como "Anulada" y no se contabiliza en reportes
-- [ ] Se pide confirmación antes de anular
-- [ ] Se muestra la fecha de anulación y una nota de motivo
+- [x] La venta anulada queda marcada visualmente como "Anulada" y no se contabiliza en reportes
+- [x] Se pide confirmación antes de anular
+- [x] Se muestra la fecha de anulación y una nota de motivo
 
 ---
 
 ### NIX-027: Historial de compras a proveedores
-**Estado Scrum:** Pendiente
+**Estado Scrum:** En progreso (no existe detalle de perfume al que navegar)
 **Prioridad:** Media | **Puntos:** 5 | **Sprint:** 5
 **Como** admin, **quiero** ver el historial de compras (entradas de stock) de cada proveedor, **para** evaluar proveedores y tener trazabilidad de costos.
 
@@ -742,17 +742,17 @@ Desde el listado de ventas el admin accede al detalle que muestra toda la inform
 Desde el detalle de un proveedor, el admin puede ver todas las entradas de stock asociadas: qué perfumes se compraron, cuántas unidades, a qué costo y en qué fecha. También se muestra un resumen con total invertido y unidades compradas.
 
 **Criterios de aceptación:**
-- [ ] Desde un proveedor puedo ver su historial de entradas de stock
-- [ ] Cada entrada muestra: perfume, cantidad, costo unitario, costo total, fecha
-- [ ] Las entradas se muestran desde la más reciente
-- [ ] Se muestra un resumen: total de unidades compradas y monto total invertido
-- [ ] Puedo filtrar las entradas por rango de fechas
+- [x] Desde un proveedor puedo ver su historial de entradas de stock
+- [x] Cada entrada muestra: perfume, cantidad, costo unitario, costo total, fecha
+- [x] Las entradas se muestran desde la más reciente
+- [x] Se muestra un resumen: total de unidades compradas y monto total invertido
+- [x] Puedo filtrar las entradas por rango de fechas
 - [ ] Puedo navegar al detalle del perfume desde cada entrada
 
 ---
 
 ### NIX-028: Reporte de ventas de perfumes
-**Estado Scrum:** Pendiente
+**Estado Scrum:** Implementada
 **Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 5
 **Como** admin, **quiero** generar un reporte de ventas de perfumes por periodo, **para** conocer las ganancias y el rendimiento de esta línea de negocio.
 
@@ -760,20 +760,20 @@ Desde el detalle de un proveedor, el admin puede ver todas las entradas de stock
 El admin consulta un reporte filtrado por rango de fechas que muestra las ventas realizadas, ingresos totales, costo de la mercadería vendida, ganancia bruta y desglose por tipo de venta (minorista vs mayorista). Se puede exportar a PDF o Excel.
 
 **Criterios de aceptación:**
-- [ ] Puedo seleccionar un rango de fechas para generar el reporte
-- [ ] El reporte muestra solo ventas confirmadas (no anuladas) dentro del rango
-- [ ] Veo: total de ventas, ingresos totales, costo de mercadería vendida, ganancia bruta
-- [ ] Veo el desglose separado entre ventas minoristas y mayoristas
-- [ ] Veo un detalle por venta con: código, cliente, tipo, total y ganancia
-- [ ] Puedo ver los perfumes más vendidos (top 5) en el periodo
-- [ ] Puedo exportar el reporte a PDF
-- [ ] Puedo exportar el reporte a Excel (CSV)
-- [ ] Se muestra un mensaje cuando no hay datos en el rango seleccionado
+- [x] Puedo seleccionar un rango de fechas para generar el reporte
+- [x] El reporte muestra solo ventas confirmadas (no anuladas) dentro del rango
+- [x] Veo: total de ventas, ingresos totales, costo de mercadería vendida, ganancia bruta
+- [x] Veo el desglose separado entre ventas minoristas y mayoristas
+- [x] Veo un detalle por venta con: código, cliente, tipo, total y ganancia
+- [x] Puedo ver los perfumes más vendidos (top 5) en el periodo
+- [x] Puedo exportar el reporte a PDF
+- [x] Puedo exportar el reporte a Excel (CSV)
+- [x] Se muestra un mensaje cuando no hay datos en el rango seleccionado
 
 ---
 
 ### NIX-029: Integrar ventas de perfumes en navegación y dashboard
-**Estado Scrum:** Pendiente
+**Estado Scrum:** En progreso (las últimas ventas no enlazan al detalle de la venta)
 **Prioridad:** Media | **Puntos:** 3 | **Sprint:** 5
 **Como** admin, **quiero** acceder a las ventas de perfumes desde la navegación y ver métricas de ventas en el dashboard de perfumes, **para** tener una vista completa del negocio.
 
@@ -781,12 +781,12 @@ El admin consulta un reporte filtrado por rango de fechas que muestra las ventas
 Se agrega "Ventas" como sub-ítem de la sección Perfumes en el sidebar. El dashboard de perfumes se actualiza para incluir métricas de ventas: ventas del mes, ingresos, ganancia bruta y un gráfico o resumen de ventas recientes.
 
 **Criterios de aceptación:**
-- [ ] Hay un sub-ítem "Ventas" en la sección Perfumes del sidebar
-- [ ] El dashboard de perfumes muestra: ventas del mes actual, ingresos del mes, ganancia bruta del mes
+- [x] Hay un sub-ítem "Ventas" en la sección Perfumes del sidebar
+- [x] El dashboard de perfumes muestra: ventas del mes actual, ingresos del mes, ganancia bruta del mes
 - [ ] Se muestran las últimas 5 ventas realizadas con acceso al detalle
-- [ ] Se muestra un comparativo simple: ventas minoristas vs mayoristas del mes (cantidad e ingresos)
-- [ ] Las nuevas rutas están integradas con react-router-dom
-- [ ] La navegación funciona en móvil
+- [x] Se muestra un comparativo simple: ventas minoristas vs mayoristas del mes (cantidad e ingresos)
+- [x] Las nuevas rutas están integradas con react-router-dom
+- [x] La navegación funciona en móvil
 
 ---
 
@@ -920,7 +920,7 @@ El admin puede elegir hasta 4 KPIs principales que se muestran como tarjetas des
 **Historias incluidas:** NIX-036, NIX-037, NIX-038, NIX-039, NIX-040, NIX-041, NIX-042
 
 ### NIX-036: Autenticación segura con Supabase Auth
-**Estado Scrum:** Pendiente
+**Estado Scrum:** Implementada
 **Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 7
 **Como** admin, **quiero** que el sistema requiera autenticación segura para acceder a cualquier funcionalidad, **para** garantizar que solo usuarios autorizados puedan operar el ERP.
 
