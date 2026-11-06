@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { Proveedor } from '../types/database'
 
 export function useProveedores() {
@@ -12,7 +13,7 @@ export function useProveedores() {
     setError(null)
     const { data, error } = await supabase.from('proveedores').select('*').order('nombre')
     setLoading(false)
-    if (error) { setError(error.message); return }
+    if (error) { const isAuth = await handleSupabaseError(error); if (!isAuth) setError(error.message); return }
     setProveedores(data ?? [])
   }
 

@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 
 export interface ClienteRanking {
   clienteId: string
@@ -38,7 +39,7 @@ export function useRankingClientes() {
     ])
 
     const err = pedidosRes.error ?? ventasRes.error ?? clientesRes.error
-    if (err) { setError(err.message); setLoading(false); return }
+    if (err) { const isAuth = await handleSupabaseError(err); if (!isAuth) setError(err.message); setLoading(false); return }
 
     const pedidos = pedidosRes.data ?? []
     const ventas = ventasRes.data ?? []

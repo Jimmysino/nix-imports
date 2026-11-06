@@ -7,9 +7,11 @@ interface AuthContextType {
   user: User | null
   session: Session | null
   loading: boolean
+  sessionExpired: boolean
   login: (email: string, password: string) => Promise<{ error: string | null }>
   logout: () => Promise<void>
   resetPassword: (email: string) => Promise<{ error: string | null }>
+  clearSessionExpired: () => void
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
@@ -23,6 +25,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
   const [showWarning, setShowWarning] = useState(false)
   const [countdown, setCountdown] = useState(60)
+  const [sessionExpired, setSessionExpired] = useState(false)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session: s } }) => {
@@ -31,14 +34,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false)
     })
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, s) => {
+      const hadUser = !!user
       setSession(s)
       setUser(s?.user ?? null)
       setLoading(false)
+
+      if (event === 'TOKEN_REFRESHED' && !s) {
+        setSessionExpired(true)
+      }
+
+      if (event === 'SIGNED_OUT' && hadUser) {
+        setSessionExpired(true)
+      }
     })
 
     return () => subscription.unsubscribe()
-  }, [])
+  }, [user])
 
   // Inactivity timeout
   useEffect(() => {
@@ -58,7 +70,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }, INACTIVITY_TIMEOUT_MS - WARNING_BEFORE_MS)
 
       inactivityTimer = setTimeout(() => {
-        supabase.auth.signOut()
+        setSessionExpired(true)
+        supabase.auth.signOut({ scope: 'global' })
       }, INACTIVITY_TIMEOUT_MS)
     }
 
@@ -99,6 +112,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await logAuthEvent(email, 'login_fallido')
       return { error: 'Credenciales incorrectas. Verifica tu email y contraseña.' }
     }
+    setSessionExpired(false)
     await logAuthEvent(email, 'login_ok')
     return { error: null }
   }, [logAuthEvent])
@@ -107,7 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (user?.email) {
       await logAuthEvent(user.email, 'logout')
     }
-    await supabase.auth.signOut()
+    await supabase.auth.signOut({ scope: 'global' })
   }, [user, logAuthEvent])
 
   const resetPassword = useCallback(async (email: string) => {
@@ -121,8 +135,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: null }
   }, [logAuthEvent])
 
+  const clearSessionExpired = useCallback(() => setSessionExpired(false), [])
+
   return (
-    <AuthContext.Provider value={{ user, session, loading, login, logout, resetPassword }}>
+    <AuthContext.Provider value={{ user, session, loading, sessionExpired, login, logout, resetPassword, clearSessionExpired }}>
       {children}
       {showWarning && user && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50">

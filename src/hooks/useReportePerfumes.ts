@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { VentaPerfume, VentaPerfumeItem, Perfume } from '../types/database'
 
 export interface ReportePerfumesData {
@@ -31,7 +32,8 @@ export function useReportePerfumes() {
       .order('fecha', { ascending: false })
 
     if (queryError) {
-      setError(queryError.message)
+      const isAuth = await handleSupabaseError(queryError)
+      if (!isAuth) setError(queryError.message)
       setLoading(false)
       return
     }

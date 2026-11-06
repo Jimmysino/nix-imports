@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { Perfume, VentaPerfumeItem } from '../types/database'
 
 export interface LineaRentabilidad {
@@ -55,7 +56,7 @@ export function useRentabilidad() {
     ])
 
     const err = pedidosRes.error ?? ventasRes.error
-    if (err) { setError(err.message); setLoading(false); return }
+    if (err) { const isAuth = await handleSupabaseError(err); if (!isAuth) setError(err.message); setLoading(false); return }
 
     const perfumesRes = await supabase.from('perfumes').select('id, costo_compra')
     if (perfumesRes.error) { setError(perfumesRes.error.message); setLoading(false); return }

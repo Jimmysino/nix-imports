@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { Configuracion } from '../types/database'
 
 export function useConfiguracion() {
@@ -17,8 +18,10 @@ export function useConfiguracion() {
       .limit(1)
       .maybeSingle()
 
-    if (error) setError(error.message)
-    else setConfig(data)
+    if (error) {
+      const isAuth = await handleSupabaseError(error)
+      if (!isAuth) setError(error.message)
+    } else setConfig(data)
     setLoading(false)
   }
 

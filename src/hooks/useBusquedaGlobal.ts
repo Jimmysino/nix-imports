@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { Cliente, InventarioItem, Pedido } from '../types/database'
 
 export interface ResultadosBusqueda {

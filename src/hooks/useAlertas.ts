@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { EstadoPedido, Pedido } from '../types/database'
 
 const estadosActivos: EstadoPedido[] = [

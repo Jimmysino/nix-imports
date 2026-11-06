@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { Perfume, GeneroPerfume } from '../types/database'
 
 export function usePerfumes() {
@@ -17,7 +18,8 @@ export function usePerfumes() {
       .order('nombre')
     setLoading(false)
     if (error) {
-      setError(error.message)
+      const isAuth = await handleSupabaseError(error)
+      if (!isAuth) setError(error.message)
       return
     }
     setPerfumes(data ?? [])

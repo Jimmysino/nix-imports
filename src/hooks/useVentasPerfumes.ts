@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { VentaPerfume, VentaPerfumeItem, TipoVenta } from '../types/database'
 
 export function useVentasPerfumes() {
@@ -15,7 +16,7 @@ export function useVentasPerfumes() {
       .select('*, clientes(*), venta_perfume_items(*, perfumes(*))')
       .order('created_at', { ascending: false })
     setLoading(false)
-    if (error) { setError(error.message); return }
+    if (error) { const isAuth = await handleSupabaseError(error); if (!isAuth) setError(error.message); return }
     const mapped = (data ?? []).map((v: Record<string, unknown>) => ({
       ...v,
       cliente: v.clientes ?? undefined,

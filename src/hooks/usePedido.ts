@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { CostoAdicional, EstadoPedido, HistorialEstado, Pedido } from '../types/database'
 import { getSiguienteEstado, puedeCancelar } from '../utils/estados'
 
@@ -21,8 +22,10 @@ export function usePedido(id: string) {
       supabase.from('historial_estados').select('*').eq('pedido_id', id).order('fecha', { ascending: true }),
       supabase.from('costos_adicionales').select('*').eq('pedido_id', id).order('created_at', { ascending: false }),
     ])
-    if (pedidoError) setError(pedidoError.message)
-    else {
+    if (pedidoError) {
+      const isAuth = await handleSupabaseError(pedidoError)
+      if (!isAuth) setError(pedidoError.message)
+    } else {
       setPedido(pedidoData)
       setHistorial(historialData ?? [])
       setCostosAdicionales(costosData ?? [])

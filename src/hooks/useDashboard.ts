@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { EstadoPedido, Pedido } from '../types/database'
 
 const estadosActivos: EstadoPedido[] = [
@@ -51,7 +52,8 @@ export function useDashboard() {
 
       if (!activo) return
       if (queryError) {
-        setError(queryError.message)
+        const isAuth = await handleSupabaseError(queryError)
+        if (!isAuth) setError(queryError.message)
         setLoading(false)
         return
       }

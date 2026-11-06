@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { Pedido } from '../types/database'
 
 export interface ReporteData {
@@ -27,7 +28,8 @@ export function useReportes() {
       .order('created_at', { ascending: false })
 
     if (queryError) {
-      setError(queryError.message)
+      const isAuth = await handleSupabaseError(queryError)
+      if (!isAuth) setError(queryError.message)
       setLoading(false)
       return
     }

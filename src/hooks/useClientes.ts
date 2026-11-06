@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { Cliente } from '../types/database'
 
 export function useClientes() {
@@ -17,8 +18,10 @@ export function useClientes() {
       .from('clientes')
       .select('*')
       .order('nombre')
-    if (error) setError(error.message)
-    else setClientes(data ?? [])
+    if (error) {
+      const isAuth = await handleSupabaseError(error)
+      if (!isAuth) setError(error.message)
+    } else setClientes(data ?? [])
     setLoading(false)
   }
 

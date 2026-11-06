@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { Button } from '../components/ui/Button'
@@ -6,7 +6,7 @@ import { Input } from '../components/ui/Input'
 import { Eye, EyeOff, LogIn, KeyRound } from 'lucide-react'
 
 export function Login() {
-  const { user, loading, login, resetPassword } = useAuth()
+  const { user, loading, login, resetPassword, sessionExpired, clearSessionExpired } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -14,6 +14,10 @@ export function Login() {
   const [submitting, setSubmitting] = useState(false)
   const [mode, setMode] = useState<'login' | 'reset'>('login')
   const [resetSent, setResetSent] = useState(false)
+
+  useEffect(() => {
+    return () => { clearSessionExpired() }
+  }, [clearSessionExpired])
 
   if (loading) {
     return (
@@ -62,6 +66,12 @@ export function Login() {
           <h1 className="text-xl font-bold text-gray-900">NIX IMPORTS</h1>
           <p className="mt-1 text-sm text-gray-500">Panel de administración</p>
         </div>
+
+        {sessionExpired && (
+          <div className="mb-4 rounded-lg bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-700">
+            Tu sesión ha expirado. Por favor, inicia sesión nuevamente.
+          </div>
+        )}
 
         <div className="rounded-xl bg-white p-6 shadow-lg border border-gray-100">
           {mode === 'login' ? (

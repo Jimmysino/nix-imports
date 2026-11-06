@@ -135,6 +135,54 @@
 |----|-------------------|-----------|--------|--------|
 | NIX-027 | Historial de compras a proveedores | Media | 5 | 5 |
 
+### Epic 13: Dashboard Avanzado
+
+| ID | Historia de Usuario | Prioridad | Puntos | Sprint |
+|----|-------------------|-----------|--------|--------|
+| NIX-030 | Dashboard unificado con métricas de ambos negocios | Alta | 8 | 6 |
+| NIX-031 | Gráficos de tendencia de ingresos y pedidos | Alta | 8 | 6 |
+
+### Epic 14: Reportes Financieros
+
+| ID | Historia de Usuario | Prioridad | Puntos | Sprint |
+|----|-------------------|-----------|--------|--------|
+| NIX-032 | Reporte financiero consolidado (importaciones + perfumes) | Alta | 8 | 6 |
+| NIX-033 | Reporte de rentabilidad por línea de negocio | Media | 5 | 6 |
+
+### Epic 15: Métricas y Análisis
+
+| ID | Historia de Usuario | Prioridad | Puntos | Sprint |
+|----|-------------------|-----------|--------|--------|
+| NIX-034 | Métricas de clientes y ranking de compradores | Media | 5 | 6 |
+| NIX-035 | Indicadores de rendimiento (KPIs) configurables en dashboard | Media | 5 | 6 |
+
+### Epic 16: Autenticación y Gestión de Sesiones
+
+| ID | Historia de Usuario | Prioridad | Puntos | Sprint |
+|----|-------------------|-----------|--------|--------|
+| NIX-036 | Autenticación segura con Supabase Auth | Alta | 8 | 7 |
+| NIX-037 | Gestión segura de sesiones y tokens | Alta | 5 | 7 |
+
+### Epic 17: Control de Acceso y Autorización
+
+| ID | Historia de Usuario | Prioridad | Puntos | Sprint |
+|----|-------------------|-----------|--------|--------|
+| NIX-038 | Roles y permisos de usuario (RBAC) | Alta | 8 | 7 |
+| NIX-039 | Row Level Security (RLS) en todas las tablas | Alta | 8 | 7 |
+
+### Epic 18: Auditoría y Trazabilidad
+
+| ID | Historia de Usuario | Prioridad | Puntos | Sprint |
+|----|-------------------|-----------|--------|--------|
+| NIX-040 | Registro de auditoría de operaciones críticas | Alta | 8 | 7 |
+
+### Epic 19: Protección y Respaldo de Datos
+
+| ID | Historia de Usuario | Prioridad | Puntos | Sprint |
+|----|-------------------|-----------|--------|--------|
+| NIX-041 | Respaldo y recuperación de datos | Media | 5 | 7 |
+| NIX-042 | Protección contra ataques comunes (XSS, inyección, CSRF) | Alta | 5 | 7 |
+
 ### Resumen de puntos
 
 | Sprint | Historias | Puntos totales |
@@ -144,6 +192,8 @@
 | 3 | NIX-014, 015, 016, 017, 018 | **26** |
 | 4 | NIX-019, 020, 021, 022, 023 | **29** |
 | 5 | NIX-024, 025, 026, 027, 028, 029 | **34** |
+| 6 | NIX-030, 031, 032, 033, 034, 035 | **39** |
+| 7 | NIX-036, 037, 038, 039, 040, 041, 042 | **47** |
 
 ---
 
@@ -737,6 +787,287 @@ Se agrega "Ventas" como sub-ítem de la sección Perfumes en el sidebar. El dash
 - [ ] Se muestra un comparativo simple: ventas minoristas vs mayoristas del mes (cantidad e ingresos)
 - [ ] Las nuevas rutas están integradas con react-router-dom
 - [ ] La navegación funciona en móvil
+
+---
+
+## Sprint 6 - Scope
+
+**Fechas:** 06 Ene - 19 Ene 2027
+**Objetivo:** Consolidar un dashboard avanzado que unifique importaciones y perfumes, con gráficos de tendencia, reportes financieros cruzados y métricas de análisis del negocio.
+
+**Historias incluidas:** NIX-030, NIX-031, NIX-032, NIX-033, NIX-034, NIX-035
+
+### NIX-030: Dashboard unificado con métricas de ambos negocios
+**Estado Scrum:** Implementada
+**Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 6
+**Como** admin, **quiero** ver en el dashboard principal un resumen que combine las métricas de importaciones y perfumes, **para** tener una visión completa del estado financiero y operativo de todo el negocio en un solo lugar.
+
+**Descripción:**
+El dashboard principal se transforma en un panel unificado que muestra métricas de ambas líneas de negocio: importaciones (pedidos, comisiones) y perfumes (ventas, stock, ganancias). Se organizan en secciones claras con tarjetas de resumen y accesos directos a cada módulo.
+
+**Criterios de aceptación:**
+- [x] El dashboard muestra una sección "Importaciones" con: pedidos activos, entregados, total facturado, comisiones
+- [x] El dashboard muestra una sección "Perfumes" con: ventas del mes, ingresos, ganancia bruta, stock total
+- [x] Se muestra un resumen general consolidado: ingresos totales del negocio (comisiones + ganancias perfumes)
+- [x] Cada sección tiene un enlace directo al módulo correspondiente
+- [x] Se muestran indicadores de cambio respecto al mes anterior (sube/baja/igual)
+- [x] Los datos se cargan con estados de loading y error independientes por sección
+- [x] El layout es responsive y funcional en móvil
+
+---
+
+### NIX-031: Gráficos de tendencia de ingresos y pedidos
+**Estado Scrum:** Implementada
+**Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 6
+**Como** admin, **quiero** ver gráficos de tendencia de ingresos y actividad por mes, **para** identificar patrones de crecimiento o caída en el negocio.
+
+**Descripción:**
+Se agregan gráficos al dashboard que muestran la evolución mensual de los últimos 6 meses: ingresos por importaciones (comisiones), ingresos por perfumes (ganancias), y cantidad de operaciones. Los gráficos usan una librería ligera (recharts) integrada con el stack existente.
+
+**Criterios de aceptación:**
+- [x] Se muestra un gráfico de barras o líneas con ingresos mensuales de los últimos 6 meses
+- [x] El gráfico diferencia visualmente importaciones vs perfumes con colores distintos
+- [x] Se muestra un gráfico de actividad: cantidad de pedidos cerrados + ventas de perfumes por mes
+- [x] Los gráficos tienen tooltip al hacer hover con el detalle del mes
+- [x] Los gráficos se adaptan al ancho de la pantalla (responsive)
+- [x] Se muestra un estado vacío si no hay datos suficientes
+- [x] Los datos se calculan desde las tablas existentes sin requerir nuevas migraciones
+
+---
+
+### NIX-032: Reporte financiero consolidado
+**Estado Scrum:** Implementada
+**Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 6
+**Como** admin, **quiero** generar un reporte financiero que combine importaciones y perfumes en un solo documento, **para** tener una vista completa de los ingresos y ganancias del negocio por periodo.
+
+**Descripción:**
+Una nueva pantalla de reportes financieros permite seleccionar un rango de fechas y genera un reporte que incluye: ingresos por importaciones (comisiones cobradas), ingresos por perfumes (ventas - costo), total consolidado, y desglose por línea de negocio. Se puede exportar a PDF y CSV.
+
+**Criterios de aceptación:**
+- [x] Puedo seleccionar un rango de fechas para generar el reporte
+- [x] El reporte muestra una sección de importaciones: pedidos entregados, total facturado, comisiones cobradas
+- [x] El reporte muestra una sección de perfumes: ventas confirmadas, ingresos, costo de mercadería, ganancia bruta
+- [x] Se muestra un total consolidado: comisiones de importaciones + ganancia bruta de perfumes
+- [x] Se muestra el porcentaje de participación de cada línea en los ingresos totales
+- [x] Puedo exportar el reporte consolidado a PDF
+- [x] Puedo exportar el reporte consolidado a CSV
+- [x] Se muestra un mensaje cuando no hay datos en el rango seleccionado
+- [x] Se muestran estados de carga y error
+
+---
+
+### NIX-033: Reporte de rentabilidad por línea de negocio
+**Estado Scrum:** Implementada
+**Prioridad:** Media | **Puntos:** 5 | **Sprint:** 6
+**Como** admin, **quiero** comparar la rentabilidad entre importaciones y perfumes, **para** saber cuál línea de negocio genera más ganancia y tomar decisiones estratégicas.
+
+**Descripción:**
+Dentro del reporte financiero o como vista separada, se muestra una comparación directa entre ambas líneas: ingresos, costos, margen de ganancia (%), y evolución mensual. Permite identificar cuál línea es más rentable y cómo evoluciona cada una.
+
+**Criterios de aceptación:**
+- [x] Se muestra una tabla comparativa: importaciones vs perfumes con ingresos, costos y margen (%)
+- [x] El margen de importaciones se calcula como: comisiones / total facturado
+- [x] El margen de perfumes se calcula como: ganancia bruta / ingresos totales
+- [x] Se destaca visualmente la línea con mejor rentabilidad
+- [x] Se muestra la evolución del margen por mes (últimos 6 meses) en formato tabla o mini-gráfico
+- [x] Los datos respetan el rango de fechas seleccionado en el reporte consolidado
+
+---
+
+### NIX-034: Métricas de clientes y ranking de compradores
+**Estado Scrum:** Implementada
+**Prioridad:** Media | **Puntos:** 5 | **Sprint:** 6
+**Como** admin, **quiero** ver un ranking de clientes por volumen de compras y frecuencia, **para** identificar a los mejores clientes y priorizar la atención.
+
+**Descripción:**
+Una sección de métricas de clientes muestra los clientes ordenados por total gastado, combinando importaciones y perfumes. Se muestra cuántos pedidos y ventas tiene cada cliente, el total acumulado, y la fecha de su última operación.
+
+**Criterios de aceptación:**
+- [x] Se muestra un ranking de los top 10 clientes por total gastado
+- [x] Cada fila muestra: nombre, pedidos de importación, ventas de perfumes, total gastado, última operación
+- [x] El total gastado combina pedidos de importación (total_usd) y ventas de perfumes
+- [x] Puedo filtrar por rango de fechas
+- [x] Se muestra un badge para clientes recurrentes (más de 3 operaciones)
+- [x] Puedo navegar al detalle del cliente desde el ranking
+- [x] Se muestra un estado vacío si no hay clientes con operaciones
+
+---
+
+### NIX-035: Indicadores de rendimiento (KPIs) configurables en dashboard
+**Estado Scrum:** Implementada
+**Prioridad:** Media | **Puntos:** 5 | **Sprint:** 6
+**Como** admin, **quiero** configurar qué indicadores se muestran de forma destacada en el dashboard, **para** personalizar la vista según las métricas que más me importan.
+
+**Descripción:**
+El admin puede elegir hasta 4 KPIs principales que se muestran como tarjetas destacadas en la parte superior del dashboard. Los KPIs disponibles incluyen métricas de ambas líneas de negocio. La selección se persiste en la tabla de configuración.
+
+**Criterios de aceptación:**
+- [x] Puedo abrir un selector de KPIs desde el dashboard
+- [x] Los KPIs disponibles incluyen: pedidos activos, pedidos del mes, comisiones del mes, ventas perfumes del mes, ingresos perfumes del mes, ganancia bruta perfumes, stock total perfumes, clientes nuevos del mes, ingresos totales del negocio
+- [x] Puedo seleccionar hasta 4 KPIs para mostrar como tarjetas destacadas
+- [x] La selección se persiste en Supabase y se mantiene entre sesiones
+- [x] Los KPIs seleccionados se muestran en la parte superior del dashboard con valor actual
+- [x] Cada KPI muestra un indicador de tendencia respecto al mes anterior
+- [x] Si no hay KPIs configurados, se muestran los 4 por defecto (pedidos activos, comisiones mes, ventas perfumes mes, ingresos totales)
+
+---
+
+## Sprint 7 - Scope
+
+**Fechas:** 20 Ene - 02 Feb 2027
+**Objetivo:** Blindar el sistema con autenticación robusta, control de acceso granular (RBAC + RLS), auditoría completa de operaciones y protección contra vulnerabilidades comunes.
+
+**Historias incluidas:** NIX-036, NIX-037, NIX-038, NIX-039, NIX-040, NIX-041, NIX-042
+
+### NIX-036: Autenticación segura con Supabase Auth
+**Estado Scrum:** Pendiente
+**Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 7
+**Como** admin, **quiero** que el sistema requiera autenticación segura para acceder a cualquier funcionalidad, **para** garantizar que solo usuarios autorizados puedan operar el ERP.
+
+**Descripción:**
+Implementar el flujo completo de autenticación usando Supabase Auth: login con email/contraseña, registro controlado (solo por invitación o por un superadmin), recuperación de contraseña, y protección de todas las rutas del SPA. Se aplican políticas de contraseñas seguras y protección contra fuerza bruta.
+
+**Criterios de aceptación:**
+- [X] El sistema muestra una pantalla de login como punto de entrada obligatorio
+- [X] Solo se puede iniciar sesión con email y contraseña registrados en Supabase Auth
+- [X] El registro de nuevos usuarios está restringido: solo un superadmin puede crear cuentas (no hay auto-registro público)
+- [X] Existe un flujo de "Olvidé mi contraseña" que envía un enlace de recuperación al email registrado
+- [X] Las contraseñas deben cumplir: mínimo 8 caracteres, al menos una mayúscula, una minúscula, un número y un carácter especial
+- [X] Se muestra un indicador de fortaleza de contraseña al crear o cambiar la contraseña
+- [X] Después de 5 intentos fallidos de login, la cuenta se bloquea temporalmente por 15 minutos (rate limiting en Supabase)
+- [X] Todas las rutas del SPA están protegidas: si no hay sesión activa, se redirige al login
+- [X] Los errores de autenticación muestran mensajes genéricos (no revelan si el email existe o no)
+- [X] Se registra en log cada intento de login (exitoso y fallido) con IP y timestamp
+
+---
+
+### NIX-037: Gestión segura de sesiones y tokens
+**Estado Scrum:** Implementada
+**Prioridad:** Alta | **Puntos:** 5 | **Sprint:** 7
+**Como** admin, **quiero** que las sesiones se gestionen de forma segura con expiración y renovación automática, **para** prevenir el secuestro de sesión y el acceso no autorizado desde dispositivos olvidados.
+
+**Descripción:**
+Configurar la gestión de tokens JWT de Supabase con tiempos de expiración adecuados, refresh token rotation, cierre de sesión seguro y detección de sesiones inactivas. El usuario puede ver sus sesiones activas y cerrarlas remotamente.
+
+**Criterios de aceptación:**
+- [x] Los access tokens tienen una duración máxima de 15 minutos (configuración de Supabase)
+- [x] Los refresh tokens se rotan en cada uso (refresh token rotation habilitado)
+- [x] Si el refresh token expira (7 días de inactividad), se fuerza un nuevo login
+- [x] Al cerrar sesión se invalidan tanto el access token como el refresh token en el servidor
+- [x] Los tokens no se almacenan en localStorage: se usa el storage seguro de Supabase (httpOnly donde sea posible)
+- [x] Si el usuario está inactivo por más de 30 minutos, se muestra un modal de advertencia con cuenta regresiva de 60 segundos antes de cerrar la sesión automáticamente
+- [x] El usuario puede cerrar sesión manualmente desde cualquier pantalla (botón visible en el header/sidebar)
+- [x] Al detectar un token inválido o expirado durante una operación, se redirige al login con un mensaje claro
+- [x] No se puede acceder a la API de Supabase sin un token válido (anon key protegida por RLS)
+
+---
+
+### NIX-038: Roles y permisos de usuario (RBAC)
+**Estado Scrum:** Pendiente
+**Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 7
+**Como** superadmin, **quiero** asignar roles con permisos diferenciados a cada usuario del sistema, **para** controlar quién puede ver, crear, editar o eliminar datos según su responsabilidad.
+
+**Descripción:**
+Se implementa un sistema de control de acceso basado en roles (RBAC) con al menos tres roles: superadmin (acceso total), admin (operaciones del día a día) y viewer (solo lectura). Los roles se almacenan en una tabla de perfiles vinculada a Supabase Auth y se verifican tanto en el frontend (UI condicional) como en el backend (RLS policies).
+
+**Criterios de aceptación:**
+- [ ] Existen al menos 3 roles: `superadmin`, `admin`, `viewer`
+- [ ] El rol `superadmin` puede: crear/editar/eliminar usuarios, cambiar roles, acceder a configuración, ver auditoría, ejecutar respaldos y todas las operaciones CRUD
+- [ ] El rol `admin` puede: crear/editar pedidos, clientes, inventario, ventas, ver reportes y dashboard, pero NO puede gestionar usuarios, cambiar roles ni ver auditoría
+- [ ] El rol `viewer` puede: ver listados, detalles, reportes y dashboard en modo solo lectura, pero NO puede crear, editar ni eliminar ningún registro
+- [ ] Los roles se almacenan en una tabla `user_profiles` vinculada al `auth.users.id` de Supabase
+- [ ] El rol se verifica en el frontend: los botones y acciones no permitidas están ocultos o deshabilitados según el rol del usuario logueado
+- [ ] El rol se verifica en el backend: las RLS policies de Supabase validan el rol antes de permitir INSERT, UPDATE o DELETE
+- [ ] El superadmin tiene una pantalla de gestión de usuarios donde puede: ver la lista de usuarios, cambiar roles y desactivar cuentas
+- [ ] Un usuario desactivado no puede iniciar sesión aunque tenga credenciales válidas
+- [ ] Un usuario no puede escalarse de rol: la asignación solo la puede hacer el superadmin desde la UI
+
+---
+
+### NIX-039: Row Level Security (RLS) en todas las tablas
+**Estado Scrum:** Pendiente
+**Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 7
+**Como** admin de seguridad, **quiero** que todas las tablas de Supabase tengan políticas de Row Level Security activas, **para** que ningún dato sea accesible sin autenticación y autorización verificada a nivel de base de datos.
+
+**Descripción:**
+Se activa RLS en todas las tablas del proyecto y se crean políticas explícitas para cada operación (SELECT, INSERT, UPDATE, DELETE) basadas en el rol del usuario autenticado. Sin políticas explícitas, el acceso queda denegado por defecto. Se verifica que la anon key no permita acceso sin autenticación.
+
+**Criterios de aceptación:**
+- [ ] RLS está habilitado en TODAS las tablas del proyecto (pedidos, clientes, inventario, perfumes, stock_movements, configuracion, ventas, proveedores, costos_adicionales, alertas, user_profiles, audit_log)
+- [ ] Cada tabla tiene políticas explícitas para SELECT, INSERT, UPDATE y DELETE según el rol
+- [ ] Sin autenticación (anon key sola) NO se puede leer, insertar, actualizar ni eliminar ningún registro
+- [ ] El rol `viewer` solo tiene políticas SELECT en las tablas de datos operativos
+- [ ] El rol `admin` tiene políticas SELECT, INSERT y UPDATE en tablas operativas, pero no DELETE en tablas críticas (clientes, pedidos)
+- [ ] El rol `superadmin` tiene acceso completo a todas las tablas incluidas audit_log y user_profiles
+- [ ] Las políticas usan `auth.uid()` y una función SQL `get_user_role()` que consulta user_profiles para verificar el rol
+- [ ] Existe una migración SQL documentada que crea todas las políticas RLS
+- [ ] Se incluye un test manual o script SQL que verifica que cada rol tiene exactamente los permisos esperados (no más, no menos)
+- [ ] La tabla `audit_log` es append-only: nadie puede hacer UPDATE ni DELETE, solo INSERT (excepto superadmin para mantenimiento)
+
+---
+
+### NIX-040: Registro de auditoría de operaciones críticas
+**Estado Scrum:** Pendiente
+**Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 7
+**Como** superadmin, **quiero** que todas las operaciones críticas queden registradas en un log de auditoría inmutable, **para** investigar incidentes, detectar actividad sospechosa y cumplir con trazabilidad.
+
+**Descripción:**
+Se crea una tabla `audit_log` que registra automáticamente (vía triggers de PostgreSQL) cada INSERT, UPDATE y DELETE en tablas sensibles. Cada registro incluye quién hizo la operación, qué cambió, cuándo y los valores antes/después. El superadmin puede consultar el log desde la UI con filtros.
+
+**Criterios de aceptación:**
+- [ ] Existe una tabla `audit_log` con: id, tabla_afectada, operacion (INSERT/UPDATE/DELETE), usuario_id, usuario_email, datos_anteriores (JSONB), datos_nuevos (JSONB), ip_address, created_at
+- [ ] Se registran automáticamente (vía triggers SQL) las operaciones en: pedidos, clientes, inventario, perfumes, stock_movements, ventas, configuracion, user_profiles
+- [ ] Los triggers capturan los valores OLD y NEW completos en formato JSONB
+- [ ] El `usuario_id` se obtiene de `auth.uid()` dentro del trigger
+- [ ] La tabla `audit_log` es append-only: las RLS impiden UPDATE y DELETE (excepto superadmin para purgado)
+- [ ] El superadmin tiene una pantalla "Auditoría" accesible desde el sidebar
+- [ ] La pantalla de auditoría muestra una tabla paginada con: fecha, usuario, operación, tabla, resumen del cambio
+- [ ] Puedo filtrar el log por: usuario, tabla, tipo de operación y rango de fechas
+- [ ] Puedo expandir un registro para ver el detalle completo (datos antes/después en formato legible)
+- [ ] Los registros de auditoría de login fallido (NIX-036) también se consultan desde esta pantalla
+- [ ] El log de auditoría se retiene por al menos 90 días
+
+---
+
+### NIX-041: Respaldo y recuperación de datos
+**Estado Scrum:** Pendiente
+**Prioridad:** Media | **Puntos:** 5 | **Sprint:** 7
+**Como** superadmin, **quiero** poder generar respaldos de los datos del sistema y restaurarlos si es necesario, **para** proteger el negocio ante pérdida de datos, errores humanos o incidentes.
+
+**Descripción:**
+El superadmin puede exportar un respaldo completo de las tablas principales en formato JSON desde la UI. También puede consultar el estado de los respaldos automáticos de Supabase (Point-in-Time Recovery). Para restauración, se provee una guía y un flujo asistido para importar datos desde un respaldo JSON.
+
+**Criterios de aceptación:**
+- [ ] El superadmin puede generar un respaldo manual desde la UI que exporta todas las tablas principales a un archivo JSON con estructura definida
+- [ ] El archivo de respaldo incluye: clientes, pedidos, inventario, perfumes, stock_movements, ventas, proveedores, costos_adicionales, configuracion
+- [ ] El respaldo incluye metadatos: fecha de generación, usuario que lo generó, versión del esquema, cantidad de registros por tabla
+- [ ] El archivo se descarga con nombre formato: `nix-backup-YYYY-MM-DD-HHmmss.json`
+- [ ] Se muestra una pantalla de "Respaldos" accesible solo para superadmin con: botón de respaldo manual, historial de respaldos generados (fecha, tamaño, usuario)
+- [ ] Se muestra información sobre el PITR (Point-in-Time Recovery) de Supabase: estado habilitado/deshabilitado y ventana de retención
+- [ ] Los datos sensibles (contraseñas, tokens) NO se incluyen en el respaldo
+- [ ] El respaldo se genera en segundo plano con indicador de progreso para no bloquear la UI
+
+---
+
+### NIX-042: Protección contra ataques comunes (XSS, inyección, CSRF)
+**Estado Scrum:** Pendiente
+**Prioridad:** Alta | **Puntos:** 5 | **Sprint:** 7
+**Como** admin de seguridad, **quiero** que el sistema esté protegido contra las vulnerabilidades web más comunes, **para** prevenir ataques que comprometan datos o sesiones de usuarios.
+
+**Descripción:**
+Se implementan capas de defensa contra las principales amenazas del OWASP Top 10 aplicables: XSS (Cross-Site Scripting), inyección SQL, CSRF (Cross-Site Request Forgery), y exposición de datos sensibles. Se configuran headers de seguridad HTTP, se sanitizan todas las entradas de usuario y se verifica que no haya secrets expuestos en el frontend.
+
+**Criterios de aceptación:**
+- [ ] Todas las entradas de usuario se sanitizan antes de renderizar: no se usa `dangerouslySetInnerHTML` en ningún componente, y si existe algún caso justificado se sanitiza con DOMPurify
+- [ ] Los inputs que aceptan URLs (links de compra, tracking, imágenes) validan formato con esquema permitido (solo `https://`) y rechazan esquemas peligrosos (`javascript:`, `data:`, `vbscript:`)
+- [ ] Las queries a Supabase usan exclusivamente el cliente JS con parámetros tipados (nunca concatenación de strings SQL ni `.rpc()` con SQL dinámico sin parametrizar)
+- [ ] Se configuran los siguientes headers de seguridad en el hosting (Vercel): `Content-Security-Policy` (restrictiva, sin `unsafe-inline` donde sea posible), `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Strict-Transport-Security`, `Referrer-Policy: strict-origin-when-cross-origin`
+- [ ] El archivo `.env` con las claves de Supabase NO está en el repositorio (verificar `.gitignore`) y las variables de entorno en Vercel están marcadas como secretas
+- [ ] La `anon key` de Supabase expuesta en el frontend solo permite operaciones protegidas por RLS (validado en NIX-039)
+- [ ] La `service_role key` de Supabase NUNCA aparece en el código frontend ni en el bundle de producción
+- [ ] Se ejecuta un análisis estático de dependencias (`npm audit`) y no hay vulnerabilidades críticas o altas sin resolver
+- [ ] Los formularios de creación/edición tienen protección contra doble envío (botón deshabilitado durante submit, debounce en la acción)
+- [ ] Los errores del sistema no exponen stack traces, rutas internas ni nombres de tablas al usuario final: se muestra un mensaje genérico y el detalle se registra en consola solo en modo desarrollo
 
 ---
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { Pedido } from '../types/database'
 
 export function usePedidos() {
@@ -17,8 +18,10 @@ export function usePedidos() {
       .from('pedidos')
       .select('*, cliente:clientes(*)')
       .order('created_at', { ascending: false })
-    if (error) setError(error.message)
-    else setPedidos(data ?? [])
+    if (error) {
+      const isAuth = await handleSupabaseError(error)
+      if (!isAuth) setError(error.message)
+    } else setPedidos(data ?? [])
     setLoading(false)
   }
 
