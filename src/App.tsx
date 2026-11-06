@@ -14,6 +14,7 @@ import { PerfumesStock } from './pages/PerfumesStock'
 import { Proveedores } from './pages/Proveedores'
 import { PerfumesVentas } from './pages/PerfumesVentas'
 import { PerfumesReportes } from './pages/PerfumesReportes'
+import { ReporteFinanciero } from './pages/ReporteFinanciero'
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="clientes" element={<Clientes />} />
           <Route path="inventario" element={<Inventario />} />
           <Route path="reportes" element={<Reportes />} />
+          <Route path="reportes/financiero" element={<ReporteFinanciero />} />
           <Route path="perfumes" element={<PerfumesDashboard />} />
           <Route path="perfumes/catalogo" element={<PerfumesCatalogo />} />
           <Route path="perfumes/precios" element={<PerfumesPrecios />} />
