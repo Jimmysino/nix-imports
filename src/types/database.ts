@@ -166,6 +166,20 @@ export interface UserProfile {
   updated_at: string
 }
 
+export type OperacionAuditoria = 'INSERT' | 'UPDATE' | 'DELETE'
+
+export interface AuditLogEntry {
+  id: string
+  tabla_afectada: string
+  operacion: OperacionAuditoria
+  usuario_id: string | null
+  usuario_email: string | null
+  datos_anteriores: Record<string, unknown> | null
+  datos_nuevos: Record<string, unknown> | null
+  ip_address: string | null
+  created_at: string
+}
+
 export interface AuthLogEntry {
   id: string
   email: string

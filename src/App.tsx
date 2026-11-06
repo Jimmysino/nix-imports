@@ -5,6 +5,7 @@ import { AdminLayout } from './layouts/AdminLayout'
 import { RoleRoute } from './components/RoleRoute'
 import { Login } from './pages/Login'
 import { Usuarios } from './pages/Usuarios'
+import { Auditoria } from './pages/Auditoria'
 import { Dashboard } from './pages/Dashboard'
 import { Pedidos } from './pages/Pedidos'
 import { PedidoDetalle } from './pages/PedidoDetalle'
@@ -54,6 +55,7 @@ export default function App() {
             <Route path="perfumes/reportes" element={<PerfumesReportes />} />
             <Route path="configuracion" element={<RoleRoute roles={['superadmin']}><Configuracion /></RoleRoute>} />
             <Route path="usuarios" element={<RoleRoute roles={['superadmin']}><Usuarios /></RoleRoute>} />
+            <Route path="auditoria" element={<RoleRoute roles={['superadmin']}><Auditoria /></RoleRoute>} />
           </Route>
         </Routes>
       </AuthProvider>

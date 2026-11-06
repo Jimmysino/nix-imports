@@ -1007,7 +1007,7 @@ Se activa RLS en todas las tablas del proyecto y se crean políticas explícitas
 ---
 
 ### NIX-040: Registro de auditoría de operaciones críticas
-**Estado Scrum:** Pendiente
+**Estado Scrum:** Implementada
 **Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 7
 **Como** superadmin, **quiero** que todas las operaciones críticas queden registradas en un log de auditoría inmutable, **para** investigar incidentes, detectar actividad sospechosa y cumplir con trazabilidad.
 
@@ -1015,17 +1015,17 @@ Se activa RLS en todas las tablas del proyecto y se crean políticas explícitas
 Se crea una tabla `audit_log` que registra automáticamente (vía triggers de PostgreSQL) cada INSERT, UPDATE y DELETE en tablas sensibles. Cada registro incluye quién hizo la operación, qué cambió, cuándo y los valores antes/después. El superadmin puede consultar el log desde la UI con filtros.
 
 **Criterios de aceptación:**
-- [ ] Existe una tabla `audit_log` con: id, tabla_afectada, operacion (INSERT/UPDATE/DELETE), usuario_id, usuario_email, datos_anteriores (JSONB), datos_nuevos (JSONB), ip_address, created_at
-- [ ] Se registran automáticamente (vía triggers SQL) las operaciones en: pedidos, clientes, inventario, perfumes, stock_movements, ventas, configuracion, user_profiles
-- [ ] Los triggers capturan los valores OLD y NEW completos en formato JSONB
-- [ ] El `usuario_id` se obtiene de `auth.uid()` dentro del trigger
-- [ ] La tabla `audit_log` es append-only: las RLS impiden UPDATE y DELETE (excepto superadmin para purgado)
-- [ ] El superadmin tiene una pantalla "Auditoría" accesible desde el sidebar
-- [ ] La pantalla de auditoría muestra una tabla paginada con: fecha, usuario, operación, tabla, resumen del cambio
-- [ ] Puedo filtrar el log por: usuario, tabla, tipo de operación y rango de fechas
-- [ ] Puedo expandir un registro para ver el detalle completo (datos antes/después en formato legible)
-- [ ] Los registros de auditoría de login fallido (NIX-036) también se consultan desde esta pantalla
-- [ ] El log de auditoría se retiene por al menos 90 días
+- [x] Existe una tabla `audit_log` con: id, tabla_afectada, operacion (INSERT/UPDATE/DELETE), usuario_id, usuario_email, datos_anteriores (JSONB), datos_nuevos (JSONB), ip_address, created_at
+- [x] Se registran automáticamente (vía triggers SQL) las operaciones en: pedidos, clientes, inventario, perfumes, stock_movements, ventas, configuracion, user_profiles
+- [x] Los triggers capturan los valores OLD y NEW completos en formato JSONB
+- [x] El `usuario_id` se obtiene de `auth.uid()` dentro del trigger
+- [x] La tabla `audit_log` es append-only: las RLS impiden UPDATE y DELETE (excepto superadmin para purgado)
+- [x] El superadmin tiene una pantalla "Auditoría" accesible desde el sidebar
+- [x] La pantalla de auditoría muestra una tabla paginada con: fecha, usuario, operación, tabla, resumen del cambio
+- [x] Puedo filtrar el log por: usuario, tabla, tipo de operación y rango de fechas
+- [x] Puedo expandir un registro para ver el detalle completo (datos antes/después en formato legible)
+- [x] Los registros de auditoría de login fallido (NIX-036) también se consultan desde esta pantalla
+- [x] El log de auditoría se retiene por al menos 90 días
 
 ---
 

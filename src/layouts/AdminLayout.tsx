@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell, Menu, X, Droplets, ChevronDown, BookOpen, DollarSign, Warehouse, Truck, ShoppingCart, FileBarChart, PieChart, GitCompare, Crown, LogOut, ShieldCheck } from 'lucide-react'
+import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell, Menu, X, Droplets, ChevronDown, BookOpen, DollarSign, Warehouse, Truck, ShoppingCart, FileBarChart, PieChart, GitCompare, Crown, LogOut, ShieldCheck, ScrollText } from 'lucide-react'
 import { BusquedaGlobal } from '../components/BusquedaGlobal'
 import { PanelAlertas } from '../components/PanelAlertas'
 import { useAlertas } from '../hooks/useAlertas'
@@ -164,6 +164,17 @@ export function AdminLayout() {
             >
               <ShieldCheck size={17} />
               Usuarios
+            </NavLink>
+            <NavLink
+              to="/auditoria"
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors min-h-[44px] ${
+                  isActive ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-600 hover:bg-gray-100'
+                }`
+              }
+            >
+              <ScrollText size={17} />
+              Auditoría
             </NavLink>
           </>
         )}
