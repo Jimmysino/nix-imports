@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Plus, ShoppingCart, Trash2, X, Eye, Ban, Check } from 'lucide-react'
+import { Plus, ShoppingCart, Trash2, X, Eye, Ban, Check, ArrowUpDown } from 'lucide-react'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
 import { Select } from '../components/ui/Select'
@@ -48,6 +48,8 @@ export function PerfumesVentas() {
   const [filtroBusqueda, setFiltroBusqueda] = useState('')
   const [filtroDesde, setFiltroDesde] = useState('')
   const [filtroHasta, setFiltroHasta] = useState('')
+  const [ordenarPor, setOrdenarPor] = useState<'fecha' | 'total'>('fecha')
+  const [ordenAsc, setOrdenAsc] = useState(false)
 
   const [perfumeSeleccionado, setPerfumeSeleccionado] = useState('')
   const [cantidadLinea, setCantidadLinea] = useState('')
@@ -190,6 +192,11 @@ export function PerfumesVentas() {
 
   const opcionesClientes = clientes.map((c) => ({ value: c.id, label: c.nombre }))
 
+  function toggleOrden(col: 'fecha' | 'total') {
+    if (ordenarPor === col) setOrdenAsc((prev) => !prev)
+    else { setOrdenarPor(col); setOrdenAsc(false) }
+  }
+
   const ventasFiltradas = ventas.filter((v) => {
     if (filtroTipo && v.tipo !== filtroTipo) return false
     if (filtroDesde && v.fecha < filtroDesde) return false
@@ -200,6 +207,10 @@ export function PerfumesVentas() {
       if (!v.codigo.toLowerCase().includes(q) && !nombreCliente.toLowerCase().includes(q)) return false
     }
     return true
+  }).sort((a, b) => {
+    const mul = ordenAsc ? 1 : -1
+    if (ordenarPor === 'fecha') return mul * a.fecha.localeCompare(b.fecha)
+    return mul * (a.total - b.total)
   })
 
   const totalFiltrado = ventasFiltradas
@@ -509,11 +520,19 @@ export function PerfumesVentas() {
                 <thead>
                   <tr className="border-b border-gray-100 bg-gray-50">
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Código</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Fecha</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+                      <button onClick={() => toggleOrden('fecha')} className="inline-flex items-center gap-1 hover:text-gray-700">
+                        Fecha <ArrowUpDown size={12} className={ordenarPor === 'fecha' ? 'text-blue-500' : ''} />
+                      </button>
+                    </th>
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Cliente</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Tipo</th>
                     <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Ítems</th>
-                    <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Total</th>
+                    <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">
+                      <button onClick={() => toggleOrden('total')} className="inline-flex items-center gap-1 hover:text-gray-700 ml-auto">
+                        Total <ArrowUpDown size={12} className={ordenarPor === 'total' ? 'text-blue-500' : ''} />
+                      </button>
+                    </th>
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Estado</th>
                     <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500"></th>
                   </tr>
