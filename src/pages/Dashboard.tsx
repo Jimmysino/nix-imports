@@ -297,11 +297,11 @@ export function Dashboard() {
                 <XAxis dataKey="label" tick={{ fontSize: 12 }} />
                 <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip
-                  formatter={(value: number, name: string) => [
-                    formatMoneda(value),
+                  formatter={(value, name) => [
+                    formatMoneda(Number(value)),
                     name === 'comisionesImport' ? 'Comisiones importaciones' : 'Ganancia perfumes',
                   ]}
-                  labelFormatter={(label: string) => `Mes: ${label}`}
+                  labelFormatter={(label) => `Mes: ${label}`}
                 />
                 <Legend
                   formatter={(value: string) =>
@@ -321,11 +321,11 @@ export function Dashboard() {
                 <XAxis dataKey="label" tick={{ fontSize: 12 }} />
                 <YAxis tick={{ fontSize: 12 }} allowDecimals={false} />
                 <Tooltip
-                  formatter={(value: number, name: string) => [
-                    value,
+                  formatter={(value, name) => [
+                    Number(value),
                     name === 'pedidosCerrados' ? 'Pedidos entregados' : 'Ventas perfumes',
                   ]}
-                  labelFormatter={(label: string) => `Mes: ${label}`}
+                  labelFormatter={(label) => `Mes: ${label}`}
                 />
                 <Legend
                   formatter={(value: string) =>

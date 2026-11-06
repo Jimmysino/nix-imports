@@ -1062,7 +1062,7 @@ Se implementan capas de defensa contra las principales amenazas del OWASP Top 10
 - [x] Los inputs que aceptan URLs (links de compra, tracking, imágenes) validan formato con esquema permitido (solo `https://`) y rechazan esquemas peligrosos (`javascript:`, `data:`, `vbscript:`)
 - [x] Las queries a Supabase usan exclusivamente el cliente JS con parámetros tipados (nunca concatenación de strings SQL ni `.rpc()` con SQL dinámico sin parametrizar)
 - [x] Se configuran los siguientes headers de seguridad en el hosting (Vercel): `Content-Security-Policy` (restrictiva, sin `unsafe-inline` donde sea posible), `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Strict-Transport-Security`, `Referrer-Policy: strict-origin-when-cross-origin`
-- [x] El archivo `.env` con las claves de Supabase NO está en el repositorio (verificar `.gitignore`) y las variables de entorno en Vercel están marcadas como secretas
+- [x] El archivo `.env` con las claves de Supabase NO está en el repositorio (verificar `.gitignore`) y las variables se configuran en Vercel (Settings → Environment Variables), nunca en el código. Las variables `VITE_*` quedan en el bundle por diseño (la anon key es pública y la protege RLS), por eso solo se usa la anon key y jamás la `service_role`
 - [x] La `anon key` de Supabase expuesta en el frontend solo permite operaciones protegidas por RLS (validado en NIX-039)
 - [x] La `service_role key` de Supabase NUNCA aparece en el código frontend ni en el bundle de producción
 - [x] Se ejecuta un análisis estático de dependencias (`npm audit`) y no hay vulnerabilidades críticas o altas sin resolver

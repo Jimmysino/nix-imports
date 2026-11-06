@@ -151,8 +151,8 @@ export function ReporteRentabilidad() {
                   <XAxis dataKey="label" tick={{ fontSize: 12 }} />
                   <YAxis tick={{ fontSize: 12 }} unit="%" />
                   <Tooltip
-                    formatter={(value: number, name: string) => [`${value}%`, name === 'margenImportaciones' ? 'Importaciones' : 'Perfumes']}
-                    labelFormatter={(label: string) => `Mes: ${label}`}
+                    formatter={(value, name) => [`${value}%`, name === 'margenImportaciones' ? 'Importaciones' : 'Perfumes']}
+                    labelFormatter={(label) => `Mes: ${label}`}
                   />
                   <Legend formatter={(value: string) => value === 'margenImportaciones' ? 'Importaciones' : 'Perfumes'} />
                   <Bar dataKey="margenImportaciones" fill="#3b82f6" radius={[4, 4, 0, 0]} />

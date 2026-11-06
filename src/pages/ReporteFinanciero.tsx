@@ -50,7 +50,7 @@ function exportarConsolidadoCSV(data: ReporteFinancieroData, desde: string, hast
   lines.push(['Codigo', 'Fecha', 'Cliente', 'Tipo', 'Total', 'Ganancia'])
   for (const v of data.perfumes.ventas) {
     const costo = (v.items ?? []).reduce((s, item) => {
-      const c = (item as Record<string, unknown>).perfume as Record<string, unknown> | undefined
+      const c = item.perfume
       return s + item.cantidad * Number(c?.costo_compra ?? 0)
     }, 0)
     lines.push([v.codigo, v.fecha, v.cliente?.nombre ?? v.cliente_nombre ?? '', v.tipo, String(v.total), String(v.total - costo)])
@@ -139,7 +139,7 @@ function exportarConsolidadoPDF(data: ReporteFinancieroData, desde: string, hast
       head: [['Codigo', 'Fecha', 'Cliente', 'Tipo', 'Total', 'Ganancia']],
       body: data.perfumes.ventas.map((v) => {
         const costo = (v.items ?? []).reduce((s, item) => {
-          const c = (item as Record<string, unknown>).perfume as Record<string, unknown> | undefined
+          const c = item.perfume
           return s + item.cantidad * Number(c?.costo_compra ?? 0)
         }, 0)
         return [v.codigo, v.fecha, v.cliente?.nombre ?? v.cliente_nombre ?? '', v.tipo, `$${formatMoneda(v.total)}`, `$${formatMoneda(v.total - costo)}`]
@@ -349,7 +349,7 @@ export function ReporteFinanciero() {
                   <tbody>
                     {data.perfumes.ventas.map((v) => {
                       const costo = (v.items ?? []).reduce((s, item) => {
-                        const c = (item as Record<string, unknown>).perfume as Record<string, unknown> | undefined
+                        const c = item.perfume
                         return s + item.cantidad * Number(c?.costo_compra ?? 0)
                       }, 0)
                       return (

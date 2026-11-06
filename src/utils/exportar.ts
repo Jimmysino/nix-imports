@@ -58,7 +58,7 @@ export function exportarPerfumesCSV(data: ReportePerfumesData, desde: string, ha
   const header = ['Código', 'Fecha', 'Cliente', 'Tipo', 'Total', 'Ganancia']
   const rows = data.ventas.map((v) => {
     const costo = (v.items ?? []).reduce((sum, item) => {
-      const c = (item as Record<string, unknown>).perfume as Record<string, unknown> | undefined
+      const c = item.perfume
       return sum + item.cantidad * (Number(c?.costo_compra ?? 0))
     }, 0)
     return [
@@ -95,7 +95,7 @@ export function exportarPerfumesPDF(data: ReportePerfumesData, desde: string, ha
     head: [['Código', 'Fecha', 'Cliente', 'Tipo', 'Total', 'Ganancia']],
     body: data.ventas.map((v) => {
       const costo = (v.items ?? []).reduce((sum, item) => {
-        const c = (item as Record<string, unknown>).perfume as Record<string, unknown> | undefined
+        const c = item.perfume
         return sum + item.cantidad * (Number(c?.costo_compra ?? 0))
       }, 0)
       return [

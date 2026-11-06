@@ -154,7 +154,7 @@ export function PerfumesReportes() {
                   <tbody>
                     {data.ventas.map((v) => {
                       const costo = (v.items ?? []).reduce((sum, item) => {
-                        const perf = (item as Record<string, unknown>).perfume as Record<string, unknown> | undefined
+                        const perf = item.perfume
                         return sum + item.cantidad * (Number(perf?.costo_compra ?? 0))
                       }, 0)
                       const ganancia = v.total - costo
