@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, useCallback } from 'react'
+import { createContext, useContext, useEffect, useRef, useState, useCallback } from 'react'
 import type { ReactNode } from 'react'
 import type { User, Session } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
@@ -64,34 +64,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [userId])
 
+  const userIdRef = useRef<string | undefined>(undefined)
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
+    userIdRef.current = userId
+  }, [userId])
+
+  useEffect(() => {
+    function aplicarSesion(s: Session | null) {
       setSession(s)
-      setUser(s?.user ?? null)
+      setUser((prev) => {
+        const siguiente = s?.user ?? null
+        if (prev && siguiente && prev.id === siguiente.id && prev.updated_at === siguiente.updated_at) return prev
+        return siguiente
+      })
       setLoading(false)
-    })
+    }
+
+    supabase.auth.getSession().then(({ data: { session: s } }) => aplicarSesion(s))
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, s) => {
-      const hadUser = !!user
-      setSession(s)
-      setUser(s?.user ?? null)
-      setLoading(false)
+      const teniaUsuario = !!userIdRef.current
+      aplicarSesion(s)
 
       if (event === 'TOKEN_REFRESHED' && !s) {
         setSessionExpired(true)
       }
 
-      if (event === 'SIGNED_OUT' && hadUser) {
+      if (event === 'SIGNED_OUT' && teniaUsuario) {
         setSessionExpired(true)
       }
     })
 
     return () => subscription.unsubscribe()
-  }, [user])
+  }, [])
 
   // Inactivity timeout
   useEffect(() => {
-    if (!user) return
+    if (!userId) return
 
     let inactivityTimer: ReturnType<typeof setTimeout>
     let warningTimer: ReturnType<typeof setTimeout>
@@ -121,7 +130,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       clearTimeout(inactivityTimer)
       clearTimeout(warningTimer)
     }
-  }, [user])
+  }, [userId])
 
   // Countdown when warning is shown
   useEffect(() => {
