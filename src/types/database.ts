@@ -154,6 +154,27 @@ export interface VentaPerfumeItem {
   created_at: string
 }
 
+export type RolUsuario = 'superadmin' | 'admin' | 'viewer'
+
+export interface UserProfile {
+  id: string
+  email: string
+  nombre: string | null
+  rol: RolUsuario
+  activo: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface AuthLogEntry {
+  id: string
+  email: string
+  evento: 'login_ok' | 'login_fallido' | 'logout' | 'password_reset'
+  ip_address: string | null
+  user_agent: string | null
+  created_at: string
+}
+
 export interface Configuracion {
   id: string
   comision_default: number

@@ -1,5 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './contexts/AuthContext'
+import { ProtectedRoute } from './components/ProtectedRoute'
 import { AdminLayout } from './layouts/AdminLayout'
+import { Login } from './pages/Login'
 import { Dashboard } from './pages/Dashboard'
 import { Pedidos } from './pages/Pedidos'
 import { PedidoDetalle } from './pages/PedidoDetalle'
@@ -21,27 +24,36 @@ import { MetricasClientes } from './pages/MetricasClientes'
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<AdminLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="pedidos" element={<Pedidos />} />
-          <Route path="pedidos/:id" element={<PedidoDetalle />} />
-          <Route path="clientes" element={<Clientes />} />
-          <Route path="inventario" element={<Inventario />} />
-          <Route path="reportes" element={<Reportes />} />
-          <Route path="reportes/financiero" element={<ReporteFinanciero />} />
-          <Route path="reportes/rentabilidad" element={<ReporteRentabilidad />} />
-          <Route path="reportes/clientes" element={<MetricasClientes />} />
-          <Route path="perfumes" element={<PerfumesDashboard />} />
-          <Route path="perfumes/catalogo" element={<PerfumesCatalogo />} />
-          <Route path="perfumes/precios" element={<PerfumesPrecios />} />
-          <Route path="perfumes/stock" element={<PerfumesStock />} />
-          <Route path="perfumes/proveedores" element={<Proveedores />} />
-          <Route path="perfumes/ventas" element={<PerfumesVentas />} />
-          <Route path="perfumes/reportes" element={<PerfumesReportes />} />
-          <Route path="configuracion" element={<Configuracion />} />
-        </Route>
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route
+            element={
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Dashboard />} />
+            <Route path="pedidos" element={<Pedidos />} />
+            <Route path="pedidos/:id" element={<PedidoDetalle />} />
+            <Route path="clientes" element={<Clientes />} />
+            <Route path="inventario" element={<Inventario />} />
+            <Route path="reportes" element={<Reportes />} />
+            <Route path="reportes/financiero" element={<ReporteFinanciero />} />
+            <Route path="reportes/rentabilidad" element={<ReporteRentabilidad />} />
+            <Route path="reportes/clientes" element={<MetricasClientes />} />
+            <Route path="perfumes" element={<PerfumesDashboard />} />
+            <Route path="perfumes/catalogo" element={<PerfumesCatalogo />} />
+            <Route path="perfumes/precios" element={<PerfumesPrecios />} />
+            <Route path="perfumes/stock" element={<PerfumesStock />} />
+            <Route path="perfumes/proveedores" element={<Proveedores />} />
+            <Route path="perfumes/ventas" element={<PerfumesVentas />} />
+            <Route path="perfumes/reportes" element={<PerfumesReportes />} />
+            <Route path="configuracion" element={<Configuracion />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   )
 }

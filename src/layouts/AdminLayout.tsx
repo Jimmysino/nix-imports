@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell, Menu, X, Droplets, ChevronDown, BookOpen, DollarSign, Warehouse, Truck, ShoppingCart, FileBarChart, PieChart, GitCompare, Crown } from 'lucide-react'
+import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell, Menu, X, Droplets, ChevronDown, BookOpen, DollarSign, Warehouse, Truck, ShoppingCart, FileBarChart, PieChart, GitCompare, Crown, LogOut } from 'lucide-react'
 import { BusquedaGlobal } from '../components/BusquedaGlobal'
 import { PanelAlertas } from '../components/PanelAlertas'
 import { useAlertas } from '../hooks/useAlertas'
+import { useAuth } from '../contexts/AuthContext'
 
 const navItems = [
   { to: '/',            label: 'Dashboard',   icon: LayoutDashboard },
@@ -34,6 +35,7 @@ export function AdminLayout() {
   const [perfumesAbierto, setPerfumesAbierto] = useState(false)
   const alertasRef = useRef<HTMLDivElement>(null)
   const { alertas, marcarRevisada } = useAlertas()
+  const { user, logout } = useAuth()
   const location = useLocation()
 
   useEffect(() => { setMenuAbierto(false) }, [location.pathname])
@@ -149,6 +151,22 @@ export function AdminLayout() {
           Configuración
         </NavLink>
       </nav>
+
+      <div className="border-t border-gray-200 p-3">
+        <div className="flex items-center gap-2 px-3 py-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-600 shrink-0">
+            {user?.email?.[0]?.toUpperCase() ?? 'U'}
+          </div>
+          <span className="flex-1 truncate text-xs text-gray-500">{user?.email}</span>
+          <button
+            onClick={logout}
+            className="rounded-lg p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors"
+            title="Cerrar sesión"
+          >
+            <LogOut size={16} />
+          </button>
+        </div>
+      </div>
     </>
   )
 
@@ -186,6 +204,14 @@ export function AdminLayout() {
               className="lg:hidden rounded-lg p-2 text-gray-500 hover:bg-gray-100 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
             >
               <Search size={18} />
+            </button>
+
+            <button
+              onClick={logout}
+              className="hidden max-lg:flex rounded-lg p-2 text-gray-500 hover:bg-red-50 hover:text-red-500 transition-colors min-h-[44px] min-w-[44px] items-center justify-center"
+              title="Cerrar sesión"
+            >
+              <LogOut size={18} />
             </button>
 
             <div ref={alertasRef} className="relative">
