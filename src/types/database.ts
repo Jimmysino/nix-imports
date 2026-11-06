@@ -123,6 +123,37 @@ export interface MovimientoPerfume {
   created_at: string
 }
 
+export type TipoVenta = 'Minorista' | 'Mayorista'
+export type EstadoVenta = 'Confirmada' | 'Anulada'
+
+export interface VentaPerfume {
+  id: string
+  codigo: string
+  tipo: TipoVenta
+  cliente_id: string | null
+  cliente_nombre: string | null
+  cliente?: Cliente
+  estado: EstadoVenta
+  total: number
+  nota: string | null
+  fecha_anulacion: string | null
+  motivo_anulacion: string | null
+  fecha: string
+  created_at: string
+  items?: VentaPerfumeItem[]
+}
+
+export interface VentaPerfumeItem {
+  id: string
+  venta_id: string
+  perfume_id: string
+  perfume?: Perfume
+  cantidad: number
+  precio_unitario: number
+  subtotal: number
+  created_at: string
+}
+
 export interface Configuracion {
   id: string
   comision_default: number
