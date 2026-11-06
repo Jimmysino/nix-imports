@@ -6,6 +6,7 @@ import { RoleRoute } from './components/RoleRoute'
 import { Login } from './pages/Login'
 import { Usuarios } from './pages/Usuarios'
 import { Auditoria } from './pages/Auditoria'
+import { Respaldos } from './pages/Respaldos'
 import { Dashboard } from './pages/Dashboard'
 import { Pedidos } from './pages/Pedidos'
 import { PedidoDetalle } from './pages/PedidoDetalle'
@@ -56,6 +57,7 @@ export default function App() {
             <Route path="configuracion" element={<RoleRoute roles={['superadmin']}><Configuracion /></RoleRoute>} />
             <Route path="usuarios" element={<RoleRoute roles={['superadmin']}><Usuarios /></RoleRoute>} />
             <Route path="auditoria" element={<RoleRoute roles={['superadmin']}><Auditoria /></RoleRoute>} />
+            <Route path="respaldos" element={<RoleRoute roles={['superadmin']}><Respaldos /></RoleRoute>} />
           </Route>
         </Routes>
       </AuthProvider>

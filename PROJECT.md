@@ -1030,7 +1030,7 @@ Se crea una tabla `audit_log` que registra automáticamente (vía triggers de Po
 ---
 
 ### NIX-041: Respaldo y recuperación de datos
-**Estado Scrum:** Pendiente
+**Estado Scrum:** Implementada (criterio PITR parcial: Supabase no expone su estado al frontend)
 **Prioridad:** Media | **Puntos:** 5 | **Sprint:** 7
 **Como** superadmin, **quiero** poder generar respaldos de los datos del sistema y restaurarlos si es necesario, **para** proteger el negocio ante pérdida de datos, errores humanos o incidentes.
 
@@ -1038,14 +1038,14 @@ Se crea una tabla `audit_log` que registra automáticamente (vía triggers de Po
 El superadmin puede exportar un respaldo completo de las tablas principales en formato JSON desde la UI. También puede consultar el estado de los respaldos automáticos de Supabase (Point-in-Time Recovery). Para restauración, se provee una guía y un flujo asistido para importar datos desde un respaldo JSON.
 
 **Criterios de aceptación:**
-- [ ] El superadmin puede generar un respaldo manual desde la UI que exporta todas las tablas principales a un archivo JSON con estructura definida
-- [ ] El archivo de respaldo incluye: clientes, pedidos, inventario, perfumes, stock_movements, ventas, proveedores, costos_adicionales, configuracion
-- [ ] El respaldo incluye metadatos: fecha de generación, usuario que lo generó, versión del esquema, cantidad de registros por tabla
-- [ ] El archivo se descarga con nombre formato: `nix-backup-YYYY-MM-DD-HHmmss.json`
-- [ ] Se muestra una pantalla de "Respaldos" accesible solo para superadmin con: botón de respaldo manual, historial de respaldos generados (fecha, tamaño, usuario)
-- [ ] Se muestra información sobre el PITR (Point-in-Time Recovery) de Supabase: estado habilitado/deshabilitado y ventana de retención
-- [ ] Los datos sensibles (contraseñas, tokens) NO se incluyen en el respaldo
-- [ ] El respaldo se genera en segundo plano con indicador de progreso para no bloquear la UI
+- [x] El superadmin puede generar un respaldo manual desde la UI que exporta todas las tablas principales a un archivo JSON con estructura definida
+- [x] El archivo de respaldo incluye: clientes, pedidos, inventario, perfumes, stock_movements, ventas, proveedores, costos_adicionales, configuracion
+- [x] El respaldo incluye metadatos: fecha de generación, usuario que lo generó, versión del esquema, cantidad de registros por tabla
+- [x] El archivo se descarga con nombre formato: `nix-backup-YYYY-MM-DD-HHmmss.json`
+- [x] Se muestra una pantalla de "Respaldos" accesible solo para superadmin con: botón de respaldo manual, historial de respaldos generados (fecha, tamaño, usuario)
+- [ ] Se muestra información sobre el PITR (Point-in-Time Recovery) de Supabase: estado habilitado/deshabilitado y ventana de retención (se muestra información y cómo verificarlo en el dashboard; el estado real no es consultable desde el frontend)
+- [x] Los datos sensibles (contraseñas, tokens) NO se incluyen en el respaldo
+- [x] El respaldo se genera en segundo plano con indicador de progreso para no bloquear la UI
 
 ---
 

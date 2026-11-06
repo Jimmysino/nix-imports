@@ -166,6 +166,17 @@ export interface UserProfile {
   updated_at: string
 }
 
+export interface RespaldoLog {
+  id: string
+  usuario_id: string
+  usuario_email: string
+  nombre_archivo: string
+  tamano_bytes: number
+  version_esquema: string
+  registros_por_tabla: Record<string, number>
+  created_at: string
+}
+
 export type OperacionAuditoria = 'INSERT' | 'UPDATE' | 'DELETE'
 
 export interface AuditLogEntry {
