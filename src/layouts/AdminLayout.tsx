@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell, Menu, X, Droplets, ChevronDown, BookOpen, DollarSign, Warehouse, Truck, ShoppingCart, FileBarChart, PieChart } from 'lucide-react'
+import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell, Menu, X, Droplets, ChevronDown, BookOpen, DollarSign, Warehouse, Truck, ShoppingCart, FileBarChart, PieChart, GitCompare } from 'lucide-react'
 import { BusquedaGlobal } from '../components/BusquedaGlobal'
 import { PanelAlertas } from '../components/PanelAlertas'
 import { useAlertas } from '../hooks/useAlertas'
@@ -12,6 +12,7 @@ const navItems = [
   { to: '/inventario',  label: 'Inventario',  icon: Boxes },
   { to: '/reportes',    label: 'Reportes',    icon: BarChart3 },
   { to: '/reportes/financiero', label: 'Financiero', icon: PieChart },
+  { to: '/reportes/rentabilidad', label: 'Rentabilidad', icon: GitCompare },
   { to: '/configuracion', label: 'Configuración', icon: Settings },
 ]
 
