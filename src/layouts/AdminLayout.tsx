@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell, Menu, X, Droplets, ChevronDown, BookOpen, DollarSign, Warehouse, Truck, ShoppingCart } from 'lucide-react'
+import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell, Menu, X, Droplets, ChevronDown, BookOpen, DollarSign, Warehouse, Truck, ShoppingCart, FileBarChart } from 'lucide-react'
 import { BusquedaGlobal } from '../components/BusquedaGlobal'
 import { PanelAlertas } from '../components/PanelAlertas'
 import { useAlertas } from '../hooks/useAlertas'
@@ -21,6 +21,7 @@ const perfumesSubItems = [
   { to: '/perfumes/stock',      label: 'Stock',       icon: Warehouse },
   { to: '/perfumes/proveedores', label: 'Proveedores', icon: Truck },
   { to: '/perfumes/ventas',      label: 'Ventas',      icon: ShoppingCart },
+  { to: '/perfumes/reportes',    label: 'Reportes',    icon: FileBarChart },
 ]
 
 export function AdminLayout() {
