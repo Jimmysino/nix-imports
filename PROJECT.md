@@ -963,7 +963,7 @@ Configurar la gestión de tokens JWT de Supabase con tiempos de expiración adec
 ---
 
 ### NIX-038: Roles y permisos de usuario (RBAC)
-**Estado Scrum:** Pendiente
+**Estado Scrum:** En progreso (RLS de tablas operativas se completa en NIX-039)
 **Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 7
 **Como** superadmin, **quiero** asignar roles con permisos diferenciados a cada usuario del sistema, **para** controlar quién puede ver, crear, editar o eliminar datos según su responsabilidad.
 
@@ -971,16 +971,16 @@ Configurar la gestión de tokens JWT de Supabase con tiempos de expiración adec
 Se implementa un sistema de control de acceso basado en roles (RBAC) con al menos tres roles: superadmin (acceso total), admin (operaciones del día a día) y viewer (solo lectura). Los roles se almacenan en una tabla de perfiles vinculada a Supabase Auth y se verifican tanto en el frontend (UI condicional) como en el backend (RLS policies).
 
 **Criterios de aceptación:**
-- [ ] Existen al menos 3 roles: `superadmin`, `admin`, `viewer`
-- [ ] El rol `superadmin` puede: crear/editar/eliminar usuarios, cambiar roles, acceder a configuración, ver auditoría, ejecutar respaldos y todas las operaciones CRUD
-- [ ] El rol `admin` puede: crear/editar pedidos, clientes, inventario, ventas, ver reportes y dashboard, pero NO puede gestionar usuarios, cambiar roles ni ver auditoría
-- [ ] El rol `viewer` puede: ver listados, detalles, reportes y dashboard en modo solo lectura, pero NO puede crear, editar ni eliminar ningún registro
-- [ ] Los roles se almacenan en una tabla `user_profiles` vinculada al `auth.users.id` de Supabase
-- [ ] El rol se verifica en el frontend: los botones y acciones no permitidas están ocultos o deshabilitados según el rol del usuario logueado
+- [x] Existen al menos 3 roles: `superadmin`, `admin`, `viewer`
+- [x] El rol `superadmin` puede: crear/editar/eliminar usuarios, cambiar roles, acceder a configuración, ver auditoría, ejecutar respaldos y todas las operaciones CRUD
+- [x] El rol `admin` puede: crear/editar pedidos, clientes, inventario, ventas, ver reportes y dashboard, pero NO puede gestionar usuarios, cambiar roles ni ver auditoría
+- [x] El rol `viewer` puede: ver listados, detalles, reportes y dashboard en modo solo lectura, pero NO puede crear, editar ni eliminar ningún registro
+- [x] Los roles se almacenan en una tabla `user_profiles` vinculada al `auth.users.id` de Supabase
+- [x] El rol se verifica en el frontend: los botones y acciones no permitidas están ocultos o deshabilitados según el rol del usuario logueado
 - [ ] El rol se verifica en el backend: las RLS policies de Supabase validan el rol antes de permitir INSERT, UPDATE o DELETE
-- [ ] El superadmin tiene una pantalla de gestión de usuarios donde puede: ver la lista de usuarios, cambiar roles y desactivar cuentas
-- [ ] Un usuario desactivado no puede iniciar sesión aunque tenga credenciales válidas
-- [ ] Un usuario no puede escalarse de rol: la asignación solo la puede hacer el superadmin desde la UI
+- [x] El superadmin tiene una pantalla de gestión de usuarios donde puede: ver la lista de usuarios, cambiar roles y desactivar cuentas
+- [x] Un usuario desactivado no puede iniciar sesión aunque tenga credenciales válidas
+- [x] Un usuario no puede escalarse de rol: la asignación solo la puede hacer el superadmin desde la UI
 
 ---
 

@@ -2,11 +2,14 @@ import { createContext, useContext, useEffect, useState, useCallback } from 'rea
 import type { ReactNode } from 'react'
 import type { User, Session } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
+import type { RolUsuario } from '../types/database'
 
 interface AuthContextType {
   user: User | null
   session: Session | null
+  rol: RolUsuario | null
   loading: boolean
+  accessDenied: boolean
   sessionExpired: boolean
   login: (email: string, password: string) => Promise<{ error: string | null }>
   logout: () => Promise<void>
@@ -26,6 +29,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [showWarning, setShowWarning] = useState(false)
   const [countdown, setCountdown] = useState(60)
   const [sessionExpired, setSessionExpired] = useState(false)
+  const [rol, setRol] = useState<RolUsuario | null>(null)
+  const [perfilCargando, setPerfilCargando] = useState(false)
+  const [accessDenied, setAccessDenied] = useState(false)
+  const userId = user?.id
+
+  useEffect(() => {
+    if (!userId) {
+      setRol(null)
+      setPerfilCargando(false)
+      return
+    }
+    let activo = true
+    setPerfilCargando(true)
+    supabase
+      .from('user_profiles')
+      .select('rol, activo')
+      .eq('id', userId)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (!activo) return
+        if (error || !data || !data.activo) {
+          setRol(null)
+          setAccessDenied(true)
+          void supabase.auth.signOut({ scope: 'local' })
+        } else {
+          setRol(data.rol as RolUsuario)
+          setAccessDenied(false)
+        }
+        setPerfilCargando(false)
+      })
+    return () => {
+      activo = false
+    }
+  }, [userId])
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session: s } }) => {
@@ -113,6 +150,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return { error: 'Credenciales incorrectas. Verifica tu email y contraseña.' }
     }
     setSessionExpired(false)
+    setAccessDenied(false)
     await logAuthEvent(email, 'login_ok')
     return { error: null }
   }, [logAuthEvent])
@@ -138,7 +176,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const clearSessionExpired = useCallback(() => setSessionExpired(false), [])
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, sessionExpired, login, logout, resetPassword, clearSessionExpired }}>
+    <AuthContext.Provider value={{ user, session, rol, loading: loading || perfilCargando, accessDenied, sessionExpired, login, logout, resetPassword, clearSessionExpired }}>
       {children}
       {showWarning && user && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50">

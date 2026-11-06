@@ -8,6 +8,7 @@ import { Textarea } from '../components/ui/Textarea'
 import { useVentasPerfumes } from '../hooks/useVentasPerfumes'
 import { useStockPerfumes } from '../hooks/useStockPerfumes'
 import { useClientes } from '../hooks/useClientes'
+import { usePermisos } from '../hooks/usePermisos'
 import type { TipoVenta, VentaPerfume } from '../types/database'
 
 function formatMoneda(valor: number): string {
@@ -27,6 +28,7 @@ interface LineaVenta {
 }
 
 export function PerfumesVentas() {
+  const { puedeEscribir } = usePermisos()
   const { ventas, loading, error: errorCarga, crearVenta, anularVenta } = useVentasPerfumes()
   const { stocks, perfumes } = useStockPerfumes()
   const { clientes } = useClientes()
@@ -224,7 +226,7 @@ export function PerfumesVentas() {
           <h1 className="text-xl font-bold text-gray-900">Ventas de Perfumes</h1>
           <p className="mt-0.5 text-sm text-gray-500">Registro y seguimiento de ventas</p>
         </div>
-        <Button onClick={abrirForm} className="gap-2"><ShoppingCart size={16} /> Nueva venta</Button>
+        {puedeEscribir && <Button onClick={abrirForm} className="gap-2"><ShoppingCart size={16} /> Nueva venta</Button>}
       </div>
 
       {/* Formulario nueva venta */}
@@ -468,7 +470,7 @@ export function PerfumesVentas() {
               </div>
             )}
 
-            {detalleVenta.estado === 'Confirmada' && (
+            {detalleVenta.estado === 'Confirmada' && puedeEscribir && (
               <div className="flex justify-end">
                 <Button
                   variant="danger"

@@ -7,6 +7,7 @@ import { Select } from '../components/ui/Select'
 import { Textarea } from '../components/ui/Textarea'
 import { useStockPerfumes } from '../hooks/useStockPerfumes'
 import { useProveedores } from '../hooks/useProveedores'
+import { usePermisos } from '../hooks/usePermisos'
 import type { TipoMovimientoPerfume } from '../types/database'
 
 const tiposSalida = [
@@ -21,6 +22,7 @@ function formatMoneda(valor: number): string {
 }
 
 export function PerfumesStock() {
+  const { puedeEscribir } = usePermisos()
   const { stocks, stockMinimo, loading, error: errorCarga, registrarMovimiento, movimientosDePerfume, perfumes } = useStockPerfumes()
   const { proveedores } = useProveedores()
   const [mostrarForm, setMostrarForm] = useState<'entrada' | 'salida' | null>(null)
@@ -89,10 +91,12 @@ export function PerfumesStock() {
           <h1 className="text-xl font-bold text-gray-900">Stock de Perfumes</h1>
           <p className="mt-0.5 text-sm text-gray-500">Entradas, salidas y disponibilidad</p>
         </div>
-        <div className="flex gap-2">
-          <Button variant="secondary" onClick={abrirEntrada} className="gap-2"><ArrowDownCircle size={16} /> Entrada</Button>
-          <Button onClick={abrirSalida} className="gap-2"><ArrowUpCircle size={16} /> Salida</Button>
-        </div>
+        {puedeEscribir && (
+          <div className="flex gap-2">
+            <Button variant="secondary" onClick={abrirEntrada} className="gap-2"><ArrowDownCircle size={16} /> Entrada</Button>
+            <Button onClick={abrirSalida} className="gap-2"><ArrowUpCircle size={16} /> Salida</Button>
+          </div>
+        )}
       </div>
 
       <div className="mb-6 grid gap-4 sm:grid-cols-3">

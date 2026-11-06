@@ -6,6 +6,7 @@ import { Button } from './ui/Button'
 import { Input } from './ui/Input'
 import { Textarea } from './ui/Textarea'
 import { formatUSD } from '../utils/cotizacion'
+import { usePermisos } from '../hooks/usePermisos'
 
 interface CostosAdicionalesProps {
   costos: CostoAdicional[]
@@ -14,6 +15,7 @@ interface CostosAdicionalesProps {
 }
 
 export function CostosAdicionales({ costos, onAgregar, onEliminar }: CostosAdicionalesProps) {
+  const { puedeEscribir } = usePermisos()
   const [concepto, setConcepto] = useState('')
   const [monto, setMonto] = useState('')
   const [notas, setNotas] = useState('')
@@ -53,16 +55,18 @@ export function CostosAdicionales({ costos, onAgregar, onEliminar }: CostosAdici
   return (
     <div className="space-y-4">
       {error && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>}
-      <form onSubmit={guardar} className="grid gap-3 md:grid-cols-[1fr_140px]">
-        <Input label="Concepto" required value={concepto} onChange={(event) => setConcepto(event.target.value)} placeholder="Seguro, almacenamiento, despacho..." />
-        <Input label="Monto USD" type="number" min="0.01" step="0.01" required value={monto} onChange={(event) => setMonto(event.target.value)} />
-        <div className="md:col-span-2">
-          <Textarea label="Notas (opcional)" value={notas} onChange={(event) => setNotas(event.target.value)} />
-        </div>
-        <div className="md:col-span-2 flex justify-end">
-          <Button type="submit" loading={guardando}>Agregar costo</Button>
-        </div>
-      </form>
+      {puedeEscribir && (
+        <form onSubmit={guardar} className="grid gap-3 md:grid-cols-[1fr_140px]">
+          <Input label="Concepto" required value={concepto} onChange={(event) => setConcepto(event.target.value)} placeholder="Seguro, almacenamiento, despacho..." />
+          <Input label="Monto USD" type="number" min="0.01" step="0.01" required value={monto} onChange={(event) => setMonto(event.target.value)} />
+          <div className="md:col-span-2">
+            <Textarea label="Notas (opcional)" value={notas} onChange={(event) => setNotas(event.target.value)} />
+          </div>
+          <div className="md:col-span-2 flex justify-end">
+            <Button type="submit" loading={guardando}>Agregar costo</Button>
+          </div>
+        </form>
+      )}
 
       {costos.length > 0 && (
         <div className="space-y-2">
@@ -74,9 +78,11 @@ export function CostosAdicionales({ costos, onAgregar, onEliminar }: CostosAdici
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-sm font-semibold text-gray-700">{formatUSD(costo.monto_usd)}</span>
-                <button type="button" disabled={eliminando === costo.id} onClick={() => eliminar(costo)} className="text-red-400 hover:text-red-600 disabled:opacity-50" aria-label={`Eliminar ${costo.concepto}`}>
-                  <Trash2 size={16} />
-                </button>
+                {puedeEscribir && (
+                  <button type="button" disabled={eliminando === costo.id} onClick={() => eliminar(costo)} className="text-red-400 hover:text-red-600 disabled:opacity-50" aria-label={`Eliminar ${costo.concepto}`}>
+                    <Trash2 size={16} />
+                  </button>
+                )}
               </div>
             </div>
           ))}

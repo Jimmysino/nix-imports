@@ -6,7 +6,7 @@ import { Input } from '../components/ui/Input'
 import { Eye, EyeOff, LogIn, KeyRound } from 'lucide-react'
 
 export function Login() {
-  const { user, loading, login, resetPassword, sessionExpired, clearSessionExpired } = useAuth()
+  const { user, loading, login, resetPassword, sessionExpired, accessDenied, clearSessionExpired } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -67,7 +67,13 @@ export function Login() {
           <p className="mt-1 text-sm text-gray-500">Panel de administración</p>
         </div>
 
-        {sessionExpired && (
+        {accessDenied && (
+          <div className="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
+            Tu cuenta no tiene acceso al sistema. Contacta al administrador.
+          </div>
+        )}
+
+        {sessionExpired && !accessDenied && (
           <div className="mb-4 rounded-lg bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-700">
             Tu sesión ha expirado. Por favor, inicia sesión nuevamente.
           </div>

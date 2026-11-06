@@ -6,6 +6,7 @@ import { Input } from '../components/ui/Input'
 import { Select } from '../components/ui/Select'
 import { Textarea } from '../components/ui/Textarea'
 import { usePerfumes } from '../hooks/usePerfumes'
+import { usePermisos } from '../hooks/usePermisos'
 import type { GeneroPerfume, Perfume } from '../types/database'
 
 const opcionesGenero = [
@@ -38,6 +39,7 @@ const formVacio: FormData = {
 }
 
 export function PerfumesCatalogo() {
+  const { puedeEscribir } = usePermisos()
   const { perfumes, loading, error: errorCarga, crear, actualizar, eliminar } = usePerfumes()
   const [mostrarForm, setMostrarForm] = useState(false)
   const [editandoId, setEditandoId] = useState<string | null>(null)
@@ -128,7 +130,7 @@ export function PerfumesCatalogo() {
           <h1 className="text-xl font-bold text-gray-900">Catálogo de Perfumes</h1>
           <p className="mt-0.5 text-sm text-gray-500">Gestión de productos del catálogo</p>
         </div>
-        <Button onClick={abrirCrear} className="gap-2"><Plus size={16} /> Nuevo perfume</Button>
+        {puedeEscribir && <Button onClick={abrirCrear} className="gap-2"><Plus size={16} /> Nuevo perfume</Button>}
       </div>
 
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
@@ -187,7 +189,7 @@ export function PerfumesCatalogo() {
           <div className="py-16 text-center">
             <p className="text-sm text-gray-400">Todavía no hay perfumes en el catálogo</p>
             <p className="text-xs text-gray-300 mt-1 mb-3">Registra el primero con el botón "Nuevo perfume"</p>
-            <Button size="sm" onClick={abrirCrear}><Plus size={14} /> Nuevo perfume</Button>
+            {puedeEscribir && <Button size="sm" onClick={abrirCrear}><Plus size={14} /> Nuevo perfume</Button>}
           </div>
         ) : filtrados.length === 0 ? (
           <div className="py-16 text-center text-sm text-gray-400">No se encontraron perfumes con esos filtros</div>
@@ -233,7 +235,7 @@ export function PerfumesCatalogo() {
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <div className="flex items-center justify-end gap-1">
+                      {puedeEscribir && <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => abrirEditar(p)}
                           className="rounded p-1.5 text-gray-400 hover:bg-gray-100 hover:text-blue-600"
@@ -249,7 +251,7 @@ export function PerfumesCatalogo() {
                         >
                           <Trash2 size={15} />
                         </button>
-                      </div>
+                      </div>}
                     </td>
                   </tr>
                 ))}

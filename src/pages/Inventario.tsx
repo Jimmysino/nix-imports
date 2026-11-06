@@ -6,9 +6,11 @@ import { Input } from '../components/ui/Input'
 import { Select } from '../components/ui/Select'
 import { Textarea } from '../components/ui/Textarea'
 import { supabase } from '../lib/supabase'
+import { usePermisos } from '../hooks/usePermisos'
 import type { InventarioItem, Pedido } from '../types/database'
 
 export function Inventario() {
+  const { puedeEscribir } = usePermisos()
   const [items, setItems] = useState<InventarioItem[]>([])
   const [pedidos, setPedidos] = useState<Pedido[]>([])
   const [loading, setLoading] = useState(true)
@@ -109,7 +111,7 @@ export function Inventario() {
           <h1 className="text-xl font-bold text-gray-900">Inventario</h1>
           <p className="mt-0.5 text-sm text-gray-500">Inventario actual y historial de entregas</p>
         </div>
-        <Button onClick={() => setMostrarForm(true)} className="gap-2"><Plus size={16} /> Registrar producto</Button>
+        {puedeEscribir && <Button onClick={() => setMostrarForm(true)} className="gap-2"><Plus size={16} /> Registrar producto</Button>}
       </div>
 
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
@@ -183,7 +185,7 @@ export function Inventario() {
           <div className="py-16 text-center">
             <p className="text-sm text-gray-400">Todavia no hay productos registrados</p>
             <p className="text-xs text-gray-300 mt-1 mb-3">Registra el primero con el boton "Registrar producto"</p>
-            <Button size="sm" onClick={() => setMostrarForm(true)}><Plus size={14} /> Registrar producto</Button>
+            {puedeEscribir && <Button size="sm" onClick={() => setMostrarForm(true)}><Plus size={14} /> Registrar producto</Button>}
           </div>
         ) : itemsFiltrados.length === 0 ? (
           <div className="py-16 text-center text-sm text-gray-400">No se encontraron productos con esos filtros</div>
@@ -206,7 +208,9 @@ export function Inventario() {
                 <td className="px-4 py-3 text-gray-500">{new Date(item.fecha_recepcion).toLocaleDateString('es-AR')}</td>
                 <td className="px-4 py-3 text-gray-500">{item.fecha_entrega ? new Date(item.fecha_entrega).toLocaleDateString('es-AR') : '—'}</td>
                 <td className="px-4 py-3">
-                  {item.estado === 'En almacén' ? (
+                  {item.estado === 'En almacén' && !puedeEscribir ? (
+                    <span className="rounded-full bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700">En almacén</span>
+                  ) : item.estado === 'En almacén' ? (
                     <Button
                       type="button"
                       variant="secondary"

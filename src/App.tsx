@@ -2,7 +2,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { AdminLayout } from './layouts/AdminLayout'
+import { RoleRoute } from './components/RoleRoute'
 import { Login } from './pages/Login'
+import { Usuarios } from './pages/Usuarios'
 import { Dashboard } from './pages/Dashboard'
 import { Pedidos } from './pages/Pedidos'
 import { PedidoDetalle } from './pages/PedidoDetalle'
@@ -50,7 +52,8 @@ export default function App() {
             <Route path="perfumes/proveedores" element={<Proveedores />} />
             <Route path="perfumes/ventas" element={<PerfumesVentas />} />
             <Route path="perfumes/reportes" element={<PerfumesReportes />} />
-            <Route path="configuracion" element={<Configuracion />} />
+            <Route path="configuracion" element={<RoleRoute roles={['superadmin']}><Configuracion /></RoleRoute>} />
+            <Route path="usuarios" element={<RoleRoute roles={['superadmin']}><Usuarios /></RoleRoute>} />
           </Route>
         </Routes>
       </AuthProvider>

@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell, Menu, X, Droplets, ChevronDown, BookOpen, DollarSign, Warehouse, Truck, ShoppingCart, FileBarChart, PieChart, GitCompare, Crown, LogOut } from 'lucide-react'
+import { Package, Users, LayoutDashboard, Settings, Boxes, BarChart3, Search, Bell, Menu, X, Droplets, ChevronDown, BookOpen, DollarSign, Warehouse, Truck, ShoppingCart, FileBarChart, PieChart, GitCompare, Crown, LogOut, ShieldCheck } from 'lucide-react'
 import { BusquedaGlobal } from '../components/BusquedaGlobal'
 import { PanelAlertas } from '../components/PanelAlertas'
 import { useAlertas } from '../hooks/useAlertas'
 import { useAuth } from '../contexts/AuthContext'
+import { usePermisos } from '../hooks/usePermisos'
 
 const navItems = [
   { to: '/',            label: 'Dashboard',   icon: LayoutDashboard },
@@ -36,6 +37,7 @@ export function AdminLayout() {
   const alertasRef = useRef<HTMLDivElement>(null)
   const { alertas, marcarRevisada } = useAlertas()
   const { user, logout } = useAuth()
+  const { esSuperadmin } = usePermisos()
   const location = useLocation()
 
   useEffect(() => { setMenuAbierto(false) }, [location.pathname])
@@ -139,17 +141,32 @@ export function AdminLayout() {
           </div>
         )}
 
-        <NavLink
-          to="/configuracion"
-          className={({ isActive }) =>
-            `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors min-h-[44px] ${
-              isActive ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-600 hover:bg-gray-100'
-            }`
-          }
-        >
-          <Settings size={17} />
-          Configuración
-        </NavLink>
+        {esSuperadmin && (
+          <>
+            <NavLink
+              to="/configuracion"
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors min-h-[44px] ${
+                  isActive ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-600 hover:bg-gray-100'
+                }`
+              }
+            >
+              <Settings size={17} />
+              Configuración
+            </NavLink>
+            <NavLink
+              to="/usuarios"
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors min-h-[44px] ${
+                  isActive ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-600 hover:bg-gray-100'
+                }`
+              }
+            >
+              <ShieldCheck size={17} />
+              Usuarios
+            </NavLink>
+          </>
+        )}
       </nav>
 
       <div className="border-t border-gray-200 p-3">

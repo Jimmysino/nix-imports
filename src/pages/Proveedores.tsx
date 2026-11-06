@@ -7,6 +7,7 @@ import { Input } from '../components/ui/Input'
 import { Textarea } from '../components/ui/Textarea'
 import { useProveedores } from '../hooks/useProveedores'
 import { useStockPerfumes } from '../hooks/useStockPerfumes'
+import { usePermisos } from '../hooks/usePermisos'
 import { supabase } from '../lib/supabase'
 import type { Proveedor } from '../types/database'
 
@@ -21,6 +22,7 @@ interface FormData {
 const formVacio: FormData = { nombre: '', telefono: '', email: '', direccion: '', notas: '' }
 
 export function Proveedores() {
+  const { puedeEscribir } = usePermisos()
   const { proveedores, loading, error: errorCarga, crear, actualizar, eliminar } = useProveedores()
   const [mostrarForm, setMostrarForm] = useState(false)
   const [editandoId, setEditandoId] = useState<string | null>(null)
@@ -106,7 +108,7 @@ export function Proveedores() {
           <h1 className="text-xl font-bold text-gray-900">Proveedores</h1>
           <p className="mt-0.5 text-sm text-gray-500">Directorio de proveedores de perfumes</p>
         </div>
-        <Button onClick={abrirCrear} className="gap-2"><Plus size={16} /> Nuevo proveedor</Button>
+        {puedeEscribir && <Button onClick={abrirCrear} className="gap-2"><Plus size={16} /> Nuevo proveedor</Button>}
       </div>
 
       {mostrarForm && (
@@ -213,7 +215,7 @@ export function Proveedores() {
           <div className="py-16 text-center">
             <p className="text-sm text-gray-400">No hay proveedores registrados</p>
             <p className="text-xs text-gray-300 mt-1 mb-3">Registra el primero con el botón "Nuevo proveedor"</p>
-            <Button size="sm" onClick={abrirCrear}><Plus size={14} /> Nuevo proveedor</Button>
+            {puedeEscribir && <Button size="sm" onClick={abrirCrear}><Plus size={14} /> Nuevo proveedor</Button>}
           </div>
         ) : filtrados.length === 0 ? (
           <div className="py-16 text-center text-sm text-gray-400">No se encontraron proveedores</div>
@@ -236,8 +238,8 @@ export function Proveedores() {
                   <td className="px-4 py-3 text-right">
                     <div className="flex items-center justify-end gap-1">
                       <button onClick={() => { setHistorialId(historialId === p.id ? null : p.id); setFiltroDesde(''); setFiltroHasta('') }} className="rounded p-1.5 text-gray-400 hover:bg-gray-100 hover:text-blue-600" title="Ver historial"><History size={15} /></button>
-                      <button onClick={() => abrirEditar(p)} className="rounded p-1.5 text-gray-400 hover:bg-gray-100 hover:text-blue-600" title="Editar"><Pencil size={15} /></button>
-                      <button onClick={() => handleEliminar(p.id)} disabled={eliminandoId === p.id} className="rounded p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-600 disabled:opacity-50" title="Eliminar"><Trash2 size={15} /></button>
+                      {puedeEscribir && <button onClick={() => abrirEditar(p)} className="rounded p-1.5 text-gray-400 hover:bg-gray-100 hover:text-blue-600" title="Editar"><Pencil size={15} /></button>}
+                      {puedeEscribir && <button onClick={() => handleEliminar(p.id)} disabled={eliminandoId === p.id} className="rounded p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-600 disabled:opacity-50" title="Eliminar"><Trash2 size={15} /></button>}
                     </div>
                   </td>
                 </tr>

@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft, ExternalLink } from 'lucide-react'
 import { usePedido } from '../hooks/usePedido'
 import { useConfiguracion } from '../hooks/useConfiguracion'
+import { usePermisos } from '../hooks/usePermisos'
 import { Badge } from '../components/ui/Badge'
 import { CotizacionForm } from '../components/CotizacionForm'
 import { CambiarEstado } from '../components/CambiarEstado'
@@ -12,6 +13,7 @@ import { formatUSD } from '../utils/cotizacion'
 export function PedidoDetalle() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const { puedeEscribir } = usePermisos()
   const { pedido, historial, costosAdicionales, loading, error, actualizarCotizacion, actualizarCompra, cambiarEstado, agregarCostoAdicional, eliminarCostoAdicional } = usePedido(id!)
   const { config } = useConfiguracion()
 
@@ -46,10 +48,12 @@ export function PedidoDetalle() {
       </div>
 
       {/* Cambiar estado */}
-      <div className="rounded-xl border border-gray-200 bg-white p-5">
-        <h2 className="font-semibold text-gray-700 mb-4">Estado del pedido</h2>
-        <CambiarEstado estadoActual={pedido.estado} onCambiar={cambiarEstado} />
-      </div>
+      {puedeEscribir && (
+        <div className="rounded-xl border border-gray-200 bg-white p-5">
+          <h2 className="font-semibold text-gray-700 mb-4">Estado del pedido</h2>
+          <CambiarEstado estadoActual={pedido.estado} onCambiar={cambiarEstado} />
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Columna izquierda: info del pedido */}
@@ -132,7 +136,7 @@ export function PedidoDetalle() {
               <CotizacionForm
                 comisionDefault={config.comision_default}
                 tipoCambioDefault={config.tipo_cambio}
-                soloLectura={!puedeEditar}
+                soloLectura={!puedeEditar || !puedeEscribir}
                 valoresIniciales={
                   pedido.precio_usd !== null
                     ? {

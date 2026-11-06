@@ -6,6 +6,7 @@ import { Badge } from '../components/ui/Badge'
 import { NuevoPedidoForm } from '../components/NuevoPedidoForm'
 import { usePedidos } from '../hooks/usePedidos'
 import { useClientes } from '../hooks/useClientes'
+import { usePermisos } from '../hooks/usePermisos'
 import { FLUJO_ESTADOS } from '../utils/estados'
 import { formatUSD } from '../utils/cotizacion'
 import type { CategoriaTech, EstadoPedido, Pedido } from '../types/database'
@@ -14,6 +15,7 @@ type OrdenPedidos = 'fecha-desc' | 'fecha-asc' | 'estado-asc'
 
 export function Pedidos() {
   const navigate = useNavigate()
+  const { puedeEscribir } = usePermisos()
   const [mostrarForm, setMostrarForm] = useState(false)
   const [exito, setExito] = useState<string | null>(null)
   const [errorForm, setErrorForm] = useState<string | null>(null)
@@ -108,10 +110,12 @@ export function Pedidos() {
             {pedidosFiltrados.length} de {pedidos.length} pedido{pedidos.length !== 1 ? 's' : ''}
           </p>
         </div>
-        <Button onClick={() => { setMostrarForm(true); setErrorForm(null) }} className="gap-2">
-          <Plus size={16} />
-          Nuevo pedido
-        </Button>
+        {puedeEscribir && (
+          <Button onClick={() => { setMostrarForm(true); setErrorForm(null) }} className="gap-2">
+            <Plus size={16} />
+            Nuevo pedido
+          </Button>
+        )}
       </div>
 
       {/* Toast éxito */}
@@ -223,9 +227,11 @@ export function Pedidos() {
           <div className="py-16 text-center">
             <p className="text-gray-400 text-sm">No hay pedidos todavía</p>
             <p className="text-gray-300 text-xs mt-1 mb-3">Creá el primero con el botón "Nuevo pedido"</p>
-            <Button size="sm" onClick={() => { setMostrarForm(true); setErrorForm(null) }}>
-              <Plus size={14} /> Crear pedido
-            </Button>
+            {puedeEscribir && (
+              <Button size="sm" onClick={() => { setMostrarForm(true); setErrorForm(null) }}>
+                <Plus size={14} /> Crear pedido
+              </Button>
+            )}
           </div>
         ) : pedidosFiltrados.length === 0 ? (
           <div className="py-16 text-center">

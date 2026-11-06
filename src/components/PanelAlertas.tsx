@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { AlertTriangle, Check, X } from 'lucide-react'
 import type { Alerta } from '../hooks/useAlertas'
 import { Badge } from './ui/Badge'
+import { usePermisos } from '../hooks/usePermisos'
 
 interface Props {
   alertas: Alerta[]
@@ -11,6 +12,7 @@ interface Props {
 
 export function PanelAlertas({ alertas, onRevisar, onCerrar }: Props) {
   const navigate = useNavigate()
+  const { puedeEscribir } = usePermisos()
 
   return (
     <div className="absolute right-0 top-full mt-2 w-[calc(100vw-2rem)] sm:w-96 max-w-96 rounded-xl border border-gray-200 bg-white shadow-xl z-50">
@@ -44,13 +46,15 @@ export function PanelAlertas({ alertas, onRevisar, onCerrar }: Props) {
                     <span className="text-xs text-gray-400">{pedido.cliente?.nombre ?? ''}</span>
                   </div>
                 </button>
-                <button
-                  onClick={() => onRevisar(pedido.id)}
-                  title="Marcar como revisada"
-                  className="shrink-0 rounded p-1 text-gray-300 hover:bg-gray-100 hover:text-green-600"
-                >
-                  <Check size={16} />
-                </button>
+                {puedeEscribir && (
+                  <button
+                    onClick={() => onRevisar(pedido.id)}
+                    title="Marcar como revisada"
+                    className="shrink-0 rounded p-1 text-gray-300 hover:bg-gray-100 hover:text-green-600"
+                  >
+                    <Check size={16} />
+                  </button>
+                )}
               </div>
             ))}
           </div>

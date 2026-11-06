@@ -4,6 +4,7 @@ import { Eye, Pencil, Plus, Search, X } from 'lucide-react'
 import { ClienteForm } from '../components/ClienteForm'
 import { Button } from '../components/ui/Button'
 import { useClientes } from '../hooks/useClientes'
+import { usePermisos } from '../hooks/usePermisos'
 import { supabase } from '../lib/supabase'
 import { Badge } from '../components/ui/Badge'
 import { formatUSD } from '../utils/cotizacion'
@@ -11,6 +12,7 @@ import type { Cliente, Pedido } from '../types/database'
 
 export function Clientes() {
   const navigate = useNavigate()
+  const { puedeEscribir } = usePermisos()
   const { clientes, loading, error, crearCliente, actualizarCliente } = useClientes()
   const [mostrarForm, setMostrarForm] = useState(false)
   const [clienteEditando, setClienteEditando] = useState<Cliente | null>(null)
@@ -92,7 +94,7 @@ export function Clientes() {
           <h1 className="text-xl font-bold text-gray-900">Clientes</h1>
           <p className="mt-0.5 text-sm text-gray-500">{clientesFiltrados.length} de {clientes.length} clientes</p>
         </div>
-        <Button onClick={nuevoCliente} className="gap-2"><Plus size={16} /> Nuevo cliente</Button>
+        {puedeEscribir && <Button onClick={nuevoCliente} className="gap-2"><Plus size={16} /> Nuevo cliente</Button>}
       </div>
 
       {exito && (
@@ -174,7 +176,7 @@ export function Clientes() {
           <div className="py-16 text-center">
             <p className="text-sm text-gray-400">No hay clientes registrados</p>
             <p className="text-xs text-gray-300 mt-1 mb-3">Registra el primero con el boton "Nuevo cliente"</p>
-            <Button size="sm" onClick={nuevoCliente}><Plus size={14} /> Crear cliente</Button>
+            {puedeEscribir && <Button size="sm" onClick={nuevoCliente}><Plus size={14} /> Crear cliente</Button>}
           </div>
         ) : clientesFiltrados.length === 0 ? (
           <div className="py-16 text-center text-sm text-gray-400">No se encontraron clientes</div>
@@ -202,9 +204,11 @@ export function Clientes() {
                       <button type="button" onClick={() => mostrarHistorial(cliente)} className="inline-flex items-center gap-1 text-xs font-medium text-gray-600 hover:text-gray-800">
                         <Eye size={14} /> Historial
                       </button>
-                      <button type="button" onClick={() => editarCliente(cliente)} className="inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-700">
-                        <Pencil size={14} /> Editar
-                      </button>
+                      {puedeEscribir && (
+                        <button type="button" onClick={() => editarCliente(cliente)} className="inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-700">
+                          <Pencil size={14} /> Editar
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>

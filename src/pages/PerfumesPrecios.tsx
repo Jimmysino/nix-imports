@@ -3,6 +3,7 @@ import { Pencil, X, Check } from 'lucide-react'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
 import { usePerfumes } from '../hooks/usePerfumes'
+import { usePermisos } from '../hooks/usePermisos'
 
 function margen(costo: number, precio: number): string {
   if (costo <= 0 || precio <= 0) return '—'
@@ -15,6 +16,7 @@ function formatMoneda(valor: number): string {
 }
 
 export function PerfumesPrecios() {
+  const { puedeEscribir } = usePermisos()
   const { perfumes, loading, error: errorCarga, actualizar } = usePerfumes()
   const [editandoId, setEditandoId] = useState<string | null>(null)
   const [form, setForm] = useState({ costo_compra: '', precio_minorista: '', precio_mayorista: '' })
@@ -149,9 +151,11 @@ export function PerfumesPrecios() {
                         <td className="px-4 py-3 text-right font-medium text-gray-800">{formatMoneda(p.precio_mayorista)}</td>
                         <td className="px-4 py-3 text-right text-sm text-green-600">{margen(p.costo_compra, p.precio_mayorista)}</td>
                         <td className="px-4 py-3 text-right">
-                          <button onClick={() => abrirEditar(p)} className="rounded p-1.5 text-gray-400 hover:bg-gray-100 hover:text-blue-600" title="Editar precios">
-                            <Pencil size={15} />
-                          </button>
+                          {puedeEscribir && (
+                            <button onClick={() => abrirEditar(p)} className="rounded p-1.5 text-gray-400 hover:bg-gray-100 hover:text-blue-600" title="Editar precios">
+                              <Pencil size={15} />
+                            </button>
+                          )}
                         </td>
                       </>
                     )}

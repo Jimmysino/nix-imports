@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { ExternalLink, PackageCheck, Save } from 'lucide-react'
 import { Button } from './ui/Button'
 import { Input } from './ui/Input'
+import { usePermisos } from '../hooks/usePermisos'
 
 interface CompraTrackingProps {
   linkCompra?: string | null
@@ -21,6 +22,7 @@ function esUrlValida(valor: string) {
 }
 
 export function CompraTracking({ linkCompra, numeroTracking, urlTracking, onGuardar }: CompraTrackingProps) {
+  const { puedeEscribir } = usePermisos()
   const [link, setLink] = useState(linkCompra ?? '')
   const [tracking, setTracking] = useState(numeroTracking ?? '')
   const [urlSeguimiento, setUrlSeguimiento] = useState(urlTracking ?? '')
@@ -67,12 +69,14 @@ export function CompraTracking({ linkCompra, numeroTracking, urlTracking, onGuar
           type="url"
           value={link}
           onChange={(event) => setLink(event.target.value)}
+          readOnly={!puedeEscribir}
           placeholder="https://tienda.com/producto"
         />
         <Input
           label="Número de tracking"
           value={tracking}
           onChange={(event) => setTracking(event.target.value)}
+          readOnly={!puedeEscribir}
           placeholder="Ej: 1Z999AA10123456784"
         />
         <Input
@@ -80,6 +84,7 @@ export function CompraTracking({ linkCompra, numeroTracking, urlTracking, onGuar
           type="url"
           value={urlSeguimiento}
           onChange={(event) => setUrlSeguimiento(event.target.value)}
+          readOnly={!puedeEscribir}
           placeholder="https://tracking.com/..."
         />
       </div>
@@ -99,11 +104,13 @@ export function CompraTracking({ linkCompra, numeroTracking, urlTracking, onGuar
         </div>
       )}
 
-      <div className="flex justify-end">
-        <Button type="button" loading={guardando} onClick={guardar} className="gap-2">
-          <Save size={15} /> Guardar compra y tracking
-        </Button>
-      </div>
+      {puedeEscribir && (
+        <div className="flex justify-end">
+          <Button type="button" loading={guardando} onClick={guardar} className="gap-2">
+            <Save size={15} /> Guardar compra y tracking
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

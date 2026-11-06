@@ -7,6 +7,7 @@ import { useDashboardUnificado } from '../hooks/useDashboardUnificado'
 import type { MetricaConTendencia, Tendencia } from '../hooks/useDashboardUnificado'
 import { useTendencias } from '../hooks/useTendencias'
 import { useAlertas } from '../hooks/useAlertas'
+import { usePermisos } from '../hooks/usePermisos'
 import { useKpisDashboard, resolverKpi, KPI_OPCIONES } from '../hooks/useKpisDashboard'
 import type { KpiId } from '../hooks/useKpisDashboard'
 import { formatUSD } from '../utils/cotizacion'
@@ -47,6 +48,7 @@ const colorMap: Record<string, string> = {
 
 export function Dashboard() {
   const navigate = useNavigate()
+  const { puedeEscribir } = usePermisos()
   const { data, loading, error } = useDashboardUnificado()
   const { datos: tendencias, loading: loadingTendencias } = useTendencias()
   const { alertas } = useAlertas()
@@ -88,9 +90,11 @@ export function Dashboard() {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">KPIs Destacados</h2>
-            <button onClick={abrirSelector} className="flex items-center gap-1 text-xs text-gray-400 hover:text-gray-600 transition-colors">
-              <Settings2 size={13} /> Configurar
-            </button>
+            {puedeEscribir && (
+              <button onClick={abrirSelector} className="flex items-center gap-1 text-xs text-gray-400 hover:text-gray-600 transition-colors">
+                <Settings2 size={13} /> Configurar
+              </button>
+            )}
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {kpiIds.map((id) => {
