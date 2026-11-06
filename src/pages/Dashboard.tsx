@@ -1,11 +1,14 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { AlertTriangle, ArrowRight, TrendingUp, TrendingDown, Minus, Package, Droplets, DollarSign } from 'lucide-react'
+import { AlertTriangle, ArrowRight, TrendingUp, TrendingDown, Minus, Package, Droplets, DollarSign, Settings2, X, Check } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts'
 import { Badge } from '../components/ui/Badge'
 import { useDashboardUnificado } from '../hooks/useDashboardUnificado'
 import type { MetricaConTendencia, Tendencia } from '../hooks/useDashboardUnificado'
 import { useTendencias } from '../hooks/useTendencias'
 import { useAlertas } from '../hooks/useAlertas'
+import { useKpisDashboard, resolverKpi, KPI_OPCIONES } from '../hooks/useKpisDashboard'
+import type { KpiId } from '../hooks/useKpisDashboard'
 import { formatUSD } from '../utils/cotizacion'
 
 function formatMoneda(valor: number): string {
@@ -34,11 +37,40 @@ function LoadingCard() {
   return <div className="mt-2 h-8 w-24 animate-pulse rounded bg-gray-100" />
 }
 
+const colorMap: Record<string, string> = {
+  blue: 'border-blue-200 bg-blue-50/50',
+  purple: 'border-purple-200 bg-purple-50/50',
+  green: 'border-green-200 bg-green-50/50',
+  emerald: 'border-emerald-200 bg-emerald-50/50',
+  gray: 'border-gray-200 bg-gray-50/50',
+}
+
 export function Dashboard() {
   const navigate = useNavigate()
   const { data, loading, error } = useDashboardUnificado()
   const { datos: tendencias, loading: loadingTendencias } = useTendencias()
   const { alertas } = useAlertas()
+  const { kpiIds, loading: loadingKpis, guardar: guardarKpis } = useKpisDashboard()
+  const [selectorAbierto, setSelectorAbierto] = useState(false)
+  const [kpiSeleccion, setKpiSeleccion] = useState<KpiId[]>([])
+
+  function abrirSelector() {
+    setKpiSeleccion([...kpiIds])
+    setSelectorAbierto(true)
+  }
+
+  function toggleKpi(id: KpiId) {
+    setKpiSeleccion((prev) => {
+      if (prev.includes(id)) return prev.filter((k) => k !== id)
+      if (prev.length >= 4) return prev
+      return [...prev, id]
+    })
+  }
+
+  function confirmarKpis() {
+    void guardarKpis(kpiSeleccion)
+    setSelectorAbierto(false)
+  }
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -49,6 +81,79 @@ export function Dashboard() {
 
       {error && (
         <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
+      )}
+
+      {/* KPIs configurables */}
+      {!loadingKpis && (
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">KPIs Destacados</h2>
+            <button onClick={abrirSelector} className="flex items-center gap-1 text-xs text-gray-400 hover:text-gray-600 transition-colors">
+              <Settings2 size={13} /> Configurar
+            </button>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {kpiIds.map((id) => {
+              if (!data) return (
+                <div key={id} className="rounded-xl border border-gray-200 bg-white shadow-sm p-4">
+                  <p className="text-sm text-gray-500">{KPI_OPCIONES.find((o) => o.id === id)?.label}</p>
+                  <LoadingCard />
+                </div>
+              )
+              const kpi = resolverKpi(id, data)
+              return (
+                <div key={id} className={`rounded-xl border shadow-sm p-4 ${colorMap[kpi.def.color] ?? colorMap.gray}`}>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-600">{kpi.def.label}</p>
+                    {kpi.metrica && <TendenciaIcon tendencia={kpi.metrica.tendencia} />}
+                  </div>
+                  <p className="mt-1 text-2xl font-semibold text-gray-900">{kpi.valor}</p>
+                  {kpi.metrica && <TendenciaLabel m={kpi.metrica} />}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Modal selector KPIs */}
+      {selectorAbierto && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
+            <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
+              <h3 className="font-semibold text-gray-900">Seleccionar KPIs (máx. 4)</h3>
+              <button onClick={() => setSelectorAbierto(false)} className="text-gray-400 hover:text-gray-600"><X size={18} /></button>
+            </div>
+            <div className="p-5 space-y-2 max-h-[400px] overflow-y-auto">
+              {KPI_OPCIONES.map((opcion) => {
+                const activo = kpiSeleccion.includes(opcion.id)
+                const deshabilitado = !activo && kpiSeleccion.length >= 4
+                return (
+                  <button
+                    key={opcion.id}
+                    onClick={() => toggleKpi(opcion.id)}
+                    disabled={deshabilitado}
+                    className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
+                      activo ? 'bg-blue-50 border border-blue-200 text-blue-800' : deshabilitado ? 'opacity-40 cursor-not-allowed bg-gray-50 border border-gray-100' : 'bg-gray-50 border border-gray-100 hover:bg-gray-100 text-gray-700'
+                    }`}
+                  >
+                    <div className={`flex h-5 w-5 items-center justify-center rounded ${activo ? 'bg-blue-600' : 'border border-gray-300'}`}>
+                      {activo && <Check size={12} className="text-white" />}
+                    </div>
+                    {opcion.label}
+                  </button>
+                )
+              })}
+            </div>
+            <div className="flex items-center justify-between border-t border-gray-100 px-5 py-4">
+              <span className="text-xs text-gray-400">{kpiSeleccion.length}/4 seleccionados</span>
+              <div className="flex gap-2">
+                <button onClick={() => setSelectorAbierto(false)} className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50">Cancelar</button>
+                <button onClick={confirmarKpis} disabled={kpiSeleccion.length === 0} className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50">Guardar</button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Resumen consolidado */}

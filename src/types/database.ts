@@ -160,6 +160,7 @@ export interface Configuracion {
   dias_alerta: number
   tipo_cambio: number
   stock_minimo_perfumes: number
+  kpis_dashboard: string[]
   updated_at: string
 }
 
