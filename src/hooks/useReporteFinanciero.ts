@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { mensajeError } from '../utils/errores'
 import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { Pedido, VentaPerfume, VentaPerfumeItem, Perfume } from '../types/database'
 
@@ -59,7 +60,7 @@ export function useReporteFinanciero() {
     const err = pedidosRes.error ?? ventasRes.error
     if (err) {
       const isAuth = await handleSupabaseError(err)
-      if (!isAuth) setError(err.message)
+      if (!isAuth) setError(mensajeError(err))
       setLoading(false)
       return
     }

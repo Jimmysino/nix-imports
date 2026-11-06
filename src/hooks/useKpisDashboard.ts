@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { DashboardUnificadoData, MetricaConTendencia } from './useDashboardUnificado'
 
 export type KpiId =

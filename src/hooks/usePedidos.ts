@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { mensajeError } from '../utils/errores'
 import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { Pedido } from '../types/database'
 
@@ -20,7 +21,7 @@ export function usePedidos() {
       .order('created_at', { ascending: false })
     if (error) {
       const isAuth = await handleSupabaseError(error)
-      if (!isAuth) setError(error.message)
+      if (!isAuth) setError(mensajeError(error))
     } else setPedidos(data ?? [])
     setLoading(false)
   }
@@ -31,14 +32,14 @@ export function usePedidos() {
       .insert(pedido)
       .select('*, cliente:clientes(*)')
       .single()
-    if (error) throw new Error(error.message)
+    if (error) throw new Error(mensajeError(error))
     // Registrar estado inicial en historial
     const { error: historialError } = await supabase.from('historial_estados').insert({
       pedido_id: data.id,
       estado: 'Solicitado',
       notas: 'Pedido creado',
     })
-    if (historialError) throw new Error(historialError.message)
+    if (historialError) throw new Error(mensajeError(historialError))
     setPedidos((prev) => [data, ...prev])
     return data
   }

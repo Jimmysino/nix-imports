@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { mensajeError } from '../utils/errores'
 import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { Perfume } from '../types/database'
 
@@ -49,7 +50,7 @@ export function useTendencias() {
 
       if (!activo) return
       const err = pedidosRes.error ?? ventasRes.error ?? perfumesRes.error
-      if (err) { const isAuth = await handleSupabaseError(err); if (!isAuth) setError(err.message); setLoading(false); return }
+      if (err) { const isAuth = await handleSupabaseError(err); if (!isAuth) setError(mensajeError(err)); setLoading(false); return }
 
       const pedidos = pedidosRes.data ?? []
       const ventas = ventasRes.data ?? []

@@ -6,6 +6,7 @@ import { Button } from '../components/ui/Button'
 import { useClientes } from '../hooks/useClientes'
 import { usePermisos } from '../hooks/usePermisos'
 import { supabase } from '../lib/supabase'
+import { mensajeError } from '../utils/errores'
 import { Badge } from '../components/ui/Badge'
 import { formatUSD } from '../utils/cotizacion'
 import type { Cliente, Pedido } from '../types/database'
@@ -37,14 +38,14 @@ export function Clientes() {
       .eq('cliente_id', cliente.id)
       .order('created_at', { ascending: false })
     setPedidosCliente(error ? [] : data ?? [])
-    setErrorConteos(error?.message ?? null)
+    setErrorConteos(error ? mensajeError(error) : null)
     setLoadingPedidos(false)
   }
 
   async function cargarConteos() {
     const { data, error } = await supabase.from('pedidos').select('cliente_id')
     if (error) {
-      setErrorConteos(error.message)
+      setErrorConteos(mensajeError(error))
       return
     }
     const conteo: Record<string, number> = {}

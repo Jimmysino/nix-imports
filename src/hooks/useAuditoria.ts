@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { mensajeError } from '../utils/errores'
 import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { AuditLogEntry, AuthLogEntry } from '../types/database'
 
@@ -56,7 +57,7 @@ export function useAuditoria(filtros: FiltrosAuditoria, pagina: number) {
     const { data, error, count } = await query
     if (error) {
       const isAuth = await handleSupabaseError(error)
-      if (!isAuth) setError(error.message)
+      if (!isAuth) setError(mensajeError(error))
     } else {
       setError(null)
       setRegistros((data ?? []) as AuditLogEntry[])
@@ -97,7 +98,7 @@ export function useAccesos(filtros: FiltrosAccesos, pagina: number) {
     const { data, error, count } = await query
     if (error) {
       const isAuth = await handleSupabaseError(error)
-      if (!isAuth) setError(error.message)
+      if (!isAuth) setError(mensajeError(error))
     } else {
       setError(null)
       setRegistros((data ?? []) as AuthLogEntry[])

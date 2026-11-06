@@ -7,6 +7,7 @@ import { Select } from '../components/ui/Select'
 import { Textarea } from '../components/ui/Textarea'
 import { usePerfumes } from '../hooks/usePerfumes'
 import { usePermisos } from '../hooks/usePermisos'
+import { MENSAJE_URL_HTTPS, esUrlHttps, urlHttpsOVacio } from '../utils/urlSegura'
 import type { GeneroPerfume, Perfume } from '../types/database'
 
 const opcionesGenero = [
@@ -83,6 +84,7 @@ export function PerfumesCatalogo() {
     if (!form.nombre.trim()) return setError('Ingresá el nombre del perfume')
     if (!form.marca.trim()) return setError('Ingresá la marca')
     if (!Number.isInteger(ml) || ml < 1) return setError('La presentación debe ser un número entero mayor a cero')
+    if (!urlHttpsOVacio(form.imagen_url)) return setError(`URL de imagen: ${MENSAJE_URL_HTTPS}`)
 
     setGuardando(true)
     setError(null)
@@ -210,8 +212,8 @@ export function PerfumesCatalogo() {
                   <tr key={p.id} className="border-b border-gray-50">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        {p.imagen_url ? (
-                          <img src={p.imagen_url} alt={p.nombre} className="h-10 w-10 rounded-lg object-cover" />
+                        {esUrlHttps(p.imagen_url) ? (
+                          <img src={p.imagen_url ?? undefined} alt={p.nombre} className="h-10 w-10 rounded-lg object-cover" />
                         ) : (
                           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 text-xs font-medium text-gray-400">
                             {p.nombre.charAt(0)}

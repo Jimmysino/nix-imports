@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { mensajeError } from '../utils/errores'
 import { handleSupabaseError } from '../lib/supabaseErrorHandler'
-import type { VentaPerfume, VentaPerfumeItem, TipoVenta } from '../types/database'
+import type { VentaPerfume, TipoVenta } from '../types/database'
 
 export function useVentasPerfumes() {
   const [ventas, setVentas] = useState<VentaPerfume[]>([])
@@ -16,7 +17,7 @@ export function useVentasPerfumes() {
       .select('*, clientes(*), venta_perfume_items(*, perfumes(*))')
       .order('created_at', { ascending: false })
     setLoading(false)
-    if (error) { const isAuth = await handleSupabaseError(error); if (!isAuth) setError(error.message); return }
+    if (error) { const isAuth = await handleSupabaseError(error); if (!isAuth) setError(mensajeError(error)); return }
     const mapped = (data ?? []).map((v: Record<string, unknown>) => ({
       ...v,
       cliente: v.clientes ?? undefined,
@@ -65,7 +66,7 @@ export function useVentasPerfumes() {
       .select()
       .single()
 
-    if (ventaErr) return { ok: false, error: ventaErr.message }
+    if (ventaErr) return { ok: false, error: mensajeError(ventaErr) }
 
     const itemsInsert = params.items.map((item) => ({
       venta_id: venta.id,
@@ -81,7 +82,7 @@ export function useVentasPerfumes() {
 
     if (itemsErr) {
       await supabase.from('ventas_perfumes').delete().eq('id', venta.id)
-      return { ok: false, error: itemsErr.message }
+      return { ok: false, error: mensajeError(itemsErr) }
     }
 
     const movimientos = params.items.map((item) => ({
@@ -99,7 +100,7 @@ export function useVentasPerfumes() {
     if (movErr) {
       await supabase.from('venta_perfume_items').delete().eq('venta_id', venta.id)
       await supabase.from('ventas_perfumes').delete().eq('id', venta.id)
-      return { ok: false, error: `Error al descontar stock: ${movErr.message}` }
+      return { ok: false, error: `Error al descontar stock: ${mensajeError(movErr)}` }
     }
 
     await cargar()
@@ -120,7 +121,7 @@ export function useVentasPerfumes() {
       })
       .eq('id', ventaId)
 
-    if (updateErr) return { ok: false, error: updateErr.message }
+    if (updateErr) return { ok: false, error: mensajeError(updateErr) }
 
     if (venta.items && venta.items.length > 0) {
       const devolucion = venta.items.map((item) => ({

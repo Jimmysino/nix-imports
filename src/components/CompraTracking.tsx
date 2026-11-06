@@ -3,6 +3,7 @@ import { ExternalLink, PackageCheck, Save } from 'lucide-react'
 import { Button } from './ui/Button'
 import { Input } from './ui/Input'
 import { usePermisos } from '../hooks/usePermisos'
+import { urlHttpsOVacio } from '../utils/urlSegura'
 
 interface CompraTrackingProps {
   linkCompra?: string | null
@@ -11,15 +12,7 @@ interface CompraTrackingProps {
   onGuardar: (datos: { link_compra: string | null; numero_tracking: string | null; url_tracking: string | null }) => Promise<void>
 }
 
-function esUrlValida(valor: string) {
-  if (!valor.trim()) return true
-  try {
-    const url = new URL(valor)
-    return url.protocol === 'http:' || url.protocol === 'https:'
-  } catch {
-    return false
-  }
-}
+const esUrlValida = urlHttpsOVacio
 
 export function CompraTracking({ linkCompra, numeroTracking, urlTracking, onGuardar }: CompraTrackingProps) {
   const { puedeEscribir } = usePermisos()
@@ -37,11 +30,11 @@ export function CompraTracking({ linkCompra, numeroTracking, urlTracking, onGuar
 
   async function guardar() {
     if (!esUrlValida(link)) {
-      setError('El link de compra debe ser una URL válida que comience con http:// o https://')
+      setError('El link de compra debe ser una URL válida que comience con https://')
       return
     }
     if (!esUrlValida(urlSeguimiento)) {
-      setError('El enlace de seguimiento debe ser una URL válida que comience con http:// o https://')
+      setError('El enlace de seguimiento debe ser una URL válida que comience con https://')
       return
     }
 

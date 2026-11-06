@@ -9,6 +9,7 @@ import { CambiarEstado } from '../components/CambiarEstado'
 import { CompraTracking } from '../components/CompraTracking'
 import { CostosAdicionales } from '../components/CostosAdicionales'
 import { formatUSD } from '../utils/cotizacion'
+import { esUrlHttps } from '../utils/urlSegura'
 
 export function PedidoDetalle() {
   const { id } = useParams<{ id: string }>()
@@ -77,11 +78,11 @@ export function PedidoDetalle() {
                   <span className="text-gray-700">{pedido.producto_descripcion}</span>
                 </div>
               )}
-              {pedido.producto_url && (
+              {esUrlHttps(pedido.producto_url) && (
                 <div className="flex gap-2">
                   <span className="text-gray-400 w-24 shrink-0">URL</span>
                   <a
-                    href={pedido.producto_url}
+                    href={pedido.producto_url ?? undefined}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:underline flex items-center gap-1 truncate"

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { mensajeError } from '../utils/errores'
 import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { CostoAdicional, EstadoPedido, HistorialEstado, Pedido } from '../types/database'
 import { getSiguienteEstado, puedeCancelar } from '../utils/estados'
@@ -24,7 +25,7 @@ export function usePedido(id: string) {
     ])
     if (pedidoError) {
       const isAuth = await handleSupabaseError(pedidoError)
-      if (!isAuth) setError(pedidoError.message)
+      if (!isAuth) setError(mensajeError(pedidoError))
     } else {
       setPedido(pedidoData)
       setHistorial(historialData ?? [])
@@ -58,7 +59,7 @@ export function usePedido(id: string) {
       .eq('id', pedido.id)
       .select('*, cliente:clientes(*)')
       .single()
-    if (error) throw new Error(error.message)
+    if (error) throw new Error(mensajeError(error))
 
     if (estadoAnterior === 'Solicitado') {
       const { error: historialError } = await supabase.from('historial_estados').insert({
@@ -66,7 +67,7 @@ export function usePedido(id: string) {
         estado: 'Cotizado',
         notas: 'Cotización generada',
       })
-      if (historialError) throw new Error(historialError.message)
+      if (historialError) throw new Error(mensajeError(historialError))
     }
 
     await fetchPedido()
@@ -86,7 +87,7 @@ export function usePedido(id: string) {
       .eq('id', pedido.id)
       .select('*, cliente:clientes(*)')
       .single()
-    if (error) throw new Error(error.message)
+    if (error) throw new Error(mensajeError(error))
 
     await fetchPedido()
     return data
@@ -114,14 +115,14 @@ export function usePedido(id: string) {
       .from('pedidos')
       .update({ estado: nuevoEstado })
       .eq('id', pedido.id)
-    if (error) throw new Error(error.message)
+    if (error) throw new Error(mensajeError(error))
 
     const { error: historialError } = await supabase.from('historial_estados').insert({
       pedido_id: pedido.id,
       estado: nuevoEstado,
       notas: notas ?? null,
     })
-    if (historialError) throw new Error(historialError.message)
+    if (historialError) throw new Error(mensajeError(historialError))
 
     await fetchPedido()
   }
@@ -136,7 +137,7 @@ export function usePedido(id: string) {
       .insert({ pedido_id: pedido.id, concepto: concepto.trim(), monto_usd: monto, notas: notas?.trim() || null })
       .select()
       .single()
-    if (error) throw new Error(error.message)
+    if (error) throw new Error(mensajeError(error))
 
     if (pedido.total_usd !== null) {
       await supabase.from('pedidos').update({ total_usd: pedido.total_usd + monto }).eq('id', pedido.id)
@@ -148,7 +149,7 @@ export function usePedido(id: string) {
   async function eliminarCostoAdicional(costo: CostoAdicional) {
     if (!pedido) throw new Error('Pedido no encontrado')
     const { error } = await supabase.from('costos_adicionales').delete().eq('id', costo.id)
-    if (error) throw new Error(error.message)
+    if (error) throw new Error(mensajeError(error))
 
     if (pedido.total_usd !== null) {
       await supabase.from('pedidos').update({ total_usd: Math.max(0, pedido.total_usd - costo.monto_usd) }).eq('id', pedido.id)

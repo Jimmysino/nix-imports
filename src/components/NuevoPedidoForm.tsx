@@ -7,6 +7,8 @@ import { Input } from './ui/Input'
 import { Select } from './ui/Select'
 import { Textarea } from './ui/Textarea'
 import { Button } from './ui/Button'
+import { MENSAJE_TELEFONO_DUPLICADO } from '../hooks/useClientes'
+import { MENSAJE_URL_HTTPS, urlHttpsOVacio } from '../utils/urlSegura'
 import type { CategoriaTech, Cliente } from '../types/database'
 
 const categoriaOptions: { value: CategoriaTech; label: string }[] = [
@@ -29,7 +31,7 @@ const pedidoSchema = z.object({
   cliente_id:             z.string().min(1, 'Seleccioná un cliente'),
   producto_nombre:        z.string().min(2, 'Ingresá el nombre del producto'),
   producto_descripcion:   z.string().optional(),
-  producto_url:           z.string().url('URL inválida').optional().or(z.literal('')),
+  producto_url:           z.string().refine(urlHttpsOVacio, MENSAJE_URL_HTTPS).optional(),
   categoria:              z.enum(['Celular','Laptop','Tablet','Accesorio','Otro']),
   notas:                  z.string().optional(),
 })
@@ -68,8 +70,8 @@ export function NuevoPedidoForm({ clientes, onSubmit, onCrearCliente, onCancel }
       clienteForm.reset()
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error al guardar cliente'
-      if (msg.includes('unique')) {
-        clienteForm.setError('telefono', { message: 'Ya existe un cliente con ese teléfono' })
+      if (msg === MENSAJE_TELEFONO_DUPLICADO) {
+        clienteForm.setError('telefono', { message: MENSAJE_TELEFONO_DUPLICADO })
       } else {
         setErrorCliente(msg)
       }

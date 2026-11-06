@@ -60,7 +60,7 @@ export function ClienteForm({ cliente, onGuardar, onCancelar }: ClienteFormProps
       })
     } catch (err) {
       const mensaje = err instanceof Error ? err.message : 'No se pudo guardar el cliente'
-      setError(mensaje.includes('unique') || mensaje.includes('duplicate') ? 'Ya existe un cliente con ese teléfono' : mensaje)
+      setError(mensaje)
     } finally {
       setGuardando(false)
     }

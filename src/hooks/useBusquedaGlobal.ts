@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { Cliente, InventarioItem, Pedido } from '../types/database'
 
 export interface ResultadosBusqueda {
@@ -18,7 +17,7 @@ export function useBusquedaGlobal() {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const buscar = useCallback(async (termino: string) => {
-    const q = termino.trim()
+    const q = termino.replace(/[^\p{L}\p{N}\s\-_.@+]/gu, ' ').replace(/\s+/g, ' ').trim()
     if (q.length < 2) {
       setResultados(VACIO)
       setLoading(false)

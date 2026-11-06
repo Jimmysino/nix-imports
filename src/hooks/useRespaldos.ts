@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { mensajeError } from '../utils/errores'
 import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import { useAuth } from '../contexts/AuthContext'
 import { TABLAS_RESPALDO, VERSION_ESQUEMA, descargarJson, nombreArchivoRespaldo } from '../utils/respaldo'
@@ -44,7 +45,7 @@ export function useRespaldos() {
       .limit(50)
     if (error) {
       const isAuth = await handleSupabaseError(error)
-      if (!isAuth) setError(error.message)
+      if (!isAuth) setError(mensajeError(error))
     } else {
       setHistorial((data ?? []) as RespaldoLog[])
     }
@@ -98,7 +99,7 @@ export function useRespaldos() {
     } catch (e) {
       const err = e as { message?: string; code?: string }
       const isAuth = await handleSupabaseError(err)
-      if (!isAuth) setError(err.message ?? 'No se pudo generar el respaldo')
+      if (!isAuth) setError(mensajeError(err))
     } finally {
       setGenerando(false)
       setProgreso(null)

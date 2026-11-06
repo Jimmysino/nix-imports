@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { mensajeError } from '../utils/errores'
 import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { Perfume, GeneroPerfume } from '../types/database'
 
@@ -19,7 +20,7 @@ export function usePerfumes() {
     setLoading(false)
     if (error) {
       const isAuth = await handleSupabaseError(error)
-      if (!isAuth) setError(error.message)
+      if (!isAuth) setError(mensajeError(error))
       return
     }
     setPerfumes(data ?? [])
@@ -42,7 +43,7 @@ export function usePerfumes() {
       .single()
     if (error) {
       if (error.code === '23505') return { ok: false, error: 'Ya existe un perfume con la misma marca, nombre y presentación' }
-      return { ok: false, error: error.message }
+      return { ok: false, error: mensajeError(error) }
     }
     setPerfumes((prev) => [...prev, data].sort((a, b) => a.marca.localeCompare(b.marca) || a.nombre.localeCompare(b.nombre)))
     return { ok: true }
@@ -57,7 +58,7 @@ export function usePerfumes() {
       .single()
     if (error) {
       if (error.code === '23505') return { ok: false, error: 'Ya existe un perfume con la misma marca, nombre y presentación' }
-      return { ok: false, error: error.message }
+      return { ok: false, error: mensajeError(error) }
     }
     setPerfumes((prev) => prev.map((p) => (p.id === id ? data : p)))
     return { ok: true }
@@ -67,7 +68,7 @@ export function usePerfumes() {
     const { error } = await supabase.from('perfumes').delete().eq('id', id)
     if (error) {
       if (error.code === '23503') return { ok: false, error: 'No se puede eliminar: este perfume tiene movimientos de stock asociados' }
-      return { ok: false, error: error.message }
+      return { ok: false, error: mensajeError(error) }
     }
     setPerfumes((prev) => prev.filter((p) => p.id !== id))
     return { ok: true }

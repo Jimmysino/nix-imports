@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { mensajeError } from '../utils/errores'
 import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { MovimientoPerfume, Perfume, TipoMovimientoPerfume } from '../types/database'
 
@@ -26,7 +27,7 @@ export function useStockPerfumes() {
     ])
     setLoading(false)
     const firstErr = pRes.error ?? mRes.error
-    if (firstErr) { const isAuth = await handleSupabaseError(firstErr); if (!isAuth) setError(firstErr.message); return }
+    if (firstErr) { const isAuth = await handleSupabaseError(firstErr); if (!isAuth) setError(mensajeError(firstErr)); return }
     setPerfumes(pRes.data ?? [])
     setMovimientos(mRes.data ?? [])
     if (cRes.data) setStockMinimo(cRes.data.stock_minimo_perfumes)
@@ -88,7 +89,7 @@ export function useStockPerfumes() {
       })
       .select()
       .single()
-    if (error) return { ok: false, error: error.message }
+    if (error) return { ok: false, error: mensajeError(error) }
     setMovimientos((prev) => [nuevo, ...prev])
     return { ok: true }
   }

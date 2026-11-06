@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { mensajeError } from '../utils/errores'
 import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { EstadoPedido, Pedido, VentaPerfume, Perfume } from '../types/database'
 
@@ -96,7 +97,7 @@ export function useDashboardUnificado() {
       if (!activo) return
 
       const err = pedidosRes.error ?? clientesRes.error ?? inventarioRes.error ?? ventasRes.error ?? perfumesRes.error ?? stockMovRes.error
-      if (err) { const isAuth = await handleSupabaseError(err); if (!isAuth) setError(err.message); setLoading(false); return }
+      if (err) { const isAuth = await handleSupabaseError(err); if (!isAuth) setError(mensajeError(err)); setLoading(false); return }
 
       const pedidos = (pedidosRes.data ?? []) as Pedido[]
       const perfumes = (perfumesRes.data ?? []) as Perfume[]

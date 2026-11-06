@@ -6,6 +6,7 @@ import { Input } from '../components/ui/Input'
 import { Select } from '../components/ui/Select'
 import { Textarea } from '../components/ui/Textarea'
 import { supabase } from '../lib/supabase'
+import { mensajeError } from '../utils/errores'
 import { usePermisos } from '../hooks/usePermisos'
 import type { InventarioItem, Pedido } from '../types/database'
 
@@ -32,9 +33,9 @@ export function Inventario() {
       supabase.from('inventario').select('*').order('fecha_recepcion', { ascending: false }),
       supabase.from('pedidos').select('*').neq('estado', 'Cancelado').order('created_at', { ascending: false }),
     ]).then(([inventarioResult, pedidosResult]) => {
-      if (inventarioResult.error) setError(inventarioResult.error.message)
+      if (inventarioResult.error) setError(mensajeError(inventarioResult.error))
       else setItems(inventarioResult.data ?? [])
-      if (pedidosResult.error) setError(pedidosResult.error.message)
+      if (pedidosResult.error) setError(mensajeError(pedidosResult.error))
       else setPedidos(pedidosResult.data ?? [])
       setLoading(false)
     })
@@ -60,7 +61,7 @@ export function Inventario() {
     }).select().single()
     setGuardando(false)
     if (error) {
-      setError(error.message)
+      setError(mensajeError(error))
       return
     }
     setItems((actuales) => [data, ...actuales])
@@ -83,7 +84,7 @@ export function Inventario() {
 
     setEntregando(null)
     if (error) {
-      setError(error.message)
+      setError(mensajeError(error))
       return
     }
     setItems((actuales) => actuales.map((item) => item.id === id

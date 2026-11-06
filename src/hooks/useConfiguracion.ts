@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { mensajeError } from '../utils/errores'
 import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { Configuracion } from '../types/database'
 
@@ -20,7 +21,7 @@ export function useConfiguracion() {
 
     if (error) {
       const isAuth = await handleSupabaseError(error)
-      if (!isAuth) setError(error.message)
+      if (!isAuth) setError(mensajeError(error))
     } else setConfig(data)
     setLoading(false)
   }
@@ -43,7 +44,7 @@ export function useConfiguracion() {
       .select()
       .single()
 
-    if (error) throw new Error(error.message)
+    if (error) throw new Error(mensajeError(error))
     setConfig(data)
     return data
   }
@@ -62,7 +63,7 @@ export function useConfiguracion() {
       .select()
       .single()
 
-    if (error) throw new Error(error.message)
+    if (error) throw new Error(mensajeError(error))
     setConfig(data)
     return data
   }
@@ -81,7 +82,7 @@ export function useConfiguracion() {
       .select()
       .single()
 
-    if (error) throw new Error(error.message)
+    if (error) throw new Error(mensajeError(error))
     setConfig(data)
     return data
   }

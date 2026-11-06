@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { AlertTriangle, ArrowDownCircle, ArrowUpCircle, History, Plus, X } from 'lucide-react'
+import { AlertTriangle, ArrowDownCircle, ArrowUpCircle, History, X } from 'lucide-react'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
 import { Select } from '../components/ui/Select'

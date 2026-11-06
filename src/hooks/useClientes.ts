@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { mensajeError } from '../utils/errores'
 import { handleSupabaseError } from '../lib/supabaseErrorHandler'
 import type { Cliente } from '../types/database'
+
+export const MENSAJE_TELEFONO_DUPLICADO = 'Ya existe un cliente con ese teléfono'
 
 export function useClientes() {
   const [clientes, setClientes] = useState<Cliente[]>([])
@@ -20,7 +23,7 @@ export function useClientes() {
       .order('nombre')
     if (error) {
       const isAuth = await handleSupabaseError(error)
-      if (!isAuth) setError(error.message)
+      if (!isAuth) setError(mensajeError(error))
     } else setClientes(data ?? [])
     setLoading(false)
   }
@@ -40,7 +43,7 @@ export function useClientes() {
       })
       .select()
       .single()
-    if (error) throw new Error(error.message)
+    if (error) throw new Error(error.code === '23505' ? MENSAJE_TELEFONO_DUPLICADO : mensajeError(error))
     setClientes((prev) => [...prev, data].sort((a, b) => a.nombre.localeCompare(b.nombre)))
     return data
   }
@@ -63,7 +66,7 @@ export function useClientes() {
       .eq('id', id)
       .select()
       .single()
-    if (error) throw new Error(error.message)
+    if (error) throw new Error(error.code === '23505' ? MENSAJE_TELEFONO_DUPLICADO : mensajeError(error))
     setClientes((prev) => prev.map((item) => item.id === id ? data : item))
     return data
   }
