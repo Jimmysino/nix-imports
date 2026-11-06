@@ -16,6 +16,7 @@ import { PerfumesVentas } from './pages/PerfumesVentas'
 import { PerfumesReportes } from './pages/PerfumesReportes'
 import { ReporteFinanciero } from './pages/ReporteFinanciero'
 import { ReporteRentabilidad } from './pages/ReporteRentabilidad'
+import { MetricasClientes } from './pages/MetricasClientes'
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="reportes" element={<Reportes />} />
           <Route path="reportes/financiero" element={<ReporteFinanciero />} />
           <Route path="reportes/rentabilidad" element={<ReporteRentabilidad />} />
+          <Route path="reportes/clientes" element={<MetricasClientes />} />
           <Route path="perfumes" element={<PerfumesDashboard />} />
           <Route path="perfumes/catalogo" element={<PerfumesCatalogo />} />
           <Route path="perfumes/precios" element={<PerfumesPrecios />} />
