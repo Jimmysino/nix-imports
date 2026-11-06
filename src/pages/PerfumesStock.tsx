@@ -1,3 +1,4 @@
+import { aumentaStock } from '../utils/stock'
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { AlertTriangle, ArrowDownCircle, ArrowUpCircle, History, X } from 'lucide-react'
@@ -189,14 +190,14 @@ export function PerfumesStock() {
                     <td className="px-4 py-3 text-gray-600">{new Date(m.fecha + 'T12:00:00').toLocaleDateString('es-AR')}</td>
                     <td className="px-4 py-3">
                       <span className={`rounded-full px-2 py-1 text-xs font-medium ${
-                        m.tipo === 'Entrada' ? 'bg-green-50 text-green-700' :
+                        aumentaStock(m) ? 'bg-green-50 text-green-700' :
                         m.tipo === 'Venta' ? 'bg-blue-50 text-blue-700' :
                         m.tipo === 'Merma' ? 'bg-red-50 text-red-700' :
                         'bg-gray-50 text-gray-700'
                       }`}>{m.tipo}</span>
                     </td>
-                    <td className={`px-4 py-3 text-right font-medium ${m.tipo === 'Entrada' ? 'text-green-600' : 'text-red-600'}`}>
-                      {m.tipo === 'Entrada' ? '+' : '-'}{m.cantidad}
+                    <td className={`px-4 py-3 text-right font-medium ${aumentaStock(m) ? 'text-green-600' : 'text-red-600'}`}>
+                      {aumentaStock(m) ? '+' : '-'}{m.cantidad}
                     </td>
                     <td className="px-4 py-3 text-right text-gray-500">{m.costo_unitario ? formatMoneda(m.costo_unitario) : '—'}</td>
                     <td className="px-4 py-3 text-gray-500">{m.proveedor ?? '—'}</td>

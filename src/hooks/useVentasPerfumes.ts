@@ -127,11 +127,19 @@ export function useVentasPerfumes() {
       const devolucion = venta.items.map((item) => ({
         perfume_id: item.perfume_id,
         tipo: 'Ajuste' as const,
+        es_devolucion: true,
         cantidad: item.cantidad,
         nota: `Devolución por anulación de venta ${venta.codigo}`,
         fecha: new Date().toISOString().slice(0, 10),
       }))
-      await supabase.from('movimientos_perfumes').insert(devolucion)
+      const { error: movErr } = await supabase.from('movimientos_perfumes').insert(devolucion)
+      if (movErr) {
+        await supabase
+          .from('ventas_perfumes')
+          .update({ estado: 'Confirmada', fecha_anulacion: null, motivo_anulacion: null })
+          .eq('id', ventaId)
+        return { ok: false, error: `No se pudo devolver el stock: ${mensajeError(movErr)}` }
+      }
     }
 
     await cargar()

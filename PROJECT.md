@@ -675,7 +675,7 @@ Se agrega una sección "Perfumes" en la navegación del sidebar con sub-ítems: 
 **Historias incluidas:** NIX-024, NIX-025, NIX-026, NIX-027, NIX-028, NIX-029
 
 ### NIX-024: Registrar venta de perfumes
-**Estado Scrum:** En progreso (falta mensaje de confirmación al guardar)
+**Estado Scrum:** Implementada
 **Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 5
 **Como** admin, **quiero** registrar una venta de perfumes indicando cliente, productos y tipo de venta (minorista/mayorista), **para** llevar control de las ventas y aplicar el precio correspondiente.
 
@@ -692,7 +692,7 @@ El admin crea una venta seleccionando el tipo (minorista o mayorista), un client
 - [x] No puedo vender más unidades de las que hay en stock
 - [x] Al confirmar la venta, se descuenta automáticamente del stock (movimiento tipo "Venta")
 - [x] La venta genera un código único visible (VTA-XXXX)
-- [ ] Se muestra confirmación al guardar exitosamente
+- [x] Se muestra confirmación al guardar exitosamente
 
 ---
 
@@ -716,7 +716,7 @@ Vista principal de ventas en formato tabla con la información más relevante. E
 ---
 
 ### NIX-026: Detalle y anulación de venta
-**Estado Scrum:** En progreso (la anulación resta stock en vez de devolverlo)
+**Estado Scrum:** Implementada
 **Prioridad:** Alta | **Puntos:** 5 | **Sprint:** 5
 **Como** admin, **quiero** ver el detalle de una venta y poder anularla si fue un error, **para** corregir errores y mantener el stock correcto.
 
@@ -726,7 +726,7 @@ Desde el listado de ventas el admin accede al detalle que muestra toda la inform
 **Criterios de aceptación:**
 - [x] Puedo ver el detalle completo de una venta: código, fecha, cliente, tipo, productos vendidos con cantidad y precio, total
 - [x] Puedo anular una venta que no haya sido anulada previamente
-- [ ] Al anular, se genera un movimiento de tipo "Ajuste" que devuelve las unidades al stock
+- [x] Al anular, se genera un movimiento de tipo "Ajuste" que devuelve las unidades al stock
 - [x] La venta anulada queda marcada visualmente como "Anulada" y no se contabiliza en reportes
 - [x] Se pide confirmación antes de anular
 - [x] Se muestra la fecha de anulación y una nota de motivo
@@ -734,7 +734,7 @@ Desde el listado de ventas el admin accede al detalle que muestra toda la inform
 ---
 
 ### NIX-027: Historial de compras a proveedores
-**Estado Scrum:** En progreso (no existe detalle de perfume al que navegar)
+**Estado Scrum:** Implementada
 **Prioridad:** Media | **Puntos:** 5 | **Sprint:** 5
 **Como** admin, **quiero** ver el historial de compras (entradas de stock) de cada proveedor, **para** evaluar proveedores y tener trazabilidad de costos.
 
@@ -747,7 +747,7 @@ Desde el detalle de un proveedor, el admin puede ver todas las entradas de stock
 - [x] Las entradas se muestran desde la más reciente
 - [x] Se muestra un resumen: total de unidades compradas y monto total invertido
 - [x] Puedo filtrar las entradas por rango de fechas
-- [ ] Puedo navegar al detalle del perfume desde cada entrada
+- [x] Puedo navegar al detalle del perfume desde cada entrada
 
 ---
 
@@ -773,7 +773,7 @@ El admin consulta un reporte filtrado por rango de fechas que muestra las ventas
 ---
 
 ### NIX-029: Integrar ventas de perfumes en navegación y dashboard
-**Estado Scrum:** En progreso (las últimas ventas no enlazan al detalle de la venta)
+**Estado Scrum:** Implementada
 **Prioridad:** Media | **Puntos:** 3 | **Sprint:** 5
 **Como** admin, **quiero** acceder a las ventas de perfumes desde la navegación y ver métricas de ventas en el dashboard de perfumes, **para** tener una vista completa del negocio.
 
@@ -783,7 +783,7 @@ Se agrega "Ventas" como sub-ítem de la sección Perfumes en el sidebar. El dash
 **Criterios de aceptación:**
 - [x] Hay un sub-ítem "Ventas" en la sección Perfumes del sidebar
 - [x] El dashboard de perfumes muestra: ventas del mes actual, ingresos del mes, ganancia bruta del mes
-- [ ] Se muestran las últimas 5 ventas realizadas con acceso al detalle
+- [x] Se muestran las últimas 5 ventas realizadas con acceso al detalle
 - [x] Se muestra un comparativo simple: ventas minoristas vs mayoristas del mes (cantidad e ingresos)
 - [x] Las nuevas rutas están integradas con react-router-dom
 - [x] La navegación funciona en móvil

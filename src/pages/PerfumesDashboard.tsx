@@ -1,3 +1,4 @@
+import { aumentaStock } from '../utils/stock'
 import { useNavigate } from 'react-router-dom'
 import { AlertTriangle, ShoppingCart, TrendingUp } from 'lucide-react'
 import { useStockPerfumes } from '../hooks/useStockPerfumes'
@@ -140,7 +141,7 @@ export function PerfumesDashboard() {
                 {ultimasVentas.map((v) => (
                   <tr
                     key={v.id}
-                    onClick={() => navigate('/perfumes/ventas')}
+                    onClick={() => navigate(`/perfumes/ventas?venta=${v.id}`)}
                     className="cursor-pointer border-b border-gray-50 hover:bg-gray-50 transition-colors"
                   >
                     <td className="px-4 py-3 font-medium text-blue-600">{v.codigo}</td>
@@ -217,14 +218,14 @@ export function PerfumesDashboard() {
                       <td className="px-4 py-3 font-medium text-gray-800">{perfume ? `${perfume.marca} - ${perfume.nombre}` : '—'}</td>
                       <td className="px-4 py-3">
                         <span className={`rounded-full px-2 py-1 text-xs font-medium ${
-                          m.tipo === 'Entrada' ? 'bg-green-50 text-green-700' :
+                          aumentaStock(m) ? 'bg-green-50 text-green-700' :
                           m.tipo === 'Venta' ? 'bg-blue-50 text-blue-700' :
                           m.tipo === 'Merma' ? 'bg-red-50 text-red-700' :
                           'bg-gray-50 text-gray-700'
                         }`}>{m.tipo}</span>
                       </td>
-                      <td className={`px-4 py-3 text-right font-medium ${m.tipo === 'Entrada' ? 'text-green-600' : 'text-red-600'}`}>
-                        {m.tipo === 'Entrada' ? '+' : '-'}{m.cantidad}
+                      <td className={`px-4 py-3 text-right font-medium ${aumentaStock(m) ? 'text-green-600' : 'text-red-600'}`}>
+                        {aumentaStock(m) ? '+' : '-'}{m.cantidad}
                       </td>
                     </tr>
                   )

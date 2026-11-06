@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Plus, ShoppingCart, Trash2, X, Eye, Ban, Check, ArrowUpDown } from 'lucide-react'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
@@ -59,6 +60,17 @@ export function PerfumesVentas() {
   const [guardando, setGuardando] = useState(false)
   const [anulando, setAnulando] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [exito, setExito] = useState<string | null>(null)
+  const [errorAnular, setErrorAnular] = useState<string | null>(null)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const ventaParam = searchParams.get('venta')
+
+  useEffect(() => {
+    if (!ventaParam || loading) return
+    const encontrada = ventas.find((v) => v.id === ventaParam)
+    if (encontrada) setDetalleVenta(encontrada)
+    setSearchParams({}, { replace: true })
+  }, [ventaParam, loading, ventas, setSearchParams])
 
   function resetForm() {
     setTipo('Minorista')
@@ -74,7 +86,7 @@ export function PerfumesVentas() {
     setError(null)
   }
 
-  function abrirForm() { resetForm(); setMostrarForm(true) }
+  function abrirForm() { resetForm(); setExito(null); setMostrarForm(true) }
   function cerrarForm() { setMostrarForm(false); setError(null) }
 
   function agregarLinea() {
@@ -170,6 +182,7 @@ export function PerfumesVentas() {
     setGuardando(false)
     if (!resultado.ok) { setError(resultado.error ?? 'Error al registrar la venta'); return }
     cerrarForm()
+    setExito(`Venta ${resultado.venta?.codigo ?? ''} registrada correctamente`.replace('  ', ' '))
   }
 
   async function confirmarAnulacion() {
@@ -177,7 +190,8 @@ export function PerfumesVentas() {
     setAnulando(true)
     const resultado = await anularVenta(mostrarAnular.id, motivoAnulacion)
     setAnulando(false)
-    if (!resultado.ok) { setError(resultado.error ?? 'Error al anular'); return }
+    if (!resultado.ok) { setErrorAnular(resultado.error ?? 'Error al anular'); return }
+    setErrorAnular(null)
     setMostrarAnular(null)
     setMotivoAnulacion('')
     setDetalleVenta(null)
@@ -228,6 +242,15 @@ export function PerfumesVentas() {
         </div>
         {puedeEscribir && <Button onClick={abrirForm} className="gap-2"><ShoppingCart size={16} /> Nueva venta</Button>}
       </div>
+
+      {exito && (
+        <div role="status" className="mb-4 flex items-center justify-between rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+          <span>{exito}</span>
+          <button onClick={() => setExito(null)} aria-label="Cerrar mensaje" className="text-green-600 hover:text-green-800">
+            <X size={16} />
+          </button>
+        </div>
+      )}
 
       {/* Formulario nueva venta */}
       {mostrarForm && (
@@ -474,7 +497,7 @@ export function PerfumesVentas() {
               <div className="flex justify-end">
                 <Button
                   variant="danger"
-                  onClick={() => { setMostrarAnular(detalleVenta); setMotivoAnulacion('') }}
+                  onClick={() => { setMostrarAnular(detalleVenta); setMotivoAnulacion(''); setErrorAnular(null) }}
                   className="gap-2"
                 >
                   <Ban size={16} /> Anular venta
@@ -497,8 +520,9 @@ export function PerfumesVentas() {
               onChange={(e) => setMotivoAnulacion(e.target.value)}
               placeholder="Opcional: indicá el motivo"
             />
+            {errorAnular && <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{errorAnular}</p>}
             <div className="mt-4 flex justify-end gap-2">
-              <Button variant="secondary" onClick={() => setMostrarAnular(null)}>Cancelar</Button>
+              <Button variant="secondary" onClick={() => { setMostrarAnular(null); setErrorAnular(null) }}>Cancelar</Button>
               <Button variant="danger" loading={anulando} onClick={confirmarAnulacion}>Confirmar anulación</Button>
             </div>
           </div>

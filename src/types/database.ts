@@ -114,6 +114,7 @@ export interface MovimientoPerfume {
   perfume_id: string
   perfume?: Perfume
   tipo: TipoMovimientoPerfume
+  es_devolucion?: boolean
   cantidad: number
   costo_unitario: number | null
   proveedor: string | null

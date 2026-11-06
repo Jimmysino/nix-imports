@@ -1,3 +1,4 @@
+import { aumentaStock } from '../utils/stock'
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { mensajeError } from '../utils/errores'
@@ -41,7 +42,7 @@ export function useStockPerfumes() {
       let stock = 0
       let valorInventario = 0
       for (const m of movs) {
-        if (m.tipo === 'Entrada') {
+        if (aumentaStock(m)) {
           stock += m.cantidad
           valorInventario += m.cantidad * (m.costo_unitario ?? perfume.costo_compra ?? 0)
         } else {

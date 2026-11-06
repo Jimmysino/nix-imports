@@ -1,3 +1,4 @@
+import { aumentaStock } from '../utils/stock'
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { mensajeError } from '../utils/errores'
@@ -149,7 +150,7 @@ export function useDashboardUnificado() {
         let stock = 0
         for (const m of perfMovs) {
           const mv = m as Record<string, unknown>
-          if (mv.tipo === 'Entrada') stock += Number(mv.cantidad)
+          if (aumentaStock({ tipo: String(mv.tipo), es_devolucion: mv.es_devolucion === true })) stock += Number(mv.cantidad)
           else stock -= Number(mv.cantidad)
         }
         return total + Math.max(0, stock)

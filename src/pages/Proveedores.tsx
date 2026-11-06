@@ -183,7 +183,7 @@ export function Proveedores() {
                           <td className="px-4 py-3">
                             {perfume ? (
                               <button
-                                onClick={() => navigate('/perfumes/catalogo')}
+                                onClick={() => navigate(`/perfumes/detalle/${perfume.id}`)}
                                 className="text-left text-blue-600 hover:underline"
                               >
                                 {perfume.marca} - {perfume.nombre} ({perfume.presentacion_ml} ml)
