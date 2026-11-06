@@ -4,6 +4,7 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { AdminLayout } from './layouts/AdminLayout'
 import { RoleRoute } from './components/RoleRoute'
 import { Login } from './pages/Login'
+import { ResetPassword } from './pages/ResetPassword'
 import { Usuarios } from './pages/Usuarios'
 import { Auditoria } from './pages/Auditoria'
 import { Respaldos } from './pages/Respaldos'
@@ -32,6 +33,7 @@ export default function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route
             element={
               <ProtectedRoute>
