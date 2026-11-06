@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { AlertTriangle, ArrowRight, TrendingUp, TrendingDown, Minus, Package, Droplets, DollarSign } from 'lucide-react'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts'
 import { Badge } from '../components/ui/Badge'
 import { useDashboardUnificado } from '../hooks/useDashboardUnificado'
 import type { MetricaConTendencia, Tendencia } from '../hooks/useDashboardUnificado'
+import { useTendencias } from '../hooks/useTendencias'
 import { useAlertas } from '../hooks/useAlertas'
 import { formatUSD } from '../utils/cotizacion'
 
@@ -35,6 +37,7 @@ function LoadingCard() {
 export function Dashboard() {
   const navigate = useNavigate()
   const { data, loading, error } = useDashboardUnificado()
+  const { datos: tendencias, loading: loadingTendencias } = useTendencias()
   const { alertas } = useAlertas()
 
   return (
@@ -173,6 +176,71 @@ export function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Gráficos de tendencia */}
+      {!loadingTendencias && tendencias.length > 0 && (
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 mb-6">
+          <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-5">
+            <h2 className="font-semibold text-gray-900 mb-4">Ingresos mensuales (últimos 6 meses)</h2>
+            <ResponsiveContainer width="100%" height={260}>
+              <BarChart data={tendencias} barGap={4}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis dataKey="label" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} />
+                <Tooltip
+                  formatter={(value: number, name: string) => [
+                    formatMoneda(value),
+                    name === 'comisionesImport' ? 'Comisiones importaciones' : 'Ganancia perfumes',
+                  ]}
+                  labelFormatter={(label: string) => `Mes: ${label}`}
+                />
+                <Legend
+                  formatter={(value: string) =>
+                    value === 'comisionesImport' ? 'Importaciones' : 'Perfumes'
+                  }
+                />
+                <Bar dataKey="comisionesImport" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="gananciaPerfumes" fill="#a855f7" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-5">
+            <h2 className="font-semibold text-gray-900 mb-4">Actividad mensual (operaciones)</h2>
+            <ResponsiveContainer width="100%" height={260}>
+              <BarChart data={tendencias} barGap={4}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis dataKey="label" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} allowDecimals={false} />
+                <Tooltip
+                  formatter={(value: number, name: string) => [
+                    value,
+                    name === 'pedidosCerrados' ? 'Pedidos entregados' : 'Ventas perfumes',
+                  ]}
+                  labelFormatter={(label: string) => `Mes: ${label}`}
+                />
+                <Legend
+                  formatter={(value: string) =>
+                    value === 'pedidosCerrados' ? 'Pedidos entregados' : 'Ventas perfumes'
+                  }
+                />
+                <Bar dataKey="pedidosCerrados" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="ventasPerfumes" fill="#a855f7" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      )}
+
+      {loadingTendencias && (
+        <div className="mb-6 grid gap-6 grid-cols-1 lg:grid-cols-2">
+          <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-5 h-[320px] flex items-center justify-center text-sm text-gray-400">
+            Cargando gráficos...
+          </div>
+          <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-5 h-[320px] flex items-center justify-center text-sm text-gray-400">
+            Cargando gráficos...
+          </div>
+        </div>
+      )}
 
       {/* Alertas */}
       {alertas.length > 0 && (
