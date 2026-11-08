@@ -33,6 +33,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [perfilCargando, setPerfilCargando] = useState(false)
   const [accessDenied, setAccessDenied] = useState(false)
   const userId = user?.id
+  // Hay usuario pero su perfil aun no se resolvio (el efecto de carga corre despues del primer render)
+  const perfilPendiente = !!user && !rol && !accessDenied
 
   useEffect(() => {
     if (!userId) {
@@ -185,7 +187,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const clearSessionExpired = useCallback(() => setSessionExpired(false), [])
 
   return (
-    <AuthContext.Provider value={{ user, session, rol, loading: loading || perfilCargando, accessDenied, sessionExpired, login, logout, resetPassword, clearSessionExpired }}>
+    <AuthContext.Provider value={{ user, session, rol, loading: loading || perfilCargando || perfilPendiente, accessDenied, sessionExpired, login, logout, resetPassword, clearSessionExpired }}>
       {children}
       {showWarning && user && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50">

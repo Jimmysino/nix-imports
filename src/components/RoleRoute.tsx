@@ -3,7 +3,9 @@ import { useAuth } from '../contexts/AuthContext'
 import type { RolUsuario } from '../types/database'
 
 export function RoleRoute({ roles, children }: { roles: RolUsuario[]; children: React.ReactNode }) {
-  const { rol } = useAuth()
+  const { rol, loading } = useAuth()
+
+  if (loading) return null
 
   if (!rol || !roles.includes(rol)) return <Navigate to="/" replace />
 
