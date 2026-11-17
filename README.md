@@ -1,32 +1,41 @@
-# React + TypeScript + Vite
+# NIX IMPORTS
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+ERP web para administrar un negocio de importaciones de productos tecnológicos y la venta de perfumes (minorista y mayorista). Uso exclusivo del administrador; no hay portal de cliente.
 
-Currently, two official plugins are available:
+## Módulos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Importaciones:** pedidos con cotización y comisión, estados, tracking, costos adicionales, clientes e inventario temporal.
+- **Perfumes:** catálogo, precios, stock, proveedores y ventas (con anulación que devuelve stock).
+- **Reportes y métricas:** dashboard unificado con KPIs configurables, reportes financieros, rentabilidad y clientes top (PDF/CSV).
+- **Seguridad y administración:** roles (superadmin, admin, viewer), RLS, auditoría, respaldos manuales y sesión con cierre por inactividad.
 
-## React Compiler
+## Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React + Vite + TypeScript, Tailwind CSS, Supabase (PostgreSQL + Auth), despliegue en Vercel.
 
-## Expanding the Oxlint configuration
+## Puesta en marcha
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+1. `npm install`
+2. Copiar `.env.example` a `.env` y completar `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` (solo la anon key; nunca la `service_role`).
+3. Ejecutar en orden las migraciones de `supabase/migrations/` (001 a 020) en el SQL Editor de Supabase.
+4. Crear el primer usuario en Supabase Auth y asignarle el rol `superadmin` en `user_profiles`.
+5. `npm run dev` y abrir `http://localhost:5173`.
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+## Scripts
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+| Comando | Qué hace |
+|---|---|
+| `npm run dev` | Servidor de desarrollo |
+| `npm run build` | Chequeo de tipos y build de producción |
+| `npm run preview` | Sirve el build localmente |
+| `npm run lint` | Linter (Oxlint) |
+
+## Despliegue
+
+Vercel. Configurar las variables `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` en Settings > Environment Variables. [vercel.json](vercel.json) define el rewrite del SPA y los headers de seguridad.
+
+## Documentación
+
+- [PROJECT.md](PROJECT.md): backlog, historias de usuario y sprints.
+- [QA_RECORRIDO.md](QA_RECORRIDO.md): guion de pruebas manuales de extremo a extremo.
+- `supabase/tests/rls_verificacion.sql`: verificación de políticas RLS.

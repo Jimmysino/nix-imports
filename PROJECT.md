@@ -183,6 +183,14 @@
 | NIX-041 | Respaldo y recuperación de datos | Media | 5 | 7 |
 | NIX-042 | Protección contra ataques comunes (XSS, inyección, CSRF) | Alta | 5 | 7 |
 
+### Epic 20: Verificación y Calidad
+
+| ID | Historia de Usuario | Prioridad | Puntos | Sprint |
+|----|-------------------|-----------|--------|--------|
+| NIX-043 | La sesión no debe persistir al cerrar el navegador | Alta | 3 | 8 |
+| NIX-044 | Evitar redirecciones inesperadas al dashboard | Alta | 3 | 8 |
+| NIX-045 | Ejecutar el recorrido de QA completo y corregir hallazgos | Alta | 8 | 8 |
+
 ### Resumen de puntos
 
 | Sprint | Historias | Puntos totales |
@@ -194,6 +202,7 @@
 | 5 | NIX-024, 025, 026, 027, 028, 029 | **34** |
 | 6 | NIX-030, 031, 032, 033, 034, 035 | **39** |
 | 7 | NIX-036, 037, 038, 039, 040, 041, 042 | **47** |
+| 8 | NIX-043, 044, 045 | **14** |
 
 ---
 
@@ -213,7 +222,7 @@
 | 5 | 23 Dic - 05 Ene | Ventas de perfumes, stock, gestión de proveedores | MVP2 |
 | 6 | 06 Ene - 19 Ene | Dashboard avanzado, reportes financieros, métricas | MVP3 |
 | 7 | 20 Ene - 02 Feb | Roles/permisos, auditoría, respaldos, seguridad | MVP3 |
-| 8 | 03 Feb - 16 Feb | Testing final, bugfixes, deploy producción, documentación | Release |
+| 8 | 03 Feb - 16 Feb | Verificación: QA completo, bugfixes de sesión y navegación, deploy producción, documentación | Release |
 
 ---
 
@@ -1078,6 +1087,66 @@ Se implementan capas de defensa contra las principales amenazas del OWASP Top 10
 
 **Estados del pedido:**
 `Solicitado → Cotizado → Aprobado → Comprado → En tránsito → Recibido → Entregado → Cancelado`
+
+---
+
+## Sprint 8 - Scope (Verificación)
+
+**Fechas:** por definir
+**Objetivo:** Verificar el sistema de punta a punta, corregir los fallos de sesión y navegación detectados en uso real, y dejar el producto listo para producción.
+
+**Historias incluidas:** NIX-043, NIX-044, NIX-045
+
+### NIX-043: La sesión no debe persistir al cerrar el navegador
+**Estado Scrum:** Implementada
+**Prioridad:** Alta | **Puntos:** 3 | **Sprint:** 8
+**Como** admin, **quiero** que al cerrar el navegador o la pestaña la sesión se cierre, **para** que nadie con acceso a mi equipo entre al ERP sin credenciales.
+
+**Descripción:**
+Hoy el cliente de Supabase usa `persistSession: true` con `localStorage`, por lo que la sesión sobrevive al cierre del navegador y al volver a abrir el sistema se entra directo. Se debe guardar la sesión solo mientras la pestaña esté abierta (por ejemplo con `sessionStorage` como `storage` del cliente en `src/lib/supabase.ts`).
+
+**Criterios de aceptación:**
+- [X] Al cerrar la pestaña/navegador y volver a abrir el sistema, se muestra el login
+- [X] Recargar la página (F5) con la pestaña abierta mantiene la sesión
+- [X] Cerrar sesión elimina cualquier token almacenado en el navegador
+- [X] La inactividad de 30 min y el aviso de 60 s siguen funcionando
+- [X] El flujo de recuperación de contraseña (enlace por correo) sigue funcionando
+
+---
+
+### NIX-044: Evitar redirecciones inesperadas al dashboard
+**Estado Scrum:** Implementada
+**Prioridad:** Alta | **Puntos:** 3 | **Sprint:** 8
+**Como** admin, **quiero** que el sistema no me devuelva al dashboard sin que yo lo pida, **para** no perder el contexto de lo que estoy haciendo.
+
+**Descripción:**
+Se observa que, de vez en cuando, la aplicación vuelve al dashboard como si se recargara la página. Causa probable: en `AuthContext` hay un render intermedio donde ya existe `user` pero el rol aún es `null` (el perfil se carga en un efecto posterior), y `RoleRoute` redirige a `/` cuando `rol` es `null`. También se debe revisar que los eventos de Supabase (`SIGNED_IN`/`TOKEN_REFRESHED` al volver a la pestaña) no reinicien el estado de auth ni desmonten el layout.
+
+**Criterios de aceptación:**
+- [X] Recargar con F5 en `/configuracion`, `/usuarios`, `/auditoria` o `/respaldos` como superadmin mantiene la misma ruta
+- [X] `RoleRoute` espera a que el rol termine de cargar antes de decidir redirigir
+- [X] Cambiar de pestaña/ventana y volver no reinicia la pantalla ni lleva al dashboard
+- [X] Un refresco de token en segundo plano no desmonta las pantallas ni pierde formularios en edición
+- [X] Un usuario sin permiso sigue siendo redirigido al inicio al abrir una ruta restringida
+
+---
+
+### NIX-045: Ejecutar el recorrido de QA completo y corregir hallazgos
+**Estado Scrum:** En progreso
+**Prioridad:** Alta | **Puntos:** 8 | **Sprint:** 8
+**Como** admin, **quiero** probar todo el sistema como lo usaría el negocio, **para** detectar y corregir errores antes del despliegue a producción.
+
+**Descripción:**
+Ejecutar `QA_RECORRIDO.md` (Partes 1 a 11) con datos de prueba, registrar los hallazgos y corregirlos. Incluye revisar el estado de PITR en Supabase, validar el build de producción y completar la documentación y el despliegue.
+
+**Criterios de aceptación:**
+- [X] Todas las casillas de `QA_RECORRIDO.md` están marcadas o tienen un hallazgo registrado
+- [X] La tabla de cuadre final (Parte 11) coincide con lo esperado
+- [X] Cada hallazgo se corrige con su commit `fix(NIX-045)` o queda documentado como pendiente
+- [x] `npx tsc --noEmit` y `npm run build` terminan sin errores
+- [X] Se verifica en Supabase (Database > Backups) si el plan incluye PITR
+- [X] Las migraciones están aplicadas en producción y el sistema está desplegado en Vercel
+- [x] README y PROJECT.md reflejan el estado final
 
 ---
 
